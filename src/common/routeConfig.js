@@ -1,3 +1,5 @@
+import React from 'react'
+import { Link } from 'react-router-dom';
 import { App } from '../features/home';
 import homeRoute from '../features/home/route';
 import stakeRoute from '../features/stake/route';
@@ -6,9 +8,22 @@ import stakeRoute from '../features/stake/route';
 // This is used for Rekit cmds to register routes config for new features, and remove config when remove features, etc.
 const childRoutes = [homeRoute, stakeRoute];
 
+const Home = () => (
+  <>
+    <h1>Home</h1>
+    
+    <h3><a href="/app">app</a></h3>
+  </>
+)
+
 const routes = [
   {
     path: '/',
+    component: Home,
+    // childRoutes: childRoutes,
+  },
+  {
+    path: '/app',
     component: App,
     childRoutes: childRoutes,
   },
