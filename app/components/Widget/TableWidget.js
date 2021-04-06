@@ -20,7 +20,20 @@ import avatarApi from 'dan-api/images/avatars';
 import PapperBlock from '../PapperBlock/PapperBlock';
 import styles from './widget-jss';
 
-function createData(id, name, date, total, avatar, buyerName, photo, type, currentStock, totalStock, status, statusMessage) {
+function createData(
+  id,
+  name,
+  date,
+  total,
+  avatar,
+  buyerName,
+  photo,
+  type,
+  currentStock,
+  totalStock,
+  status,
+  statusMessage
+) {
   return {
     id,
     name,
@@ -38,35 +51,116 @@ function createData(id, name, date, total, avatar, buyerName, photo, type, curre
 }
 
 const data = [
-  createData('QWE123', 'Woman Bag', '23 Oct 2018', 300, avatarApi[6], 'John Doe', imgApi[21], 'blur_on', 14, 30, 'Error', 'Canceled'),
-  createData('ABC890', 'Laptop', '11 Nov 2018', 230, avatarApi[8], 'Jim Doe', imgApi[29], 'computer', 25, 70, 'Success', 'Sent'),
-  createData('GHI556', 'Pinapple Jam', '5 Nov 2018', 34, avatarApi[2], 'Jane Doe', imgApi[25], 'restaurant_menu', 35, 50, 'Warning', 'Pending'),
-  createData('MNO444', 'Action Figure', '22 Sept 2018', 17, avatarApi[9], 'Jack Doe', imgApi[30], 'toys', 9, 85, 'Info', 'Paid'),
-  createData('JKL345', 'Man Shoes', '19 Sept 2018', 208, avatarApi[5], 'Jessica Doe', imgApi[22], 'blur_on', 18, 33, 'Default', 'Returned'),
+  createData(
+    'QWE123',
+    'Woman Bag',
+    '23 Oct 2018',
+    300,
+    avatarApi[6],
+    'John Doe',
+    imgApi[21],
+    'blur_on',
+    14,
+    30,
+    'Error',
+    'Canceled'
+  ),
+  createData(
+    'ABC890',
+    'Laptop',
+    '11 Nov 2018',
+    230,
+    avatarApi[8],
+    'Jim Doe',
+    imgApi[29],
+    'computer',
+    25,
+    70,
+    'Success',
+    'Sent'
+  ),
+  createData(
+    'GHI556',
+    'Pinapple Jam',
+    '5 Nov 2018',
+    34,
+    avatarApi[2],
+    'Jane Doe',
+    imgApi[25],
+    'restaurant_menu',
+    35,
+    50,
+    'Warning',
+    'Pending'
+  ),
+  createData(
+    'MNO444',
+    'Action Figure',
+    '22 Sept 2018',
+    17,
+    avatarApi[9],
+    'Jack Doe',
+    imgApi[30],
+    'toys',
+    9,
+    85,
+    'Info',
+    'Paid'
+  ),
+  createData(
+    'JKL345',
+    'Man Shoes',
+    '19 Sept 2018',
+    208,
+    avatarApi[5],
+    'Jessica Doe',
+    imgApi[22],
+    'blur_on',
+    18,
+    33,
+    'Default',
+    'Returned'
+  ),
 ];
 
 function TableWidget(props) {
   const { classes } = props;
   const getStatus = status => {
     switch (status) {
-      case 'Error': return messageStyles.bgError;
-      case 'Warning': return messageStyles.bgWarning;
-      case 'Info': return messageStyles.bgInfo;
-      case 'Success': return messageStyles.bgSuccess;
-      default: return messageStyles.bgDefault;
+      case 'Error':
+        return messageStyles.bgError;
+      case 'Warning':
+        return messageStyles.bgWarning;
+      case 'Info':
+        return messageStyles.bgInfo;
+      case 'Success':
+        return messageStyles.bgSuccess;
+      default:
+        return messageStyles.bgDefault;
     }
   };
   const getProgress = status => {
     switch (status) {
-      case 'Error': return progressStyles.bgError;
-      case 'Warning': return progressStyles.bgWarning;
-      case 'Info': return progressStyles.bgInfo;
-      case 'Success': return progressStyles.bgSuccess;
-      default: return progressStyles.bgDefault;
+      case 'Error':
+        return progressStyles.bgError;
+      case 'Warning':
+        return progressStyles.bgWarning;
+      case 'Info':
+        return progressStyles.bgInfo;
+      case 'Success':
+        return progressStyles.bgSuccess;
+      default:
+        return progressStyles.bgDefault;
     }
   };
   return (
-    <PapperBlock noMargin title="Latest Sales" icon="ios-share-outline" whiteBg desc="Monitoring Your products. Tracking sales, and shipping status here.">
+    <PapperBlock
+      noMargin
+      title="Marketplace"
+      icon="ios-share-outline"
+      whiteBg
+      desc="Explore more than 10 cryptocurrancy markets"
+    >
       <div className={classes.root}>
         <Table className={classNames(classes.tableLong, classes.stripped)} padding="default">
           <TableHead>
@@ -79,7 +173,7 @@ function TableWidget(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map(n => ([
+            {data.map(n => [
               <TableRow key={n.id}>
                 <TableCell padding="default">
                   <div className={classes.flex}>
@@ -97,7 +191,11 @@ function TableWidget(props) {
                 </TableCell>
                 <TableCell>
                   <div className={classes.flex}>
-                    <Avatar alt={n.buyerName} src={n.avatar} className={classNames(classes.avatar, classes.sm)} />
+                    <Avatar
+                      alt={n.buyerName}
+                      src={n.avatar}
+                      className={classNames(classes.avatar, classes.sm)}
+                    />
                     <div>
                       <Typography>{n.buyerName}</Typography>
                       <Typography variant="caption">
@@ -109,13 +207,15 @@ function TableWidget(props) {
                 </TableCell>
                 <TableCell align="right">
                   <Typography variant="button">
-                    $
-                    {n.total}
+                    ${n.total}
                     ,00
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Chip label={n.statusMessage} className={classNames(classes.chip, getStatus(n.status))} />
+                  <Chip
+                    label={n.statusMessage}
+                    className={classNames(classes.chip, getStatus(n.status))}
+                  />
                 </TableCell>
                 <TableCell>
                   <div className={classes.taskStatus}>
@@ -126,10 +226,14 @@ function TableWidget(props) {
                       {n.totalStock}
                     </Typography>
                   </div>
-                  <LinearProgress variant="determinate" className={getProgress(n.status)} value={(n.currentStock / n.totalStock) * 100} />
+                  <LinearProgress
+                    variant="determinate"
+                    className={getProgress(n.status)}
+                    value={(n.currentStock / n.totalStock) * 100}
+                  />
                 </TableCell>
-              </TableRow>
-            ]))}
+              </TableRow>,
+            ])}
           </TableBody>
         </Table>
       </div>

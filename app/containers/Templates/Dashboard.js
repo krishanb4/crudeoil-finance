@@ -16,7 +16,7 @@ import styles from './appStyles-jss';
 class Dashboard extends React.Component {
   // Initial header style
   state = {
-    openGuide: false
+    openGuide: false,
   };
 
   componentDidMount = () => {
@@ -35,7 +35,7 @@ class Dashboard extends React.Component {
         loadTransition(true);
       }, 500);
     });
-  }
+  };
 
   handleOpenGuide = () => {
     this.setState({ openGuide: true });
@@ -59,128 +59,122 @@ class Dashboard extends React.Component {
       deco,
       bgPosition,
       layout,
-      changeMode
+      changeMode,
     } = this.props;
     const { openGuide } = this.state;
     const titleException = ['/app', '/app/crm-dashboard', '/app/crypto-dashboard'];
     const parts = history.location.pathname.split('/');
     const place = parts[parts.length - 1].replace('-', ' ');
+    console.log('layout', layout);
     return (
       <div
-        className={
-          classNames(
-            classes.appFrameInner,
-            layout === 'top-navigation' || layout === 'mega-menu' ? classes.topNav : classes.sideNav,
-            mode === 'dark' ? 'dark-mode' : 'light-mode'
-          )
-        }
+        className={classNames(
+          classes.appFrameInner,
+          layout === 'top-navigation' || layout === 'mega-menu' ? classes.topNav : classes.sideNav,
+          mode === 'dark' ? 'dark-mode' : 'light-mode'
+        )}
       >
         <GuideSlider openGuide={openGuide} closeGuide={this.handleCloseGuide} />
-        { /* Left Sidebar Layout */
-          layout === 'left-sidebar' && (
-            <LeftSidebarLayout
-              history={history}
-              toggleDrawer={toggleDrawer}
-              loadTransition={loadTransition}
-              changeMode={changeMode}
-              sidebarOpen={sidebarOpen}
-              pageLoaded={pageLoaded}
-              mode={mode}
-              gradient={gradient}
-              deco={deco}
-              bgPosition={bgPosition}
-              place={place}
-              titleException={titleException}
-              handleOpenGuide={this.handleOpenGuide}
-            >
-              { children }
-            </LeftSidebarLayout>
-          )
-        }
-        { /* Left Big-Sidebar Layout */
-          layout === 'big-sidebar' && (
-            <LeftSidebarBigLayout
-              history={history}
-              toggleDrawer={toggleDrawer}
-              loadTransition={loadTransition}
-              changeMode={changeMode}
-              sidebarOpen={sidebarOpen}
-              pageLoaded={pageLoaded}
-              gradient={gradient}
-              deco={deco}
-              bgPosition={bgPosition}
-              mode={mode}
-              place={place}
-              titleException={titleException}
-              handleOpenGuide={this.handleOpenGuide}
-            >
-              { children }
-            </LeftSidebarBigLayout>
-          )
-        }
-        { /* Right Sidebar Layout */
-          layout === 'right-sidebar' && (
-            <RightSidebarLayout
-              history={history}
-              toggleDrawer={toggleDrawer}
-              loadTransition={loadTransition}
-              changeMode={changeMode}
-              sidebarOpen={sidebarOpen}
-              pageLoaded={pageLoaded}
-              mode={mode}
-              gradient={gradient}
-              deco={deco}
-              bgPosition={bgPosition}
-              place={place}
-              titleException={titleException}
-              handleOpenGuide={this.handleOpenGuide}
-            >
-              { children }
-            </RightSidebarLayout>
-          )
-        }
-        { /* Top Bar with Dropdown Menu */
-          layout === 'top-navigation' && (
-            <DropMenuLayout
-              history={history}
-              toggleDrawer={toggleDrawer}
-              loadTransition={loadTransition}
-              changeMode={changeMode}
-              sidebarOpen={sidebarOpen}
-              pageLoaded={pageLoaded}
-              mode={mode}
-              gradient={gradient}
-              deco={deco}
-              bgPosition={bgPosition}
-              place={place}
-              titleException={titleException}
-              handleOpenGuide={this.handleOpenGuide}
-            >
-              { children }
-            </DropMenuLayout>
-          )
-        }
-        { /* Top Bar with Mega Menu */
-          layout === 'mega-menu' && (
-            <MegaMenuLayout
-              history={history}
-              toggleDrawer={toggleDrawer}
-              loadTransition={loadTransition}
-              changeMode={changeMode}
-              sidebarOpen={sidebarOpen}
-              pageLoaded={pageLoaded}
-              mode={mode}
-              gradient={gradient}
-              deco={deco}
-              bgPosition={bgPosition}
-              place={place}
-              titleException={titleException}
-              handleOpenGuide={this.handleOpenGuide}
-            >
-              { children }
-            </MegaMenuLayout>
-          )
-        }
+        {/* Left Sidebar Layout */
+        layout === 'left-sidebar' && (
+          <LeftSidebarLayout
+            history={history}
+            toggleDrawer={toggleDrawer}
+            loadTransition={loadTransition}
+            changeMode={changeMode}
+            sidebarOpen={sidebarOpen}
+            pageLoaded={pageLoaded}
+            mode={mode}
+            gradient={gradient}
+            deco={deco}
+            bgPosition={bgPosition}
+            place={place}
+            titleException={titleException}
+            handleOpenGuide={this.handleOpenGuide}
+          >
+            {children}
+          </LeftSidebarLayout>
+        )}
+        {/* Left Big-Sidebar Layout */
+        layout === 'big-sidebar' && (
+          <LeftSidebarBigLayout
+            history={history}
+            toggleDrawer={toggleDrawer}
+            loadTransition={loadTransition}
+            changeMode={changeMode}
+            sidebarOpen={sidebarOpen}
+            pageLoaded={pageLoaded}
+            gradient={gradient}
+            deco={deco}
+            bgPosition={bgPosition}
+            mode={mode}
+            place={place}
+            titleException={titleException}
+            handleOpenGuide={this.handleOpenGuide}
+          >
+            {children}
+          </LeftSidebarBigLayout>
+        )}
+        {/* Right Sidebar Layout */
+        layout === 'right-sidebar' && (
+          <RightSidebarLayout
+            history={history}
+            toggleDrawer={toggleDrawer}
+            loadTransition={loadTransition}
+            changeMode={changeMode}
+            sidebarOpen={sidebarOpen}
+            pageLoaded={pageLoaded}
+            mode={mode}
+            gradient={gradient}
+            deco={deco}
+            bgPosition={bgPosition}
+            place={place}
+            titleException={titleException}
+            handleOpenGuide={this.handleOpenGuide}
+          >
+            {children}
+          </RightSidebarLayout>
+        )}
+        {/* Top Bar with Dropdown Menu */
+        layout === 'top-navigation' && (
+          <DropMenuLayout
+            history={history}
+            toggleDrawer={toggleDrawer}
+            loadTransition={loadTransition}
+            changeMode={changeMode}
+            sidebarOpen={sidebarOpen}
+            pageLoaded={pageLoaded}
+            mode={mode}
+            gradient={gradient}
+            deco={deco}
+            bgPosition={bgPosition}
+            place={place}
+            titleException={titleException}
+            handleOpenGuide={this.handleOpenGuide}
+          >
+            {children}
+          </DropMenuLayout>
+        )}
+        {/* Top Bar with Mega Menu */
+        layout === 'mega-menu' && (
+          <MegaMenuLayout
+            history={history}
+            toggleDrawer={toggleDrawer}
+            loadTransition={loadTransition}
+            changeMode={changeMode}
+            sidebarOpen={sidebarOpen}
+            pageLoaded={pageLoaded}
+            mode={mode}
+            gradient={gradient}
+            deco={deco}
+            bgPosition={bgPosition}
+            place={place}
+            titleException={titleException}
+            handleOpenGuide={this.handleOpenGuide}
+          >
+            {children}
+          </MegaMenuLayout>
+        )}
       </div>
     );
   }
@@ -200,7 +194,7 @@ Dashboard.propTypes = {
   gradient: PropTypes.bool.isRequired,
   deco: PropTypes.bool.isRequired,
   bgPosition: PropTypes.string.isRequired,
-  layout: PropTypes.string.isRequired
+  layout: PropTypes.string.isRequired,
 };
 
 const reducer = 'ui';
@@ -226,4 +220,4 @@ const DashboardMaped = connect(
   mapDispatchToProps
 )(Dashboard);
 
-export default (withStyles(styles)(DashboardMaped));
+export default withStyles(styles)(DashboardMaped);

@@ -1,7 +1,7 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import { Switch, Route } from "react-router-dom";
-import Dashboard from "../Templates/Dashboard";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import { Switch, Route } from 'react-router-dom';
+import Dashboard from '../Templates/Dashboard';
 import {
   PersonalDashboard,
   CrmDashboard,
@@ -10,8 +10,8 @@ import {
   Infographics,
   MiniApps,
   NotFound,
-} from "../pageListAsync";
-import BlankPage from "../Pages/BlankPage";
+} from '../pageListAsync';
+import BlankPage from '../Pages/BlankPage';
 
 class Application extends React.Component {
   render() {
@@ -21,7 +21,7 @@ class Application extends React.Component {
         <Switch>
           {/* Home */}
           <Route exact path="/app" component={Shops} />
-          <Route path="/app/crm-dashboard" component={CrmDashboard} />
+          <Route path="/app/stat" component={CrmDashboard} />
           <Route path="/app/crypto-dashboard" component={CryptoDashboard} />
           {/* Orders */}
           <Route path="/app/order/carts" component={Infographics} />

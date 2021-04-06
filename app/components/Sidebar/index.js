@@ -13,7 +13,7 @@ class Sidebar extends React.Component {
   state = {
     status: dummy.user.status,
     anchorEl: null,
-    turnDarker: false
+    turnDarker: false,
   };
 
   // Initial header style
@@ -21,7 +21,7 @@ class Sidebar extends React.Component {
 
   componentDidMount = () => {
     window.addEventListener('scroll', this.handleScroll);
-  }
+  };
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
@@ -30,12 +30,12 @@ class Sidebar extends React.Component {
   handleScroll = () => {
     const doc = document.documentElement;
     const scroll = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-    const newFlagDarker = (scroll > 30);
+    const newFlagDarker = scroll > 30;
     if (this.flagDarker !== newFlagDarker) {
       this.setState({ turnDarker: newFlagDarker });
       this.flagDarker = newFlagDarker;
     }
-  }
+  };
 
   handleOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -48,17 +48,10 @@ class Sidebar extends React.Component {
   handleChangeStatus = status => {
     this.setState({ status });
     this.handleClose();
-  }
+  };
 
   render() {
-    const {
-      classes,
-      open,
-      toggleDrawerOpen,
-      loadTransition,
-      leftSidebar,
-      dataMenu
-    } = this.props;
+    const { classes, open, toggleDrawerOpen, loadTransition, leftSidebar, dataMenu } = this.props;
     const { status, anchorEl, turnDarker } = this.state;
     return (
       <Fragment>
@@ -90,7 +83,11 @@ class Sidebar extends React.Component {
             variant="permanent"
             onClose={toggleDrawerOpen}
             classes={{
-              paper: classNames(classes.drawer, classes.drawerPaper, !open ? classes.drawerPaperClose : ''),
+              paper: classNames(
+                classes.drawer,
+                classes.drawerPaper,
+                !open ? classes.drawerPaperClose : ''
+              ),
             }}
             open={open}
             anchor={leftSidebar ? 'left' : 'right'}
@@ -124,7 +121,7 @@ Sidebar.propTypes = {
 };
 
 Sidebar.defaultProps = {
-  leftSidebar: true
+  leftSidebar: true,
 };
 
 export default withStyles(styles)(Sidebar);
