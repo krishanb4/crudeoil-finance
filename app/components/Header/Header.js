@@ -23,7 +23,7 @@ class Header extends React.Component {
     open: false,
     fullScreen: false,
     turnDarker: false,
-    showTitle: false
+    showTitle: false,
   };
 
   // Initial header style
@@ -33,7 +33,7 @@ class Header extends React.Component {
 
   componentDidMount = () => {
     window.addEventListener('scroll', this.handleScroll);
-  }
+  };
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
@@ -42,8 +42,8 @@ class Header extends React.Component {
   handleScroll = () => {
     const doc = document.documentElement;
     const scroll = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-    const newFlagDarker = (scroll > 30);
-    const newFlagTitle = (scroll > 40);
+    const newFlagDarker = scroll > 30;
+    const newFlagTitle = scroll > 40;
     if (this.flagDarker !== newFlagDarker) {
       this.setState({ turnDarker: newFlagDarker });
       this.flagDarker = newFlagDarker;
@@ -52,17 +52,20 @@ class Header extends React.Component {
       this.setState({ showTitle: newFlagTitle });
       this.flagTitle = newFlagTitle;
     }
-  }
+  };
 
   openFullScreen = () => {
     this.setState({ fullScreen: true });
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
+    } else if (elem.mozRequestFullScreen) {
+      /* Firefox */
       elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+    } else if (elem.webkitRequestFullscreen) {
+      /* Chrome, Safari & Opera */
       elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    } else if (elem.msRequestFullscreen) {
+      /* IE/Edge */
       elem.msRequestFullscreen();
     }
   };
@@ -99,16 +102,11 @@ class Header extends React.Component {
       mode,
       title,
       openGuide,
-      history
+      history,
     } = this.props;
-    const {
-      fullScreen,
-      open,
-      turnDarker,
-      showTitle
-    } = this.state;
+    const { fullScreen, open, turnDarker, showTitle } = this.state;
 
-    const setMargin = (sidebarPosition) => {
+    const setMargin = sidebarPosition => {
       if (sidebarPosition === 'right-sidebar') {
         return classes.right;
       }
@@ -120,16 +118,14 @@ class Header extends React.Component {
 
     return (
       <AppBar
-        className={
-          classNames(
-            classes.appBar,
-            classes.floatingBar,
-            margin && classes.appBarShift,
-            setMargin(position),
-            turnDarker && classes.darker,
-            gradient ? classes.gradientBg : classes.solidBg
-          )
-        }
+        className={classNames(
+          classes.appBar,
+          classes.floatingBar,
+          margin && classes.appBarShift,
+          setMargin(position),
+          turnDarker && classes.darker,
+          gradient ? classes.gradientBg : classes.solidBg
+        )}
       >
         <Toolbar disableGutters={!open}>
           <Fab
@@ -161,29 +157,32 @@ class Header extends React.Component {
                     <Ionicon icon="ios-bulb-outline" />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Show Guide" placement="bottom">
+                {/* <Tooltip title="Show Guide" placement="bottom">
                   <IconButton className={classes.button} onClick={openGuide}>
                     <Ionicon icon="ios-help-circle-outline" />
                   </IconButton>
-                </Tooltip>                
+                </Tooltip> */}
               </div>
-              <Typography component="h2" className={classNames(classes.headerTitle, showTitle && classes.show)}>
+              <Typography
+                component="h2"
+                className={classNames(classes.headerTitle, showTitle && classes.show)}
+              >
                 {title}
               </Typography>
             </div>
           </Hidden>
-          <div className={classes.searchWrapper}>
+          {/* <div className={classes.searchWrapper}>
             <div className={classNames(classes.wrapper, classes.light)}>
               <div className={classes.search}>
                 <SearchIcon />
               </div>
               <SearchUi history={history} />
             </div>
-          </div>
-          <Hidden xsDown>
+          </div> */}
+          {/* <Hidden xsDown>
             <span className={classes.separatorV} />
           </Hidden>
-          <UserMenu />
+          <UserMenu /> */}
         </Toolbar>
       </AppBar>
     );
