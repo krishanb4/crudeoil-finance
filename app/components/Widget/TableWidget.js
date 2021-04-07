@@ -9,12 +9,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Avatar from '@material-ui/core/Avatar';
-import Icon from '@material-ui/core/Icon';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import messageStyles from 'dan-styles/Messages.scss';
-import progressStyles from 'dan-styles/Progress.scss';
 import imgApi from 'dan-api/images/photos';
 import avatarApi from 'dan-api/images/avatars';
 import PapperBlock from '../PapperBlock/PapperBlock';
@@ -162,12 +156,12 @@ function TableWidget(props) {
       desc="Explore more than 10 cryptocurrancy markets"
     >
       <div className={classes.root}>
-        <Table className={classNames(classes.tableLong, classes.stripped)} padding="default">
+        <Table className={classNames(classes.tableLong, classes.stripped)}>
           <TableHead>
             <TableRow>
               <TableCell padding="default">Products</TableCell>
               <TableCell>Buyer</TableCell>
-              <TableCell align="right">Total</TableCell>
+              <TableCell>Total</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Stock</TableCell>
             </TableRow>
@@ -176,40 +170,25 @@ function TableWidget(props) {
             {data.map(n => [
               <TableRow key={n.id}>
                 <TableCell padding="default">
-                  <div className={classes.flex}>
-                    <Avatar alt={n.name} src={n.photo} className={classes.productPhoto} />
+                  <div className={classes.flex}>                    
                     <div>
-                      <Typography variant="caption">{n.id}</Typography>
-                      <Typography variant="subtitle1">{n.name}</Typography>
-                      <a href="/app/pages/invoice" className={classes.downloadInvoice}>
-                        <ArrowDownward />
-                        &nbsp;INVOICE_
-                        {n.id}
-                      </a>
+                      <Typography variant="caption">{n.id}</Typography>                      
                     </div>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className={classes.flex}>
-                    <Avatar
-                      alt={n.buyerName}
-                      src={n.avatar}
-                      className={classNames(classes.avatar, classes.sm)}
-                    />
+                  <div className={classes.flex}>                    
                     <div>
-                      <Typography>{n.buyerName}</Typography>
-                      <Typography variant="caption">
-                        Purchased date:&nbsp;
-                        {n.date}
-                      </Typography>
+                      <Typography>{n.buyerName}</Typography>                      
                     </div>
                   </div>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography variant="button">
-                    ${n.total}
-                    ,00
-                  </Typography>
+                <div className={classes.flex}>                    
+                    <div>
+                      <Typography>{n.buyerName}</Typography>                      
+                    </div>
+                  </div>
                 </TableCell>
                 <TableCell>
                   <Chip
@@ -218,19 +197,11 @@ function TableWidget(props) {
                   />
                 </TableCell>
                 <TableCell>
-                  <div className={classes.taskStatus}>
-                    <Icon className={classes.taskIcon}>{n.type}</Icon>
-                    <Typography variant="caption">
-                      {n.currentStock}
-                      &nbsp;/&nbsp;
-                      {n.totalStock}
-                    </Typography>
-                  </div>
-                  <LinearProgress
-                    variant="determinate"
-                    className={getProgress(n.status)}
-                    value={(n.currentStock / n.totalStock) * 100}
-                  />
+                <a href="/app/pages/invoice" className={classes.downloadInvoice}>
+                        <ArrowDownward />
+                        &nbsp;INVOICE_
+                        {n.id}
+                      </a>
                 </TableCell>
               </TableRow>,
             ])}

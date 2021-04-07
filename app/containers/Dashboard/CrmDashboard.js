@@ -10,7 +10,7 @@ import styles from './dashboard-jss';
 
 class CrmDahboard extends PureComponent {
   render() {
-    const title = brand.name + ' - CRM Dashboard';
+    const title = brand.name + ' - Overall Stats';
     const description = brand.desc;
     const { classes } = this.props;
     return (

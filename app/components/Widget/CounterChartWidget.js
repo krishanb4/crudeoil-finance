@@ -2,11 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import {
-  BarChart, Bar,
-  AreaChart, Area,
-  LineChart, Line,
-} from 'recharts';
+import { BarChart, Bar, AreaChart, Area, LineChart, Line } from 'recharts';
 import { data1 } from 'dan-api/chart/chartMiniData';
 import colorfull from 'dan-api/palette/colorfull';
 import AssignmentReturned from '@material-ui/icons/AssignmentReturned';
@@ -21,7 +17,7 @@ class CounterChartWidget extends PureComponent {
         <Grid container spacing={2}>
           <Grid item md={3} xs={6}>
             <CounterWidget
-              color={colorfull[6]}
+              color={colorfull[0]}
               start={0}
               end={20}
               duration={3}
@@ -69,6 +65,32 @@ class CounterChartWidget extends PureComponent {
               <LineChart width={100} height={80} data={data1}>
                 <Line type="monotone" dataKey="pv" stroke="#FFFFFF" strokeWidth={2} />
               </LineChart>
+            </CounterWidget>
+          </Grid>
+          <Grid item md={3} xs={6}>
+            <CounterWidget
+              color={colorfull[6]}
+              start={0}
+              end={20}
+              duration={3}
+              title="Monthly Income"
+              unitBefore="$ "
+              unitAfter="k"
+            >
+              <AssignmentReturned className={classes.counterIcon} />
+            </CounterWidget>
+          </Grid>
+          <Grid item md={3} xs={6}>
+            <CounterWidget
+              color={colorfull[3]}
+              start={0}
+              end={20}
+              duration={3}
+              title="Weekly Sales"
+            >
+              <BarChart width={100} height={40} data={data1}>
+                <Bar dataKey="uv" fill="#ffffff" />
+              </BarChart>
             </CounterWidget>
           </Grid>
         </Grid>
