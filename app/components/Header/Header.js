@@ -137,7 +137,7 @@ class Header extends React.Component {
           >
             <MenuIcon />
           </Fab>
-          <Hidden smDown>
+          {/* <Hidden smDown> */}
             <div className={classes.headerProperties}>
               <div className={classNames(classes.headerAction, showTitle && classes.fadeOut)}>
                 {fullScreen ? (
@@ -183,7 +183,7 @@ class Header extends React.Component {
                 {title}
               </Typography>
             </div>
-          </Hidden>
+          {/* </Hidden> */}
           {/* <div className={classes.searchWrapper}>
             <div className={classNames(classes.wrapper, classes.light)}>
               <div className={classes.search}>

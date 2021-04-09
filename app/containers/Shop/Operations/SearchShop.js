@@ -85,46 +85,29 @@ class SearchShop extends React.Component {
                 <input className={classes.input} placeholder="Search Shop" onChange={(event) => search(event)} />
               </div>
             </div> */}
-            <div style={{ display: 'flex', flexDirection: 'column', width: '100%', padding: '15px 0px 0px 0px' }}>
-              <FormGroup row>
+            <div className={classes.filterSection}>
+              <FormGroup className={classes.flexRow}>
                 <FormControlLabel control={<Checkbox value="hideZeroBalance" />} label="Hide Zero Balances" />
                 <FormControlLabel control={<Checkbox value="retiredValues" />} label="Retired Vaults" />
                 <FormControlLabel control={<Checkbox value="depositedValues" />} label="Deposited Vaults" />
                 <FormControlLabel control={<Checkbox value="boost" />} label="Boost" />
-                <RadioGroup
-                    aria-label="filter"
-                    name="filter"
-                    className={classes.flexRow}
-                    value={'auto'}
-                    // onChange={handleChange}
-                  >
-                    <FormControlLabel style={{ minWidth: '160px', marginRight: '12px' }} value="pancake" control={<Radio />} label="Pancake" />
-                    <FormControlLabel style={{ minWidth: '123px', marginRight: '12px' }} value="oneinch" control={<Radio />} label="1Inch" />
-                    <FormControlLabel style={{ minWidth: '142px', marginRight: '12px' }} value="julswap" control={<Radio />} label="Julswap" />
-                    <FormControlLabel style={{ minWidth: '160px', marginRight: '12px' }} value="auto" control={<Radio />} label="Auto" />
-                  
-                  </RadioGroup>
               </FormGroup>
-              <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                <FormControl style={{ minWidth: '250px', marginRight: '12px' }}>
-                  <InputLabel htmlFor="age-simple">Platform</InputLabel>
-                  <Select
-                    // value= '10'
-                    // onChange={handleChange}
-                    inputProps={{
-                      name: 'age',
-                      id: 'age-simple',
-                    }}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {/* <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem> */}
-                  </Select>
-                </FormControl>
-                <FormControl style={{ minWidth: '250px', marginRight: '12px' }}>
+              <RadioGroup
+                aria-label="filter"
+                name="filter"
+                className={classes.flexRow}
+                value={'auto'}
+              // onChange={handleChange}
+              >
+                <FormControlLabel value="pancake" control={<Radio />} label="Pancake" />
+                <FormControlLabel value="oneinch" control={<Radio />} label="1Inch" />
+                <FormControlLabel value="julswap" control={<Radio />} label="Julswap" />
+                <FormControlLabel value="auto" control={<Radio />} label="Auto" />
+
+              </RadioGroup>
+
+              <div className={classes.dropdownRow}>
+                <FormControl className={classes.dropdownControl}>
                   <InputLabel htmlFor="age-simple">Vault Type</InputLabel>
                   <Select
                     // value= '10'
@@ -142,7 +125,7 @@ class SearchShop extends React.Component {
                     <MenuItem value={30}>Thirty</MenuItem> */}
                   </Select>
                 </FormControl>
-                <FormControl style={{ minWidth: '250px', marginRight: '12px' }}>
+                <FormControl className={classes.dropdownControl}>
                   <InputLabel htmlFor="age-simple">Asset</InputLabel>
                   <Select
                     // value= '10'
@@ -162,7 +145,7 @@ class SearchShop extends React.Component {
                 </FormControl>
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto', marginTop: '-3px' }}>
                   <Button style={{ marginRight: '10px' }} variant="contained" color="secondary">
                     <img style={{ marginRight: '5px' }} src='/images/clear_filter.svg' width="20" height="20" />
                     <span className={classes.cearBtnText}>Clear Filters</span>

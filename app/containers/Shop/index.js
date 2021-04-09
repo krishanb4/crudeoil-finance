@@ -54,12 +54,12 @@ const styles = (theme) => ({
   },
   tvlText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 600
   },
   depositedText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 400
   },
   detailsText: {

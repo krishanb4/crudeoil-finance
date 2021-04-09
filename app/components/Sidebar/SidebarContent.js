@@ -12,6 +12,8 @@ import dummy from 'dan-api/dummy/dummyContents';
 // import logo from 'dan-images/logo_01.png';
 import MainMenu from './MainMenu';
 import styles from './sidebar-jss';
+import Ionicon from 'react-ionicons';
+import IconButton from '@material-ui/core/IconButton';
 
 class SidebarContent extends React.Component {
   state = {
@@ -89,11 +91,11 @@ class SidebarContent extends React.Component {
                 marginTop: transform * -0.3,
               }}
             >
-                <Avatar
-                  alt={dummy.network.title}
-                  src={dummy.network.bscLogo}
-                  className={classNames(classes.avatar, classes.bigAvatar)}
-                />
+              <Avatar
+                alt={dummy.network.title}
+                src={dummy.network.bscLogo}
+                className={classNames(classes.avatar, classes.bigAvatar)}
+              />
 
               <div>
                 <Button size="small" onClick={openMenuStatus}>
@@ -151,6 +153,14 @@ class SidebarContent extends React.Component {
               </div>
             </div>
           )}
+        </div>
+        <div className={classes.menuFooter}>
+          <IconButton>
+            <Ionicon icon="logo-twitter" />
+          </IconButton>
+          <IconButton>
+            <Ionicon icon="ios-send" />
+          </IconButton>
         </div>
         <div
           id="sidebar"

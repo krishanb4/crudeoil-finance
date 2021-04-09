@@ -464,7 +464,10 @@ const styles = theme => ({
     backgroundColor: '#00ce52',
     color: 'white',
     borderRadius: 12,
-    fontWeight: 600
+    fontWeight: 600,
+    [theme.breakpoints.down('sm')]: {
+      left: '240px',
+    },
   },
   pausedTag: {
     border: '1px solid #ffcf53',
@@ -477,7 +480,10 @@ const styles = theme => ({
     backgroundColor: '#ffd555',
     color: 'black',
     borderRadius: 12,
-    fontWeight: 600
+    fontWeight: 600,
+    [theme.breakpoints.down('sm')]: {
+      left: '217px',
+    },
   },
   boostedTagDiv: {
     position: 'absolute'
@@ -535,7 +541,12 @@ const styles = theme => ({
     gridTemplateColumns: '1fr 1fr 1fr 1fr',
     gridColumnGap: 15,
     marginTop: 25,
-    gridRowGap: 15
+    gridRowGap: 15,
+    borderTop: '1px solid #dadada',
+    paddingTop: 15,
+    [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: '1fr 1fr',
+    }
   },
   mlAuto: {
     marginLeft: 'auto'
@@ -554,6 +565,30 @@ const styles = theme => ({
   },
   detailsHeader: {
     fontWeight: 'bold'
+  },
+  dialogSliderGrid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gridColumnGap: 100,
+    [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: '1fr',
+      gridColumnGap: 0,
+      gridRowGap: 35
+    },
+  },
+  inputBox: {
+    marginBottom: 10
+  },
+  inputLabel: {
+    fontSize: 16,
+    marginBottom: 10,
+    color: '#a0a0a0'
+  },
+  flexRowCenter: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 

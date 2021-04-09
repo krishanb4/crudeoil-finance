@@ -371,6 +371,15 @@ const styles = theme => ({
     backgroundColor: '#4BB543',
     border: '2.5px dashed #4BB543'
   },
+  menuFooter: {
+    bottom: 0,
+    position: 'absolute',
+    padding: 0,
+    borderTop: '1px solid #e4e4e4',
+    width: '100%',
+    display: 'flex',
+    flexWrap: 'wrap'
+  }
 });
 
 export default styles;

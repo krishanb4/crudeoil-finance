@@ -34,6 +34,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
+import Input from '@material-ui/core/Input';
 
 function getModalStyle() {
   return {
@@ -193,7 +194,7 @@ class ShopCard extends React.Component {
               className={classNames(
                 classes.shopDetailsBtnDeposit,
                 data.get('paused') ? classes.disabledBtn : ''
-              )} disabled={data.get('paused')} onClick={this.openDepositModal}>
+              )} disabled={data.get('paused')} onClick={this.openWithdrawModal}>
               <img className={classes.shopDetailsBtnImg} src='/images/deposit.svg' />
               <span className={classes.shopDetailsBtnText}>Deposit</span>
             </Button>
@@ -204,79 +205,6 @@ class ShopCard extends React.Component {
             </Button>
           </div>
         </CardActions>
-
-        <Dialog
-          fullScreen
-          open={depositModalopen}
-          onClose={this.closeDepositModal}
-          aria-labelledby="responsive-dialog-title"
-        >
-
-          <DialogTitle id="responsive-dialog-title">
-            <div className={classes.dialogTitleRow}>
-              <span>TVL : $0.00</span>
-              <IconButton color="inherit" onClick={this.closeDepositModal} aria-label="Close">
-                <CloseIcon />
-              </IconButton>
-            </div>
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              <Slider
-                defaultValue={10}
-                getAriaValueText={valuetext}
-                aria-labelledby="discrete-slider-always"
-                step={1}
-                marks={marks}
-                valueLabelDisplay="on"
-              />
-              <div className={classes.dialogGrid}>
-                <div className={classes.flexColumn}>
-                  <span className={classes.detailsHeader}>Balance</span>
-                  <span>0.00</span>
-                </div>
-                <div className={classes.flexColumn}>
-                  <span className={classes.detailsHeader}>Vault Details</span>
-                  <span>Asset: WBNB AUTO-LP</span>
-                  <span>AUTO Multiplyer: 11.50x</span>
-                  <span>Type: Stalking</span>
-                  <span>Farm Name: AUTO</span>
-                </div>
-                <div className={classes.flexColumn}>
-                  <span className={classes.detailsHeader}>APY Calculations</span>
-                  <span>Farm APR: 0.00% (0.00% Daily)</span>
-                  <span>Optimal Compunds per Year: 0</span>
-                  <span>Farm APY: 0.00%</span>
-                  <span>AUTO APR: 201.20% (0.55% Daily)</span>
-                </div>
-                <div className={classes.flexColumn}>
-                  <span className={classes.detailsHeader}>Fees</span>
-                  <span>Controller Fee: None</span>
-                  <span>Platform Fee: None</span>
-                  <span>AUTO Buyback Rate: None</span>
-                  <span>Max Entrance Fee: None</span>
-                </div>
-              </div>
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button color="secondary" variant="contained"
-              className={classNames(
-                classes.shopDetailsBtnDeposit, classes.mr15
-              )} onClick={this.closeDepositModal}>
-              <img className={classes.shopDetailsBtnImg} src='/images/deposit.svg' />
-              <span className={classes.shopDetailsBtnText}>Deposit</span>
-            </Button>
-            <Button color="secondary" variant="contained"
-              className={classNames(
-                classes.shopDetailsBtnDeposit
-              )} onClick={this.closeDepositModal}>
-              <img className={classes.shopDetailsBtnImg} src='/images/deposit.svg' />
-              <span className={classes.shopDetailsBtnText}>Deposit All</span>
-            </Button>
-          </DialogActions>
-        </Dialog>
-
 
         <Dialog
           fullScreen
@@ -294,20 +222,72 @@ class ShopCard extends React.Component {
             </div>
           </DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              <Slider
-                defaultValue={10}
-                getAriaValueText={valuetext}
-                aria-labelledby="discrete-slider-always"
-                step={1}
-                marks={marks}
-                valueLabelDisplay="on"
-              />
-              <div className={classes.dialogGrid}>
-                <div className={classes.flexColumn}>
-                  <span className={classes.detailsHeader}>Balance</span>
-                  <span>0.00</span>
+            <div className={classes.dialogSliderGrid}>
+              <div className={classes.flexColumn}>
+                <span className={classes.inputLabel}>Balance : 0.00000000</span>
+                <Input
+                  placeholder="0"
+                  className={classes.inputBox}
+                  inputProps={{
+                    'aria-label': 'Balance',
+                  }}
+                />
+                <Slider
+                  defaultValue={10}
+                  getAriaValueText={valuetext}
+                  aria-labelledby="discrete-slider-always"
+                  step={1}
+                  marks={marks}
+                  valueLabelDisplay="on"
+                />
+                <div className={classes.flexRowCenter}>
+                  <Button color="secondary" variant="contained"
+                    className={classNames(
+                      classes.shopDetailsBtnDeposit, classes.mr15
+                    )} onClick={this.closeWithdrawModal}>
+                    <img className={classes.shopDetailsBtnImg} src='/images/deposit.svg' />
+                    <span className={classes.shopDetailsBtnText}>Approve</span>
+                  </Button>
                 </div>
+              </div>
+              <div className={classes.flexColumn}>
+                <span className={classes.inputLabel}>Deposited : 0.00000000</span>
+                <Input
+                  placeholder="0"
+                  className={classes.inputBox}
+                  inputProps={{
+                    'aria-label': 'Balance',
+                  }}
+                />
+                <Slider
+                  defaultValue={10}
+                  getAriaValueText={valuetext}
+                  aria-labelledby="discrete-slider-always"
+                  step={1}
+                  marks={marks}
+                  valueLabelDisplay="on"
+                />
+                <div className={classes.flexRowCenter}>
+                  <Button color="secondary" variant="contained"
+                    className={classNames(
+                      classes.shopDetailsBtnWithdraw, classes.mr15
+                    )} onClick={this.closeWithdrawModal}>
+                    <img className={classes.shopDetailsBtnImg} src='/images/withdraw.svg' />
+                    <span className={classes.shopDetailsBtnText}>Withdraw</span>
+                  </Button>
+                  <Button color="secondary" variant="contained"
+                    className={classNames(
+                      classes.shopDetailsBtnWithdraw
+                    )} onClick={this.closeWithdrawModal}>
+                    <img className={classes.shopDetailsBtnImg} src='/images/withdraw.svg' />
+                    <span className={classes.shopDetailsBtnText}>Withdraw All</span>
+                  </Button>
+                </div>
+              </div>
+            </div>
+            <DialogContentText>
+
+              <div className={classes.dialogGrid}>
                 <div className={classes.flexColumn}>
                   <span className={classes.detailsHeader}>Vault Details</span>
                   <span>Asset: WBNB AUTO-LP</span>
@@ -333,20 +313,7 @@ class ShopCard extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-          <Button color="secondary" variant="contained"
-                  className={classNames(
-                    classes.shopDetailsBtnWithdraw, classes.mr15
-                  )} onClick={this.closeWithdrawModal}>
-                  <img className={classes.shopDetailsBtnImg} src='/images/withdraw.svg' />
-                  <span className={classes.shopDetailsBtnText}>Withdraw</span>
-                </Button>
-                <Button color="secondary" variant="contained"
-                  className={classNames(
-                    classes.shopDetailsBtnWithdraw
-                  )} onClick={this.closeWithdrawModal}>
-                  <img className={classes.shopDetailsBtnImg} src='/images/withdraw.svg' />
-                  <span className={classes.shopDetailsBtnText}>Withdraw All</span>
-                </Button>
+
           </DialogActions>
         </Dialog>
 

@@ -139,6 +139,34 @@ const styles = theme => ({
     alignItems: 'center',
     width: '100%',
     marginTop: 5
+  },
+  filterSection: {
+    display: 'grid', 
+    gridTemplateColumns: '1fr 1fr', 
+    gridColumnGap: 5, 
+    gridRowGap: 0,
+    padding: '15px 0px 15px 0px',
+    [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: '1fr', 
+    },
+  },
+  dropdownControl: {
+    minWidth: '240px', 
+    marginRight: '12px',
+    [theme.breakpoints.down('sm')]: {
+      marginRight: '0px',
+      minWidth: '100%',
+    },
+  },
+  dropdownRow: {
+    display: 'flex', 
+    alignItems: 'center', 
+    width: '100%', 
+    marginTop: '-15px',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column', 
+      marginBottom: 20
+    },
   }
 });
 
