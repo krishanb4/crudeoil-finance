@@ -133,6 +133,13 @@ const styles = theme => ({
     overflow: 'hidden',
     boxShadow: theme.shadows[5]
   },
+  flexRow: {
+    display: 'flex',
+    flexDirection: 'row !important',
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 5
+  }
 });
 
 export default styles;

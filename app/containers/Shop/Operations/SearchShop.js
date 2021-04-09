@@ -25,6 +25,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 
 class SearchShop extends React.Component {
   state = {
@@ -87,6 +91,19 @@ class SearchShop extends React.Component {
                 <FormControlLabel control={<Checkbox value="retiredValues" />} label="Retired Vaults" />
                 <FormControlLabel control={<Checkbox value="depositedValues" />} label="Deposited Vaults" />
                 <FormControlLabel control={<Checkbox value="boost" />} label="Boost" />
+                <RadioGroup
+                    aria-label="filter"
+                    name="filter"
+                    className={classes.flexRow}
+                    value={'auto'}
+                    // onChange={handleChange}
+                  >
+                    <FormControlLabel style={{ minWidth: '160px', marginRight: '12px' }} value="pancake" control={<Radio />} label="Pancake" />
+                    <FormControlLabel style={{ minWidth: '123px', marginRight: '12px' }} value="oneinch" control={<Radio />} label="1Inch" />
+                    <FormControlLabel style={{ minWidth: '142px', marginRight: '12px' }} value="julswap" control={<Radio />} label="Julswap" />
+                    <FormControlLabel style={{ minWidth: '160px', marginRight: '12px' }} value="auto" control={<Radio />} label="Auto" />
+                  
+                  </RadioGroup>
               </FormGroup>
               <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                 <FormControl style={{ minWidth: '250px', marginRight: '12px' }}>
