@@ -526,6 +526,17 @@ const styles = theme => ({
     alignItems: 'center',
     marginTop: 25
   },
+  flexColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  dialogGrid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 1fr 1fr',
+    gridColumnGap: 15,
+    marginTop: 25,
+    gridRowGap: 15
+  },
   mlAuto: {
     marginLeft: 'auto'
   },
@@ -534,7 +545,16 @@ const styles = theme => ({
   },
   mr15: {
     marginRight: 15
-  } 
+  },
+  dialogTitleRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  detailsHeader: {
+    fontWeight: 'bold'
+  }
 });
 
 export default styles;
