@@ -95,7 +95,12 @@ class MainMenu extends React.Component {
             to={item.link}
             onClick={() => this.handleClick()}
           >
-            <ListItemText classes={{ primary: classes.primary }} inset primary={item.name} />
+            <ListItemIcon className={classes.icon}>
+              <Ionicon icon={item.icon} />
+            </ListItemIcon>
+            <ListItemText classes={{ primary: classes.primary }}
+              variant="inset"
+              primary={item.name} />
             {item.badge && <Chip color="primary" label={item.badge} className={classes.badge} />}
           </ListItem>
         );

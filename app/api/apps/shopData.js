@@ -1,0 +1,117 @@
+import imgApi from '../images/photos';
+const shopData = [
+  {
+    id: '1',
+    name: 'BUSD/USDT/USDC/DAI',
+    image: '/images/dummy/busd.png',
+    description: 'BUSD/USDT/USDC/DAI',
+    balance: '$0.00',
+    deposited: '$0.00',
+    apy: '0.00%',
+    daily: '0.00%',
+    tvl: '$0.00M',
+    inactive: false,
+    paused: false,
+    boosted: true
+  },
+  {
+    id: '2',
+    name: 'CAKE-BNB LP',
+    image: '/images/dummy/cake.svg',
+    description: 'CAKE-BNB LP',
+    balance: '$0.00',
+    deposited: '$0.00',
+    apy: '0.00%',
+    daily: '0.00%',
+    tvl: '$0.00M',
+    inactive: false,
+    paused: false,
+    boosted: true
+  },
+  {
+    id: '3',
+    name: 'AUTO_BNG LP',
+    image: '/images/dummy/auto.png',
+    description: 'AUTO_BNG LP',
+    balance: '$0.00',
+    deposited: '$0.00',
+    apy: '0.00%',
+    daily: '0.00%',
+    tvl: '$0.00M',
+    inactive: false,
+    paused: false,
+    boosted: false
+  },
+  {
+    id: '4',
+    name: 'BITI-BNB LP',
+    image: '/images/dummy/biti.png',
+    description: 'BITI-BNB LP',
+    balance: '$0.00',
+    deposited: '$0.00',
+    apy: '0.00%',
+    daily: '0.00%',
+    tvl: '$0.00M',
+    inactive: false,
+    paused: false,
+    boosted: false
+  },
+  {
+    id: '5',
+    name: 'PALM-BUSD LP',
+    image: '/images/dummy/palm.png',
+    description: 'PALM-BUSD LP',
+    balance: '$0.00',
+    deposited: '$0.00',
+    apy: '0.00%',
+    daily: '0.00%',
+    tvl: '$0.00M',
+    inactive: false,
+    paused: false,
+    boosted: false
+  },
+  {
+    id: '6',
+    name: 'PALM-BNB LP',
+    image: '/images/dummy/palmbnb.png',
+    description: 'PALM-BNB LP',
+    balance: '$0.00',
+    deposited: '$0.00',
+    apy: '0.00%',
+    daily: '0.00%',
+    tvl: '$0.00M',
+    inactive: false,
+    paused: false,
+    boosted: false
+  },
+  {
+    id: '7',
+    name: 'CAKE',
+    image: '/images/dummy/cakeb.png',
+    description: 'CAKE',
+    balance: '$0.00',
+    deposited: '$0.00',
+    apy: '0.00%',
+    daily: '0.00%',
+    tvl: '$0.00M',
+    inactive: true,
+    paused: false,
+    boosted: false
+  },
+  {
+    id: '8',
+    name: 'SWAMP',
+    image: '/images/dummy/swamp.svg',
+    description: 'SWAMP',
+    balance: '$0.00',
+    deposited: '$0.00',
+    apy: '0.00%',
+    daily: '0.00%',
+    tvl: '$0.00M',
+    inactive: false,
+    paused: true,
+    boosted: false
+  }
+];
+
+export default shopData;

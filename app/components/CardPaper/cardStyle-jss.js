@@ -107,9 +107,10 @@ const styles = theme => ({
     marginLeft: 10
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
     height: 30,
-    fontWeight: theme.typography.fontWeightMedium
+    fontWeight: theme.typography.fontWeightMedium,
+    marginBottom: 15
   },
   ratting: {
     margin: '10px 0',
@@ -405,6 +406,135 @@ const styles = theme => ({
     opacity: 0.4,
     transition: theme.transitions.create('opacity'),
   },
+  shopDetailsLabel: {
+    color: '#00000066',
+    fontSize: '14px',
+    fontWeight: 400
+  },
+  shopDetailsValue: {
+    color: '#000',
+    fontSize: '15px',
+    fontWeight: 600
+  },
+  shopDetailsBtnRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%'
+  },
+  shopDetailsDesc: {
+    // marginBottom: '8px',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  actionRow: {
+    padding: '10px 5px',
+    borderTop: '1px solid #e6e6e6'
+  },
+  shopDetailsBtnWithdraw: {
+    borderRadius: '10px',
+    backgroundColor: '#ff8885 !important'
+  },
+  shopDetailsBtnDeposit: {
+    borderRadius: '10px',
+    backgroundColor: '#00b9a0 !important'
+  },
+  shopDetailsBtnText: {
+    marginLeft: '5px'
+  },
+  shopDetailsBtnImg: {
+    width: 20,
+    height: 20
+  },
+  shopDetailsDescGrid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gridColumnGap: '10px',
+    gridRowGap: '10px'
+  },
+  boostedTag: {
+    border: '1px solid #11dc11',
+    width: 'fit-content',
+    padding: '3px 10px',
+    fontSize: '12px',
+    position: 'relative',
+    left: '126px',
+    top: '-40px',
+    backgroundColor: '#00ce52',
+    color: 'white',
+    borderRadius: 12,
+    fontWeight: 600
+  },
+  pausedTag: {
+    border: '1px solid #ffcf53',
+    width: 'fit-content',
+    padding: '3px 10px',
+    fontSize: '12px',
+    position: 'relative',
+    left: '100px',
+    top: '-40px',
+    backgroundColor: '#ffd555',
+    color: 'black',
+    borderRadius: 12,
+    fontWeight: 600
+  },
+  boostedTagDiv: {
+    position: 'absolute'
+  },
+  boostBtnImg: {
+    width: 20,
+    height: 20,
+    marginRight: '5px'
+  },
+  shopImg: {
+    width: '45px',
+    height: '45px',
+    // border: '1px solid #e8e8e8',
+    padding: '10px 5px',
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: '-16px'
+    // borderRadius: '50%'
+  },
+  boostedCard: {
+    backgroundColor: '#d7ffd7 !important',
+    boxShadow: '0px 0px 10px 2px rgb(106 226 106)'
+  },
+  pausedCard: {
+    backgroundColor: '#fdffc3 !important',
+    boxShadow: '0px 0px 10px 2px rgb(255 250 87)'
+  },
+  inactiveCard: {
+    backgroundColor: '#d7ffd7 !important',
+    boxShadow: '0px 0px 10px 1px rgb(106 226 106)'
+  },
+  paper: {
+    position: 'absolute',
+    width: 700,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(4),
+  },
+  disabledBtn: {
+    backgroundColor: '#808080 !important',
+    color: 'white !important'
+  },
+  flexRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 25
+  },
+  mlAuto: {
+    marginLeft: 'auto'
+  },
+  mb40: {
+    marginBottom: 40
+  },
+  mr15: {
+    marginRight: 15
+  } 
 });
 
 export default styles;

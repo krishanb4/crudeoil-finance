@@ -5,7 +5,7 @@ import brand from "dan-api/dummy/brand";
 import { withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import data from "dan-api/apps/productData";
+import data from "dan-api/apps/shopData";
 import { Toast } from "dan-components";
 import SearchShop from "./Operations/SearchShop";
 import ShopGallery from "./Operations/ShopGallery";
@@ -24,6 +24,7 @@ import {
   addNewShop,
 } from "dan-actions/ShopsActions";
 import { reset } from "redux-form";
+import Ionicon from 'react-ionicons';
 
 const styles = (theme) => ({
   button: {
@@ -33,6 +34,39 @@ const styles = (theme) => ({
   rightIcon: {
     marginLeft: theme.spacing(1),
   },
+  disclaimer: {
+    backgroundColor: '#FEEFB3',
+    fontSize: '14px',
+    padding: '5px 15px',
+    fontWeight: '600',
+    color: '#9F6000',
+    borderRadius: '7px'
+  },
+  disclaimertext: {
+    marginLeft: '5px'
+  },
+  headDetails: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    marginBottom: 10,
+    marginTop: '-20px'
+  },
+  tvlText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 600
+  },
+  depositedText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 400
+  },
+  detailsText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 400
+  }
 });
 
 const initData = {
@@ -140,8 +174,19 @@ class Shop extends React.Component {
           type={toastType}
           onClose={() => closeToast()}
         />
+        <div className={classes.headDetails}>
+          <span className={classes.tvlText}>TVL : $0.00</span>
+          <span className={classes.depositedText}>Deposited : $0.00</span>
+          <span className={classes.detailsText}>There is a 0.05%-0.1% withdrawal or deposit fee on all vaults
+</span>
+        </div>
 
-        <Button
+        <div className={classes.disclaimer}>
+          <Ionicon icon="ios-alert" />
+          <span className={classes.disclaimertext}>Using Smart Contracts, Tokens, and Crypto is always a risk. DYOR before investing.</span>
+        </div>
+
+        {/* <Button
           className={classes.button}
           variant="contained"
           color="secondary"
@@ -149,7 +194,7 @@ class Shop extends React.Component {
         >
           Add New
           <AddCircleIcon className={classes.rightIcon} />
-        </Button>
+        </Button> */}
         <SearchShop
           shopData={shopData}
           checkout={checkout}

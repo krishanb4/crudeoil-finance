@@ -5,6 +5,7 @@ import amber from '@material-ui/core/colors/amber';
 import grey from '@material-ui/core/colors/grey';
 
 const drawerWidth = 238;
+
 const styles = theme => ({
   user: {
     justifyContent: 'center'
@@ -133,7 +134,7 @@ const styles = theme => ({
     paddingBottom: theme.spacing(0.5),
     margin: `${theme.spacing(0.5)}px 0`,
     [theme.breakpoints.down('lg')]: {
-      paddingLeft: theme.spacing(3)
+      paddingLeft: '15px'
     }
   },
   child: {
@@ -358,8 +359,18 @@ const styles = theme => ({
     marginTop: theme.spacing(1)
   },
   badge: {
-    height: 'auto'
-  }
+    height: 'auto',
+    backgroundColor: '#fb9c24 !important'
+  },
+  circleWrapper: {
+    width: '100%',
+    height: '100%',
+    borderRadius: '50%',
+    padding: '2.5px',
+    backgroundClip: 'content-box',
+    backgroundColor: '#4BB543',
+    border: '2.5px dashed #4BB543'
+  },
 });
 
 export default styles;

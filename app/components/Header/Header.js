@@ -15,6 +15,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import UserMenu from './UserMenu';
 import SearchUi from '../Search/SearchUi';
 import styles from './header-jss';
+import Button from '@material-ui/core/Button';
 
 const elem = document.documentElement;
 
@@ -157,6 +158,18 @@ class Header extends React.Component {
                     <Ionicon icon="ios-bulb-outline" />
                   </IconButton>
                 </Tooltip>
+                <div className={classes.flexRowLeft}>
+                  <Tooltip title="Turn Dark/Light" placement="bottom">
+                    <span>EN</span>
+                  </Tooltip>
+                  <Tooltip title="Turn Dark/Light" placement="bottom">
+                    <Button className={classes.walletBtn} variant="contained" color="secondary">
+                    <Ionicon icon="ios-card" />
+                    <span className={classes.walletBtnText}>Wallet</span>
+                  </Button>
+                  </Tooltip>
+
+                </div>
                 {/* <Tooltip title="Show Guide" placement="bottom">
                   <IconButton className={classes.button} onClick={openGuide}>
                     <Ionicon icon="ios-help-circle-outline" />

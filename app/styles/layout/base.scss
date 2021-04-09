@@ -13,3 +13,34 @@
 @import "media";
 @import "tables";
 @import "typography";
+
+.circleWrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    float: left;
+    margin: 10px;
+}
+  .successCircle {
+    background-color: #4BB543;
+    border: 2.5px dashed #4BB543;
+  }
+  .circle {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    padding: 2.5px;
+    background-clip: content-box;
+    animation: spin 10s linear infinite;
+  }
+
+  .circleWrapper:active .circle {
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin { 
+    100% { 
+      transform: rotateZ(360deg);
+    }
+  }

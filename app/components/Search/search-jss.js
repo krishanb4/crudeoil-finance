@@ -126,6 +126,13 @@ const styles = theme => ({
     padding: 0,
     listStyleType: 'none',
   },
+  shopSearchRoot: {
+    flexGrow: 1,
+    margin: theme.spacing(2, 0, 4),
+    borderRadius: 7,
+    overflow: 'hidden',
+    boxShadow: theme.shadows[5]
+  },
 });
 
 export default styles;

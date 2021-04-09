@@ -1,28 +1,47 @@
 module.exports = [
+  // {
+  //   key: 'home',
+  //   name: 'Home',
+  //   icon: 'ios-home-outline',
+  //   child: [
+  //     // {
+  //     //   key: 'landing_page',
+  //     //   name: 'Landing Page',
+  //     //   title: true,
+  //     // },
+  //     {
+  //       key: 'app',
+  //       name: 'App',
+  //       link: '/app',
+  //       // badge: 'Hot',
+  //       icon: 'ios-globe-outline',
+  //     },
+  //     {
+  //       key: 'stat',
+  //       name: 'Stat',
+  //       link: '/app/stat',
+  //       icon: 'ios-desktop-outline',
+  //     },
+  //   ],
+  // },
   {
-    key: 'home',
-    name: 'Home',
-    icon: 'ios-home-outline',
-    child: [
-      // {
-      //   key: 'landing_page',
-      //   name: 'Landing Page',
-      //   title: true,
-      // },
-      {
-        key: 'app',
-        name: 'App',
-        link: '/app',
-        // badge: 'Hot',
-        icon: 'ios-globe-outline',
-      },
-      {
-        key: 'stat',
-        name: 'Stat',
-        link: '/app/stat',
-        icon: 'ios-desktop-outline',
-      },
-    ],
+    key: 'app',
+    name: 'Shops',
+    link: '/app',
+    icon: 'ios-globe-outline',
+  },
+  {
+    key: 'stat',
+    name: 'Stat',
+    link: '/app/stat',
+    icon: 'ios-desktop-outline'
+  },
+  {
+    key: 'governors',
+    name: 'Governors',
+    link: '',
+    badge: 'Coming Soon',
+    icon: 'ios-desktop-outline'
   },
 
   // {

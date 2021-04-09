@@ -435,6 +435,9 @@ const styles = theme => ({
   fadeOut: {},
   invert: {},
   headerAction: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
     margin: `0 ${theme.spacing(3)}px`,
     transition: 'opacity 0.5s ease',
     '& $button': {
@@ -479,6 +482,19 @@ const styles = theme => ({
     flexDirection: 'row-reverse',
     display: 'flex',
     alignItems: 'center'
+  },
+  flexRowLeft: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginLeft: 'auto',
+    alignItems: 'center'
+  },
+  walletBtn: {
+    marginLeft: '10px',
+    backgroundColor: '#ef5350 !important'
+  },
+  walletBtnText: {
+    marginLeft: '2px'
   }
 });
 

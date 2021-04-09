@@ -15,6 +15,16 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Cart from '../../../components/Cart/Cart';
 import styles from '../../../components/Search/search-jss';
+import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import Checkbox from '@material-ui/core/Checkbox';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
 
 class SearchShop extends React.Component {
   state = {
@@ -39,7 +49,11 @@ class SearchShop extends React.Component {
       keyword,
       shopData,
       handleSwitchView,
-      listView
+      listView,
+      hideZeroBalance,
+      retiredValues,
+      depositedValues,
+      boost
     } = this.props;
 
     const getTotalResult = dataArray => {
@@ -56,22 +70,123 @@ class SearchShop extends React.Component {
     };
 
     return (
-      <div className={classes.root}>
+      <div className={classes.shopSearchRoot}>
         <AppBar position="static" color="inherit">
           <Toolbar>
-            <div className={classes.flex}>
+            {/* <div className={classes.flex}>
               <div className={classes.wrapper}>
                 <div className={classes.search}>
                   <SearchIcon />
                 </div>
                 <input className={classes.input} placeholder="Search Shop" onChange={(event) => search(event)} />
               </div>
+            </div> */}
+            <div style={{ display: 'flex', flexDirection: 'column', width: '100%', padding: '15px 0px 0px 0px' }}>
+              <FormGroup row>
+                <FormControlLabel control={<Checkbox value="hideZeroBalance" />} label="Hide Zero Balances" />
+                <FormControlLabel control={<Checkbox value="retiredValues" />} label="Retired Vaults" />
+                <FormControlLabel control={<Checkbox value="depositedValues" />} label="Deposited Vaults" />
+                <FormControlLabel control={<Checkbox value="boost" />} label="Boost" />
+              </FormGroup>
+              <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                <FormControl style={{ minWidth: '250px', marginRight: '12px' }}>
+                  <InputLabel htmlFor="age-simple">Platform</InputLabel>
+                  <Select
+                    // value= '10'
+                    // onChange={handleChange}
+                    inputProps={{
+                      name: 'age',
+                      id: 'age-simple',
+                    }}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {/* <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem> */}
+                  </Select>
+                </FormControl>
+                <FormControl style={{ minWidth: '250px', marginRight: '12px' }}>
+                  <InputLabel htmlFor="age-simple">Vault Type</InputLabel>
+                  <Select
+                    // value= '10'
+                    // onChange={handleChange}
+                    inputProps={{
+                      name: 'age',
+                      id: 'age-simple',
+                    }}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {/* <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem> */}
+                  </Select>
+                </FormControl>
+                <FormControl style={{ minWidth: '250px', marginRight: '12px' }}>
+                  <InputLabel htmlFor="age-simple">Asset</InputLabel>
+                  <Select
+                    // value= '10'
+                    // onChange={handleChange}
+                    inputProps={{
+                      name: 'age',
+                      id: 'age-simple',
+                    }}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {/* <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem> */}
+                  </Select>
+                </FormControl>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
+                  <Button style={{ marginRight: '10px' }} variant="contained" color="secondary">
+                    <img style={{ marginRight: '5px' }} src='/images/clear_filter.svg' width="20" height="20" />
+                    <span className={classes.cearBtnText}>Clear Filters</span>
+                  </Button>
+                  <Hidden mdDown>
+                    <div className={classes.toggleContainer}>
+                      <ToggleButtonGroup value={listView} exclusive onChange={handleSwitchView}>
+                        <ToggleButton value="grid">
+                          <GridOn />
+                        </ToggleButton>
+                        <ToggleButton value="list">
+                          <ViewList />
+                        </ToggleButton>
+                      </ToggleButtonGroup>
+                    </div>
+                  </Hidden>
+                </div>
+              </div>
             </div>
-            <Typography variant="caption" className={classes.result}>
-              {getTotalResult(shopData)}
-              &nbsp;Results
-            </Typography>
-            <Hidden mdDown>
+            {/* <div className={classes.flexRow}>
+                <FormControl className={classes.searchformControl}>
+                  <InputLabel htmlFor="search-platform">Platform</InputLabel>
+                  <Select
+                    value='0'
+                    inputProps={{
+                      name: 'platform',
+                      id: 'search-platform',
+                    }}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+
+                  </Select>
+                </FormControl>
+              </div> */}
+
+
+
+
+            {/* <Hidden mdDown>
               <div className={classes.toggleContainer}>
                 <ToggleButtonGroup value={listView} exclusive onChange={handleSwitchView}>
                   <ToggleButton value="grid">
@@ -82,7 +197,7 @@ class SearchShop extends React.Component {
                   </ToggleButton>
                 </ToggleButtonGroup>
               </div>
-            </Hidden>
+            </Hidden> */}
           </Toolbar>
         </AppBar>
       </div>

@@ -56,14 +56,17 @@ class SidebarContent extends React.Component {
 
     const setStatus = st => {
       switch (st) {
-        case 'online':
-          return classes.online;
-        case 'idle':
-          return classes.idle;
-        case 'bussy':
-          return classes.bussy;
+        case 'bsc':
+          dummy.network.title = 'BSC';
+          return dummy.network.title;
+        case 'heco':
+          dummy.network.title = 'HECO';
+          return dummy.network.title;
+        case 'avalanche':
+          dummy.network.title = 'AVALANCHE';
+          return dummy.network.title;
         default:
-          return classes.offline;
+          return dummy.network.title;
       }
     };
     return (
@@ -75,7 +78,7 @@ class SidebarContent extends React.Component {
             to="/app"
             className={classNames(classes.brand, classes.brandBar, turnDarker && classes.darker)}
           >
-            {/* <img src={logo} alt={brand.name} /> */}
+            <img src={brand.logo} alt={brand.name} />
             {brand.name}
           </NavLink>
           {isLogin && (
@@ -86,18 +89,42 @@ class SidebarContent extends React.Component {
                 marginTop: transform * -0.3,
               }}
             >
-              <Avatar
-                alt={dummy.user.name}
-                src={dummy.user.avatar}
-                className={classNames(classes.avatar, classes.bigAvatar)}
-              />
+                <Avatar
+                  alt={dummy.network.title}
+                  src={dummy.network.bscLogo}
+                  className={classNames(classes.avatar, classes.bigAvatar)}
+                />
+
               <div>
-                <h4>{dummy.user.name}</h4>
                 <Button size="small" onClick={openMenuStatus}>
+                  <h4>{dummy.network.title}</h4>
+                </Button>
+
+                {/* <Button size="small" onClick={openMenuStatus}>
                   <i className={classNames(classes.dotStatus, setStatus(status))} />
                   {status}
-                </Button>
+                </Button> */}
                 <Menu
+                  id="status-menu"
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={closeMenuStatus}
+                  className={classes.statusMenu}
+                >
+                  <MenuItem onClick={() => changeStatus('bsc')}>
+                    <img src={dummy.network.bscLogo} width="10" height="10" />
+                    BSC
+                  </MenuItem>
+                  <MenuItem onClick={() => changeStatus('heco')}>
+                    <img src={dummy.network.hecoLogo} width="10" height="10" />
+                    HECO
+                  </MenuItem>
+                  <MenuItem onClick={() => changeStatus('avalanche')}>
+                    <img src={dummy.network.avalancheLogo} width="10" height="10" />
+                    AVALANCHE
+                  </MenuItem>
+                </Menu>
+                {/* <Menu
                   id="status-menu"
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
@@ -120,7 +147,7 @@ class SidebarContent extends React.Component {
                     <i className={classNames(classes.dotStatus, classes.offline)} />
                     Offline
                   </MenuItem>
-                </Menu>
+                </Menu> */}
               </div>
             </div>
           )}
@@ -162,8 +189,8 @@ SidebarContent.propTypes = {
 
 SidebarContent.defaultProps = {
   turnDarker: false,
-  toggleDrawerOpen: () => {},
-  loadTransition: () => {},
+  toggleDrawerOpen: () => { },
+  loadTransition: () => { },
   anchorEl: null,
   isLogin: true,
 };

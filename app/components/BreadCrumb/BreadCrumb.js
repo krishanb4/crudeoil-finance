@@ -14,7 +14,7 @@ const Breadcrumbs = (props) => {
   } = props;
   return (
     <section className={classNames(theme === 'dark' ? classes.dark : classes.light, classes.breadcrumbs)}>
-      <Route
+      {/* <Route
         path="*"
         render={() => {
           let parts = location.pathname.split('/');
@@ -41,7 +41,7 @@ const Breadcrumbs = (props) => {
             </p>
           );
         }}
-      />
+      /> */}
     </section>
   );
 };

@@ -184,7 +184,28 @@ const styles = theme => ({
   },
   error : {
     backgroundColor: red[500]
-  }
+  },
+  clearBtn: {
+    marginLeft: 'auto',
+    backgroundColor: '#ef5350 !important'
+  },
+  cearBtnText: {
+    marginLeft: '2px'
+  },
+  flexRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  searchForm: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  searchformControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+ 
 });
 
 export default styles;
