@@ -25,23 +25,29 @@ module.exports = [
   //   ],
   // },
   {
-    key: 'app',
-    name: 'Shops',
+    key: 'optimizer',
+    name: 'Optimizer',
     link: '/app',
     icon: 'ios-globe-outline',
   },
   {
-    key: 'stat',
-    name: 'Stat',
+    key: 'stats',
+    name: 'Overall Stats',
     link: '/app/stat',
-    icon: 'ios-desktop-outline'
+    icon: 'md-stats'
   },
   {
-    key: 'governors',
-    name: 'Governors',
+    key: 'governance',
+    name: 'Governance',
     link: '',
     badge: 'Coming Soon',
-    icon: 'ios-desktop-outline'
+    icon: 'md-medal'
+  },
+  {
+    key: 'doc',
+    name: 'Documents',
+    link: '',
+    icon: 'ios-document'
   },
 
   // {

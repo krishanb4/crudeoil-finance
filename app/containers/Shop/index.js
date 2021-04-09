@@ -15,6 +15,7 @@ import { closeToastAction, openToastAction } from "dan-actions/ToastAction";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { formatDate } from "../../utils/common";
 import ConfirmationModal from "../../components/Modal/ConfirmationModal";
+import { Pagination } from '../../components';
 import {
   fetchAction,
   detailAction,
@@ -89,6 +90,8 @@ class Shop extends React.Component {
     open: false,
     isModalOpen: false,
     settingTitle: " Add new Shop ",
+    page: 1,
+    pageNumbers : 1
   };
 
   componentDidMount() {
@@ -140,11 +143,39 @@ class Shop extends React.Component {
   onRejectDelete = () => {
     this.setState({ isModalOpen: false });
   };
+  onPageChange(page) {
+    this.setState({ page });
+  }
 
+  onPrev = () => {
+    let { page } = this.state;
+    if (page > 1) {
+      this.setState({ page: page -= 1 });
+    } else {
+      this.setState({ page: 1 });
+    }
+  }
+
+  onNext =(totalPages) => {
+    let { page } = this.state;
+    if (page < totalPages) {
+      this.setState({ page: page += 1 });
+    } else {
+      this.setState({ page: totalPages });
+    }
+  }
+
+  onGoFirst = ()=> {
+    this.setState({ page: 1 });
+  }
+
+  onGoLast =(totalPages) => {
+    this.setState({ page: totalPages });
+  }
   render() {
-    const title = brand.name + " - Shops";
+    const title = brand.name + " - Optimizer";
     const description = brand.desc;
-    const { listView, open, settingTitle, isModalOpen } = this.state;
+    const { listView, open, settingTitle, isModalOpen,page, pageNumbers } = this.state;
     const {
       shopData,
       checkout,
@@ -186,15 +217,6 @@ class Shop extends React.Component {
           <span className={classes.disclaimertext}>Using Smart Contracts, Tokens, and Crypto is always a risk. DYOR before investing.</span>
         </div>
 
-        {/* <Button
-          className={classes.button}
-          variant="contained"
-          color="secondary"
-          onClick={this.handleClickOpen}
-        >
-          Add New
-          <AddCircleIcon className={classes.rightIcon} />
-        </Button> */}
         <SearchShop
           shopData={shopData}
           checkout={checkout}
@@ -224,6 +246,18 @@ class Shop extends React.Component {
           isOpen={isModalOpen}
           onAgree={this.onConfirmDelete}
           onDisagree={this.onRejectDelete}
+        />
+        <Pagination
+          curpage={page}
+          totpages={10}
+          boundaryPagesRange={1}
+          onChange={this.onPageChange}
+          siblingPagesRange={1}
+          hideEllipsis={false}
+          onPrev={this.onPrev}
+          onNext={() => this.onNext(pageNumbers.length)}
+          onGoFirst={this.onGoFirst}
+          onGoLast={() => this.onGoLast(pageNumbers.length)}
         />
         {isLoading && (
           <img

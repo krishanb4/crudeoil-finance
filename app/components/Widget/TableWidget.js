@@ -13,6 +13,8 @@ import imgApi from 'dan-api/images/photos';
 import avatarApi from 'dan-api/images/avatars';
 import PapperBlock from '../PapperBlock/PapperBlock';
 import styles from './widget-jss';
+import messageStyles from 'dan-styles/Messages.scss';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
 
 function createData(
   id,
