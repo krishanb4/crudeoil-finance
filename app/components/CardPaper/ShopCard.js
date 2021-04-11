@@ -144,13 +144,19 @@ class ShopCard extends React.Component {
             <img src={data.get('image')} width="35" />
           </div>
           <section className={classes.boostedTagDiv}>
-            {data.get('boosted') && <div className={classes.boostedTag}>
+            {data.get('boosted') && <div className={classNames(
+              classes.boostedTag,
+              list ? classes.listBoostedTag : ''
+            )}>
               <img className={classes.boostBtnImg} src='/images/boost.svg' />
             Boosted
             </div>}
           </section>
           <section className={classes.boostedTagDiv}>
-            {data.get('paused') && <div className={classes.pausedTag}>
+            {data.get('paused') && <div className={classNames(
+              classes.pausedTag,
+              list ? classes.listPausedTag : ''
+            )}>
               Deposits Paused
             </div>}
           </section>
@@ -166,7 +172,7 @@ class ShopCard extends React.Component {
           <div className={classes.shopDetailsDescGrid}>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>{data.get('balance')}</span>
-              <span className={classes.shopDetailsLabel}>Balance</span>
+              <span className={classes.shopDetailsLabel}>Deposited</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>{data.get('deposited')}</span>
@@ -189,11 +195,14 @@ class ShopCard extends React.Component {
 
         </CardContent>
         <CardActions className={classes.actionRow}>
-          <div className={classes.shopDetailsBtnRow}>
+          <div className={classNames(
+            list ? classes.shopDetailsBtnCol : classes.shopDetailsBtnRow
+          )}>
             <Button color="secondary" variant="contained"
               className={classNames(
                 classes.shopDetailsBtnDeposit,
-                data.get('paused') ? classes.disabledBtn : ''
+                data.get('paused') ? classes.disabledBtn : '',
+                list ? classes.listBtn : ''
               )} disabled={data.get('paused')} onClick={this.openWithdrawModal}>
               <img className={classes.shopDetailsBtnImg} src='/images/deposit.svg' />
               <span className={classes.shopDetailsBtnText}>Deposit</span>

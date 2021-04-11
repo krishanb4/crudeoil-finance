@@ -91,6 +91,7 @@ class SearchShop extends React.Component {
                 <FormControlLabel control={<Checkbox value="retiredValues" />} label="Retired Vaults" />
                 <FormControlLabel control={<Checkbox value="depositedValues" />} label="Deposited Vaults" />
                 <FormControlLabel control={<Checkbox value="boost" />} label="Boost" />
+                <div className={classes.boostBtnIcon}></div>            
               </FormGroup>
               <RadioGroup
                 aria-label="filter"
@@ -145,7 +146,7 @@ class SearchShop extends React.Component {
                 </FormControl>
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto', marginTop: '-3px' }}>
+                <div className={classes.clearBtnRow}>
                   <Button style={{ marginRight: '10px' }} variant="contained" color="secondary">
                     <img style={{ marginRight: '5px' }} src='/images/clear_filter.svg' width="20" height="20" />
                     <span className={classes.cearBtnText}>Clear Filters</span>

@@ -407,12 +407,12 @@ const styles = theme => ({
     transition: theme.transitions.create('opacity'),
   },
   shopDetailsLabel: {
-    color: '#00000066',
+    color: theme.palette.type === 'dark' ? '#FFFFF' : '#00000066',
     fontSize: '14px',
     fontWeight: 400
   },
   shopDetailsValue: {
-    color: '#000',
+    color: theme.palette.type === 'dark' ? '#FFFFF' : '#000',
     fontSize: '15px',
     fontWeight: 600
   },
@@ -422,6 +422,12 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%'
+  },
+  shopDetailsBtnCol: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    marginRight: 25
   },
   shopDetailsDesc: {
     // marginBottom: '8px',
@@ -439,6 +445,9 @@ const styles = theme => ({
   shopDetailsBtnDeposit: {
     borderRadius: '10px',
     backgroundColor: '#00b9a0 !important'
+  },
+  listBtn: {
+    marginBottom: 25
   },
   shopDetailsBtnText: {
     marginLeft: '5px'
@@ -469,6 +478,10 @@ const styles = theme => ({
       left: '240px',
     },
   },
+  listBoostedTag: {
+    left: '55px',
+    top: '-37px',
+  },
   pausedTag: {
     border: '1px solid #ffcf53',
     width: 'fit-content',
@@ -484,6 +497,10 @@ const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       left: '217px',
     },
+  },
+  listPausedTag: {
+    left: '60px',
+    top: '-37px',
   },
   boostedTagDiv: {
     position: 'absolute'
@@ -504,11 +521,11 @@ const styles = theme => ({
     // borderRadius: '50%'
   },
   boostedCard: {
-    backgroundColor: '#d7ffd7 !important',
+    backgroundColor: theme.palette.type === 'dark' ? '#0a980a !important' : '#d7ffd7 !important',
     boxShadow: '0px 0px 10px 2px rgb(106 226 106)'
   },
   pausedCard: {
-    backgroundColor: '#fdffc3 !important',
+    backgroundColor: theme.palette.type === 'dark' ? '#dae030 !important' : '#fdffc3 !important',
     boxShadow: '0px 0px 10px 2px rgb(255 250 87)'
   },
   inactiveCard: {

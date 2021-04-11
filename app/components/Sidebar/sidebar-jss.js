@@ -362,15 +362,6 @@ const styles = theme => ({
     height: 'auto',
     backgroundColor: '#fb9c24 !important'
   },
-  circleWrapper: {
-    width: '100%',
-    height: '100%',
-    borderRadius: '50%',
-    padding: '2.5px',
-    backgroundClip: 'content-box',
-    backgroundColor: '#4BB543',
-    border: '2.5px dashed #4BB543'
-  },
   menuFooter: {
     bottom: 0,
     position: 'absolute',
@@ -379,6 +370,29 @@ const styles = theme => ({
     width: '100%',
     display: 'flex',
     flexWrap: 'wrap'
+  },
+  avatarPos: {
+    top: -93,
+    left: 11,
+    position: 'relative'
+  },
+  circleWrapper: {
+    position: 'relative',
+    width: 100,
+    height: 100,
+    float: 'left',
+    margin: 10
+  },
+  circle: {
+    display: 'block',
+    width: '100%',
+    height: '100%',
+    borderRadius: '50%',
+    padding: '2.5px',
+    backgroundClip: 'content-box',
+    animation: 'spin 10s linear infinite',
+    backgroundColor: '#4BB543',
+    border: '4px inset rgb(75 251 104)'
   }
 });
 

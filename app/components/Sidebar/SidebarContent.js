@@ -91,11 +91,20 @@ class SidebarContent extends React.Component {
                 marginTop: transform * -0.3,
               }}
             >
-              <Avatar
-                alt={dummy.network.title}
-                src={dummy.network.bscLogo}
-                className={classNames(classes.avatar, classes.bigAvatar)}
-              />
+              <div className={classes.circleWrapper}>
+                <div className={classes.circle}></div>
+                <Avatar
+                  alt={dummy.network.title}
+                  src={dummy.network.bscLogo}
+                  className={classNames(classes.avatar, classes.bigAvatar, classes.avatarPos)}
+                />
+              </div>
+              <style>{`
+                 @keyframes spin { 
+                  100% { 
+                    transform: rotateZ(360deg);
+                  }
+                }`}</style>
 
               <div>
                 <Button size="small" onClick={openMenuStatus}>

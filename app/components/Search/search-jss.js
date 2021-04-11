@@ -142,7 +142,7 @@ const styles = theme => ({
   },
   filterSection: {
     display: 'grid', 
-    gridTemplateColumns: '1fr 1fr', 
+    gridTemplateColumns: 'auto auto', 
     gridColumnGap: 5, 
     gridRowGap: 0,
     padding: '15px 0px 15px 0px',
@@ -166,6 +166,22 @@ const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column', 
       marginBottom: 20
+    },
+  },
+  boostBtnIcon: {
+    backgroundImage: theme.palette.type === 'dark' ? 'url(/images/boost.svg)' : 'url(/images/boost_green.svg)',
+    width: 24,
+    height: 24,
+    marginLeft: -10,
+    marginRight: 30
+  },
+  clearBtnRow: {
+    display: 'flex', 
+    alignItems: 'center', 
+    marginLeft: 170, 
+    marginTop: '-3px',
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 'auto'
     },
   }
 });
