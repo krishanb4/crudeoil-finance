@@ -86,26 +86,34 @@ class SearchShop extends React.Component {
               </div>
             </div> */}
             <div className={classes.filterSection}>
+              <section>
+                <div className={classes.platformFieldSetTitle}>Platforms</div>
+                <RadioGroup
+                  aria-label="filter"
+                  name="filter"
+                  className={classes.platformFieldset}
+                  value={'all'}
+                // onChange={handleChange}
+                >
+                  <FormControlLabel value="pancake" control={<Radio />} label="Pancake" />
+                  <img className={classes.platformIcon} src='/images/logo/pancake.svg' />
+                  <FormControlLabel value="oneinch" control={<Radio />} label="1Inch" />
+                  <img className={classes.platformIcon} src='/images/logo/1inch.png' />
+                  <FormControlLabel value="julswap" control={<Radio />} label="Julswap" />
+                  <img className={classes.platformIcon} src='/images/logo/julswap.svg' />
+                  <FormControlLabel value="auto" control={<Radio />} label="Auto" />
+                  <FormControlLabel value="all" control={<Radio />} label="All" />
+
+                </RadioGroup>
+              </section>
+
               <FormGroup className={classes.flexRow}>
                 <FormControlLabel control={<Checkbox value="hideZeroBalance" />} label="Hide Zero Balances" />
                 <FormControlLabel control={<Checkbox value="retiredValues" />} label="Retired Vaults" />
                 <FormControlLabel control={<Checkbox value="depositedValues" />} label="Deposited Vaults" />
-                <FormControlLabel control={<Checkbox value="boost" />} label="Boost" />
-                <div className={classes.boostBtnIcon}></div>            
+                {/* <FormControlLabel control={<Checkbox value="boost" />} label="Boost" />
+                <div className={classes.boostBtnIcon}></div>             */}
               </FormGroup>
-              <RadioGroup
-                aria-label="filter"
-                name="filter"
-                className={classes.flexRow}
-                value={'auto'}
-              // onChange={handleChange}
-              >
-                <FormControlLabel value="pancake" control={<Radio />} label="Pancake" />
-                <FormControlLabel value="oneinch" control={<Radio />} label="1Inch" />
-                <FormControlLabel value="julswap" control={<Radio />} label="Julswap" />
-                <FormControlLabel value="auto" control={<Radio />} label="Auto" />
-
-              </RadioGroup>
 
               <div className={classes.dropdownRow}>
                 <FormControl className={classes.dropdownControl}>
@@ -145,7 +153,7 @@ class SearchShop extends React.Component {
                   </Select>
                 </FormControl>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div className={classes.clearBtnRow}>
                   <Button style={{ marginRight: '10px' }} variant="contained" color="secondary">
                     <img style={{ marginRight: '5px' }} src='/images/clear_filter.svg' width="20" height="20" />

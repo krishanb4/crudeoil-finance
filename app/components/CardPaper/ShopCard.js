@@ -35,6 +35,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import Input from '@material-ui/core/Input';
+import Ionicon from 'react-ionicons';
 
 function getModalStyle() {
   return {
@@ -140,10 +141,16 @@ class ShopCard extends React.Component {
         /> */}
 
         <CardContent className={classes.floatingButtonWrap}>
+          <div className={classNames(
+            classes.shopBgImgContainer,
+            list ? classes.shopBgImgContainerFull : ''
+          )}>
+            <img className={classes.shopBgImg} src={data.get('bgImage')} />
+          </div>
           <div className={classes.shopImg}>
             <img src={data.get('image')} width="35" />
           </div>
-          <section className={classes.boostedTagDiv}>
+          {/* <section className={classes.boostedTagDiv}>
             {data.get('boosted') && <div className={classNames(
               classes.boostedTag,
               list ? classes.listBoostedTag : ''
@@ -151,7 +158,7 @@ class ShopCard extends React.Component {
               <img className={classes.boostBtnImg} src='/images/boost.svg' />
             Boosted
             </div>}
-          </section>
+          </section> */}
           <section className={classes.boostedTagDiv}>
             {data.get('paused') && <div className={classNames(
               classes.pausedTag,
@@ -169,7 +176,10 @@ class ShopCard extends React.Component {
           >
             {data.get('name')}
           </Typography>
-          <div className={classes.shopDetailsDescGrid}>
+          <div className={classNames(
+            classes.shopDetailsDescGrid,
+            list ? classes.shopDetailsDescGridLong : ''
+          )}>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>{data.get('balance')}</span>
               <span className={classes.shopDetailsLabel}>Deposited</span>
@@ -190,6 +200,31 @@ class ShopCard extends React.Component {
               <span className={classes.shopDetailsValue}>{data.get('tvl')}</span>
               <span className={classes.shopDetailsLabel}>TVL</span>
             </Typography>
+            <Typography component="p" className={classes.shopDetailsDesc}>
+              <span className={classes.shopDetailsValue}>{data.get('reward')}</span>
+              <span className={classes.shopDetailsLabel}>Reward</span>
+            </Typography>
+            {list && <div className={classes.flexColumn}>
+              <span className={classes.detailsHeader}>Vault Details</span>
+              <span>Asset: <b>WBNB AUTO-LP</b></span>
+              <span>AUTO Multiplyer: <b>11.50x</b></span>
+              <span>Type: <b>Stalking</b></span>
+              <span>Farm Name: <b>AUTO</b></span>
+            </div>}
+            {list && <div className={classes.flexColumn}>
+              <span className={classes.detailsHeader}>APY Calculations</span>
+              <span>Farm APR: <b>0.00% (0.00% Daily)</b></span>
+              <span>Optimal Compunds per Year: <b>0</b></span>
+              <span>Farm APY: <b>0.00%</b></span>
+              <span>AUTO APR: <b>201.20% (0.55% Daily)</b></span>
+            </div>}
+            {list && <div className={classes.flexColumn}>
+              <span className={classes.detailsHeader}>Fees</span>
+              <span>Controller Fee: <b>None</b></span>
+              <span>Platform Fee: <b>None</b></span>
+              <span>AUTO Buyback Rate: <b>None</b></span>
+              <span>Max Entrance Fee: <b>None</b></span>
+            </div>}
           </div>
 
 
@@ -294,30 +329,57 @@ class ShopCard extends React.Component {
                 </div>
               </div>
             </div>
+
+            <div className={classes.autoRewardsRow}>
+              <div className={classes.autoRewardsSection}>
+                <span className={classes.autoRewardsHeading}>AUTO Rewards</span>
+                <span className={classes.autoRewardsValue}>$0.00</span>
+                <Button color="secondary" variant="contained"
+                  className={classes.autoRewardsBtn}>
+                  <span className={classes.detailsBtnText}>Harvest</span>
+                  <Ionicon icon="ios-open" />
+                </Button>
+              </div>
+            </div>
+
             <DialogContentText>
 
               <div className={classes.dialogGrid}>
                 <div className={classes.flexColumn}>
                   <span className={classes.detailsHeader}>Vault Details</span>
-                  <span>Asset: WBNB AUTO-LP</span>
-                  <span>AUTO Multiplyer: 11.50x</span>
-                  <span>Type: Stalking</span>
-                  <span>Farm Name: AUTO</span>
+                  <span>Asset: <b>WBNB AUTO-LP</b></span>
+                  <span>AUTO Multiplyer: <b>11.50x</b></span>
+                  <span>Type: <b>Stalking</b></span>
+                  <span>Farm Name: <b>AUTO</b></span>
                 </div>
                 <div className={classes.flexColumn}>
                   <span className={classes.detailsHeader}>APY Calculations</span>
-                  <span>Farm APR: 0.00% (0.00% Daily)</span>
-                  <span>Optimal Compunds per Year: 0</span>
-                  <span>Farm APY: 0.00%</span>
-                  <span>AUTO APR: 201.20% (0.55% Daily)</span>
+                  <span>Farm APR: <b>0.00% (0.00% Daily)</b></span>
+                  <span>Optimal Compunds per Year: <b>0</b></span>
+                  <span>Farm APY: <b>0.00%</b></span>
+                  <span>AUTO APR: <b>201.20% (0.55% Daily)</b></span>
                 </div>
                 <div className={classes.flexColumn}>
                   <span className={classes.detailsHeader}>Fees</span>
-                  <span>Controller Fee: None</span>
-                  <span>Platform Fee: None</span>
-                  <span>AUTO Buyback Rate: None</span>
-                  <span>Max Entrance Fee: None</span>
+                  <span>Controller Fee: <b>None</b></span>
+                  <span>Platform Fee: <b>None</b></span>
+                  <span>AUTO Buyback Rate: <b>None</b></span>
+                  <span>Max Entrance Fee: <b>None</b></span>
                 </div>
+              </div>
+              <div className={classes.detailsBtnRow}>
+                <Button color="secondary" variant="contained"
+                  className={classNames(
+                    classes.detailsBtn, classes.mr15
+                  )}>
+                  <span className={classes.detailsBtnText}>Farm Contract</span>
+                  <Ionicon icon="ios-open" />
+                </Button>
+                <Button color="secondary" variant="contained"
+                  className={classes.detailsBtn}>
+                  <span className={classes.detailsBtnText}>Vault Contract</span>
+                  <Ionicon icon="ios-open" />
+                </Button>
               </div>
             </DialogContentText>
           </DialogContent>

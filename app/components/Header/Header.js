@@ -138,51 +138,57 @@ class Header extends React.Component {
             <MenuIcon />
           </Fab>
           {/* <Hidden smDown> */}
-            <div className={classes.headerProperties}>
-              <div className={classNames(classes.headerAction, showTitle && classes.fadeOut)}>
-                {fullScreen ? (
-                  <Tooltip title="Exit Full Screen" placement="bottom">
-                    <IconButton className={classes.button} onClick={this.closeFullScreen}>
-                      <Ionicon icon="ios-qr-scanner" />
-                    </IconButton>
-                  </Tooltip>
-                ) : (
-                  <Tooltip title="Full Screen" placement="bottom">
-                    <IconButton className={classes.button} onClick={this.openFullScreen}>
-                      <Ionicon icon="ios-qr-scanner" />
-                    </IconButton>
-                  </Tooltip>
-                )}
-                <Tooltip title="Turn Dark/Light" placement="bottom">
-                  <IconButton className={classes.button} onClick={() => this.turnMode(mode)}>
-                    <Ionicon icon="ios-bulb-outline" />
+          <div className={classes.headerProperties}>
+            <div className={classNames(classes.headerAction, showTitle && classes.fadeOut)}>
+              {fullScreen ? (
+                <Tooltip title="Exit Full Screen" placement="bottom">
+                  <IconButton className={classes.button} onClick={this.closeFullScreen}>
+                    <Ionicon icon="ios-qr-scanner" />
                   </IconButton>
                 </Tooltip>
-                <div className={classes.flexRowLeft}>
-                  <Tooltip title="Turn Dark/Light" placement="bottom">
-                    <span>EN</span>
-                  </Tooltip>
-                  <Tooltip title="Turn Dark/Light" placement="bottom">
-                    <Button className={classes.walletBtn} variant="contained" color="secondary">
+              ) : (
+                <Tooltip title="Full Screen" placement="bottom">
+                  <IconButton className={classes.button} onClick={this.openFullScreen}>
+                    <Ionicon icon="ios-qr-scanner" />
+                  </IconButton>
+                </Tooltip>
+              )}
+              <Tooltip title="Turn Dark/Light" placement="bottom">
+                <IconButton className={classes.button} onClick={() => this.turnMode(mode)}>
+                  <Ionicon icon="ios-bulb-outline" />
+                </IconButton>
+              </Tooltip>
+              <div className={classes.flexRowLeft}>
+                <Tooltip title="Buy" placement="bottom">
+                  <Button className={classes.buyBtn} variant="contained" color="secondary">
+                    <Ionicon icon="logo-usd" />
+                    <span className={classes.walletBtnText}>Buy</span>
+                  </Button>
+                </Tooltip>
+                {/* <Tooltip title="Language" placement="bottom">
+                  <span>EN</span>
+                </Tooltip> */}
+                <Tooltip title="Connect To Wallet" placement="bottom">
+                  <Button className={classes.walletBtn} variant="contained" color="secondary">
                     <Ionicon icon="ios-card" />
                     <span className={classes.walletBtnText}>Wallet</span>
                   </Button>
-                  </Tooltip>
+                </Tooltip>
 
-                </div>
-                {/* <Tooltip title="Show Guide" placement="bottom">
+              </div>
+              {/* <Tooltip title="Show Guide" placement="bottom">
                   <IconButton className={classes.button} onClick={openGuide}>
                     <Ionicon icon="ios-help-circle-outline" />
                   </IconButton>
                 </Tooltip> */}
-              </div>
-              <Typography
-                component="h2"
-                className={classNames(classes.headerTitle, showTitle && classes.show)}
-              >
-                {title}
-              </Typography>
             </div>
+            <Typography
+              component="h2"
+              className={classNames(classes.headerTitle, showTitle && classes.show)}
+            >
+              {title}
+            </Typography>
+          </div>
           {/* </Hidden> */}
           {/* <div className={classes.searchWrapper}>
             <div className={classNames(classes.wrapper, classes.light)}>
