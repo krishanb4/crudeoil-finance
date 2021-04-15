@@ -12,12 +12,18 @@ import Ionicon from 'react-ionicons';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import UserMenu from './UserMenu';
-import SearchUi from '../Search/SearchUi';
 import styles from './header-jss';
 import Button from '@material-ui/core/Button';
-
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { closeToastAction, openToastAction } from "dan-actions/ToastAction";
+import {
+  connectWallet,
+  disconnectWallet
+} from "dan-actions/ShopsActions";
 const elem = document.documentElement;
+
+import { createWeb3Modal } from '../../web3';
 
 class Header extends React.Component {
   state = {
@@ -25,6 +31,7 @@ class Header extends React.Component {
     fullScreen: false,
     turnDarker: false,
     showTitle: false,
+    web3Modal : null
   };
 
   // Initial header style
@@ -34,6 +41,7 @@ class Header extends React.Component {
 
   componentDidMount = () => {
     window.addEventListener('scroll', this.handleScroll);
+     this.setState({'web3Model' : createWeb3Modal()})
   };
 
   componentWillUnmount() {
@@ -53,6 +61,10 @@ class Header extends React.Component {
       this.setState({ showTitle: newFlagTitle });
       this.flagTitle = newFlagTitle;
     }
+  };
+
+  connectToWallet = ()=> {
+    this.props.connectWallet();
   };
 
   openFullScreen = () => {
@@ -163,7 +175,7 @@ class Header extends React.Component {
                     <span>EN</span>
                   </Tooltip>
                   <Tooltip title="Turn Dark/Light" placement="bottom">
-                    <Button className={classes.walletBtn} variant="contained" color="secondary">
+                    <Button className={classes.walletBtn} variant="contained" color="secondary" onClick = {()=> this.connectToWallet()}>
                     <Ionicon icon="ios-card" />
                     <span className={classes.walletBtnText}>Wallet</span>
                   </Button>
@@ -214,5 +226,29 @@ Header.propTypes = {
   openGuide: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 };
+const reducer = "wallet";
+const mapStateToProps = (state) => ({
+  force: state, // force state from reducer
+  keyword: state.getIn([reducer, "keywordValue"]),
+  shopData: state.getIn([reducer, "list"]),
+  shopIndex: state.getIn([reducer, "shopIndex"]),
+  totalItems: state.getIn([reducer, "totalItems"]),
+  toastMessage: state.getIn(["toastMessage", "toastMessage"]),
+  toastType: state.getIn(["toastMessage", "type"]),
+  isLoading: state.getIn(["common", "isLoading"]),
+});
 
-export default withStyles(styles)(Header);
+const mapDispatchToProps = (dispatch) => ({
+  connectWallet: bindActionCreators(connectWallet, dispatch),
+  disconnectWallet: bindActionCreators(disconnectWallet, dispatch),
+  closeToast: bindActionCreators(closeToastAction, dispatch),
+  openToast: bindActionCreators(openToastAction, dispatch)
+  
+});
+
+const HeaderMapped = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Header);
+
+export default withStyles(styles)(HeaderMapped);

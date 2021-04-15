@@ -50,30 +50,44 @@ module.exports = [
     icon: 'ios-document'
   },
 
-  // {
-  //   key: 'Orders',
-  //   name: 'Orders',
-  //   icon: 'md-cart',
-  //   child: [
-  //     {
-  //       key: 'OrderTypes',
-  //       name: 'Order Types',
-  //       title: true,
-  //     },
-  //     {
-  //       key: 'CartOrder',
-  //       name: 'Order through Cart',
-  //       link: '/app/order/cart',
-  //       icon: 'ios-cart-outline',
-  //     },
-  //     {
-  //       key: 'Direct',
-  //       name: 'Order through Receipt',
-  //       link: '/app/order/receipt',
-  //       icon: 'md-chatbubbles',
-  //     },
-  //   ],
-  // },
+  {
+    key: 'buy',
+    name: 'Buy OIL and DIESEL',
+    icon: 'logo-usd',
+    child: [      
+      {
+        key: 'buy-oil',
+        name: 'Buy OIL',
+        link: 'https://farm.crudeoil.finance/',
+        icon: 'md-clipboard',
+      },
+      {
+        key: 'buy-diesel',
+        name: 'Buy DIESEL',
+        link: 'https://farm.crudeoil.finance/',
+        icon: 'md-clipboard',
+      },
+    ],
+  },
+  {
+    key: 'audit',
+    name: 'Audit',
+    icon: 'logo-snapchat',
+    child: [      
+      {
+        key: 'audit-farm',
+        name: 'Yield Farm',
+        link: 'https://farm.crudeoil.finance/',
+        icon: 'md-ribbon',
+      },
+      {
+        key: 'audit-optimizer',
+        name: 'Optimizer',
+        link: 'https://farm.crudeoil.finance/',
+        icon: 'md-ribbon',
+      },
+    ],
+  },
   // {
   //   key: 'shop',
   //   name: 'Shops',

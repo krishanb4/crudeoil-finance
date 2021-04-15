@@ -18,6 +18,8 @@ import ConfirmationModal from "../../components/Modal/ConfirmationModal";
 import { Pagination } from '../../components';
 import {
   fetchAction,
+  connectWallet,
+  disconnectWallet,
   detailAction,
   updateAction,
   searchAction,
@@ -297,14 +299,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchData: bindActionCreators(fetchAction, dispatch),
-  search: bindActionCreators(searchAction, dispatch),
-  addNew: bindActionCreators(addAction, dispatch),
-  saveNewShop: bindActionCreators(addNewShop, dispatch),
-  updateShop: bindActionCreators(updateAction, dispatch),
+  connectWallet: bindActionCreators(connectWallet, dispatch),
+  disconnectWallet: bindActionCreators(disconnectWallet, dispatch),
   showDetail: bindActionCreators(detailAction, dispatch),
   closeToast: bindActionCreators(closeToastAction, dispatch),
-  openToast: bindActionCreators(openToastAction, dispatch),
-  resetForm: bindActionCreators(reset, dispatch),
+  openToast: bindActionCreators(openToastAction, dispatch)
+  
 });
 
 const ShopMapped = connect(
