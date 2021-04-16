@@ -368,8 +368,29 @@ const styles = theme => ({
     bottom: 0,
     position: 'absolute',
     padding: 0,
-    borderTop: '1px solid #e4e4e4',
     width: '100%',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  menuDivider: {
+    borderTop: '1px solid #cccccc30',
+    width: '90%',
+    height:2,
+    marginLeft: 10
+  },
+  menuDividerSmall: {
+    borderTop: '1px solid #cccccc30',
+    width: '100%',
+    height:2,
+  },
+  priceMenuDivider: {
+    borderTop: '1px solid #cccccc30',
+    width: '100%',
+    height:2,
+    marginLeft: -4,
+    marginBottom: 10
+  },
+  flexWrap: {
     display: 'flex',
     flexWrap: 'wrap'
   },
@@ -377,7 +398,6 @@ const styles = theme => ({
     bottom: 50,
     position: 'absolute',
     padding: 15,
-    borderTop: '1px solid #e4e4e4',
     width: '100%',
     display: 'flex',
     flexWrap: 'wrap',

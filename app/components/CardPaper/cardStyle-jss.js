@@ -466,6 +466,15 @@ const styles = theme => ({
     gridTemplateColumns: 'auto auto auto auto auto auto',
     gridRowGap: 20
   },
+  rowAdditonalGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'auto auto auto',
+    gridColumnGap: '10px',
+    gridRowGap: '10px',
+    borderTop: '1px solid #cccccc30',
+    marginTop: 10,
+    paddingTop: 10
+  },
   boostedTag: {
     border: '1px solid #11dc11',
     width: 'fit-content',
