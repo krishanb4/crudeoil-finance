@@ -407,7 +407,7 @@ const styles = theme => ({
     transition: theme.transitions.create('opacity'),
   },
   shopDetailsLabel: {
-    color: theme.palette.type === 'dark' ? '#FFFFF' : '#00000066',
+    color: theme.palette.type === 'dark' ? '#FFFFF' : '#7b7b7b',
     fontSize: '14px',
     fontWeight: 400
   },
@@ -458,9 +458,13 @@ const styles = theme => ({
   },
   shopDetailsDescGrid: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: 'auto auto',
     gridColumnGap: '10px',
     gridRowGap: '10px'
+  },
+  shopDetailsDescGridLong: {
+    gridTemplateColumns: 'auto auto auto auto auto auto',
+    gridRowGap: 20
   },
   boostedTag: {
     border: '1px solid #11dc11',
@@ -520,12 +524,28 @@ const styles = theme => ({
     marginTop: '-16px'
     // borderRadius: '50%'
   },
+  shopBgImgContainer: {
+    width: '85%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute'
+  },
+  shopBgImgContainerFull: {
+    width: '100%'
+  },
+  shopBgImg: {
+    width: '65px',
+    height: '65px',
+    opacity: 0.2
+  },
   boostedCard: {
-    backgroundColor: theme.palette.type === 'dark' ? '#0a980a !important' : '#d7ffd7 !important',
+    backgroundColor: theme.palette.type === 'dark' ? '#298229 !important' : '#d7ffd7 !important',
     boxShadow: '0px 0px 10px 2px rgb(106 226 106)'
   },
   pausedCard: {
-    backgroundColor: theme.palette.type === 'dark' ? '#dae030 !important' : '#fdffc3 !important',
+    backgroundColor: theme.palette.type === 'dark' ? '#8d902c !important' : '#fdffc3 !important',
     boxShadow: '0px 0px 10px 2px rgb(255 250 87)'
   },
   inactiveCard: {
@@ -555,12 +575,13 @@ const styles = theme => ({
   },
   dialogGrid: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr 1fr',
+    gridTemplateColumns: 'auto auto auto',
     gridColumnGap: 15,
     marginTop: 25,
     gridRowGap: 15,
     borderTop: '1px solid #dadada',
     paddingTop: 15,
+    fontSize: 14,
     [theme.breakpoints.down('sm')]: {
       gridTemplateColumns: '1fr 1fr',
     }
@@ -581,7 +602,9 @@ const styles = theme => ({
     justifyContent: 'space-between'
   },
   detailsHeader: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 14,
+    color: theme.palette.type === 'dark' ? '#ffff' : '#4e4e4e'
   },
   dialogSliderGrid: {
     display: 'grid',
@@ -594,7 +617,7 @@ const styles = theme => ({
     },
   },
   inputBox: {
-    marginBottom: 10
+    marginBottom: 60
   },
   inputLabel: {
     fontSize: 16,
@@ -606,6 +629,53 @@ const styles = theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  detailsBtnRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 25
+  },
+  detailsBtn: {
+    backgroundColor: '#2981bb !important',
+    borderRadius: 7
+  },
+  detailsBtnText: {
+    marginRight: 5
+  },
+  autoRewardsRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 25
+    }
+  },
+  autoRewardsSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    border: '1px solid #e8e8e8',
+    padding: '20px 45px',
+    backgroundColor: theme.palette.type === 'dark' ? '#292929 !important' : '#f7fbfd',
+    borderRadius: 10
+  },
+  autoRewardsHeading: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    color: theme.palette.type === 'dark' ? '#ffff' : '#4e4e4e',
+    marginBottom: 15
+  },
+  autoRewardsValue: {
+    fontSize: 14,
+    color: theme.palette.type === 'dark' ? '#ffff' : '#4e4e4e',
+    marginBottom: 15
+  },
+  autoRewardsBtn: {
+    backgroundColor: '#2981bb !important',
+    borderRadius: 7
   }
 });
 

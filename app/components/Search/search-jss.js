@@ -138,12 +138,15 @@ const styles = theme => ({
     flexDirection: 'row !important',
     alignItems: 'center',
     width: '100%',
-    marginTop: 5
+    marginTop: 22,
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 5 
+    }
   },
   filterSection: {
     display: 'grid', 
     gridTemplateColumns: 'auto auto', 
-    gridColumnGap: 5, 
+    gridColumnGap: 30, 
     gridRowGap: 0,
     padding: '15px 0px 15px 0px',
     [theme.breakpoints.down('sm')]: {
@@ -178,12 +181,39 @@ const styles = theme => ({
   clearBtnRow: {
     display: 'flex', 
     alignItems: 'center', 
-    marginLeft: 170, 
+    // marginLeft: 170, 
     marginTop: '-3px',
     [theme.breakpoints.down('sm')]: {
       marginLeft: 'auto'
     },
-  }
+  },
+  platformFieldset:{
+    display: 'flex',
+    flexDirection: 'row !important',
+    alignItems: 'center',
+    width: '100%',
+    marginTop: '-2px',
+    border: '1px solid #eaeaea',
+    padding: '5px 15px',
+    borderRadius: '8px'
+  },
+  platformFieldSetTitle: {
+    border: '1px solid #eaeaea',
+    width: 'fit-content',
+    padding: '3px 15px',
+    position: 'relative',
+    top: 8,
+    left: 10,
+    background: theme.palette.type === 'dark' ? '#292929 !important' : 'white',
+    fontWeight: 600,
+    borderRadius: '8px'
+  },
+  platformIcon: {
+    width: 18,
+    height: 18,
+    marginLeft: -10,
+    marginRight: 25
+  },
 });
 
 export default styles;

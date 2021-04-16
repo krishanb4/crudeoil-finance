@@ -39,10 +39,10 @@ export const getNetworkMulticall = () => {
   }
 };
 
-export const getNetworkConnectors =()=> {
+export const getNetworkConnectors =(networkId)=> {
   debugger;
   process;
-  switch (process.env.REACT_APP_NETWORK_ID) {
+  switch (networkId) {
     case '56':
       return {
         network: 'binance',

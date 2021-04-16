@@ -3,7 +3,7 @@
  */
 
 const path = require("path");
-const Dotenv = require('dotenv-webpack');
+const dotenv = require('dotenv');
 const fs = require("fs");
 const glob = require("glob");
 const webpack = require("webpack");
@@ -25,13 +25,8 @@ const plugins = [
     failOnError: false, // show a warning when there is a circular dependency
   }),
   new webpack.DefinePlugin({
-    'process.env':{
-      'NODE_ENV': JSON.stringify('development'),
-      'API_URL': JSON.stringify('https://localhost:44395/api'),
-      'REACT_APP_NETWORK_ID' : 56
-    }
-  }),
-  new Dotenv()
+    'process.env': JSON.stringify(dotenv.config().parsed)
+  })
 ];
 
 if (dllPlugin) {

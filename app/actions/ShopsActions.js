@@ -12,7 +12,7 @@ import {
 import Web3 from 'web3';
 
 export function connectWallet(web3Modal) {
-  return dispatch => {
+  return async dispatch => {
     dispatch(ConnectingToWallet());
      _connectWallet(dispatch,web3Modal);
   };

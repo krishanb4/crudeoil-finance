@@ -12,8 +12,11 @@ import Ionicon from 'react-ionicons';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import UserMenu from './UserMenu';
+import SearchUi from '../Search/SearchUi';
 import styles from './header-jss';
 import Button from '@material-ui/core/Button';
+
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { closeToastAction, openToastAction } from "dan-actions/ToastAction";
@@ -21,10 +24,10 @@ import {
   connectWallet,
   disconnectWallet
 } from "dan-actions/ShopsActions";
-const elem = document.documentElement;
 
 import { createWeb3Modal } from '../../web3';
 
+const elem = document.documentElement;
 class Header extends React.Component {
   state = {
     open: false,
@@ -41,12 +44,16 @@ class Header extends React.Component {
 
   componentDidMount = () => {
     window.addEventListener('scroll', this.handleScroll);
-     this.setState({'web3Model' : createWeb3Modal()})
+    this.setState({'web3Model' : createWeb3Modal()})
   };
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
   }
+
+  connectToWallet = ()=> {
+    this.props.connectWallet(this.state.web3Model);
+  };
 
   handleScroll = () => {
     const doc = document.documentElement;
@@ -61,10 +68,6 @@ class Header extends React.Component {
       this.setState({ showTitle: newFlagTitle });
       this.flagTitle = newFlagTitle;
     }
-  };
-
-  connectToWallet = ()=> {
-    this.props.connectWallet();
   };
 
   openFullScreen = () => {
@@ -150,51 +153,57 @@ class Header extends React.Component {
             <MenuIcon />
           </Fab>
           {/* <Hidden smDown> */}
-            <div className={classes.headerProperties}>
-              <div className={classNames(classes.headerAction, showTitle && classes.fadeOut)}>
-                {fullScreen ? (
-                  <Tooltip title="Exit Full Screen" placement="bottom">
-                    <IconButton className={classes.button} onClick={this.closeFullScreen}>
-                      <Ionicon icon="ios-qr-scanner" />
-                    </IconButton>
-                  </Tooltip>
-                ) : (
-                  <Tooltip title="Full Screen" placement="bottom">
-                    <IconButton className={classes.button} onClick={this.openFullScreen}>
-                      <Ionicon icon="ios-qr-scanner" />
-                    </IconButton>
-                  </Tooltip>
-                )}
-                <Tooltip title="Turn Dark/Light" placement="bottom">
-                  <IconButton className={classes.button} onClick={() => this.turnMode(mode)}>
-                    <Ionicon icon="ios-bulb-outline" />
+          <div className={classes.headerProperties}>
+            <div className={classNames(classes.headerAction, showTitle && classes.fadeOut)}>
+              {fullScreen ? (
+                <Tooltip title="Exit Full Screen" placement="bottom">
+                  <IconButton className={classes.button} onClick={this.closeFullScreen}>
+                    <Ionicon icon="ios-qr-scanner" />
                   </IconButton>
                 </Tooltip>
-                <div className={classes.flexRowLeft}>
-                  <Tooltip title="Turn Dark/Light" placement="bottom">
-                    <span>EN</span>
-                  </Tooltip>
-                  <Tooltip title="Turn Dark/Light" placement="bottom">
-                    <Button className={classes.walletBtn} variant="contained" color="secondary" onClick = {()=> this.connectToWallet()}>
+              ) : (
+                <Tooltip title="Full Screen" placement="bottom">
+                  <IconButton className={classes.button} onClick={this.openFullScreen}>
+                    <Ionicon icon="ios-qr-scanner" />
+                  </IconButton>
+                </Tooltip>
+              )}
+              <Tooltip title="Turn Dark/Light" placement="bottom">
+                <IconButton className={classes.button} onClick={() => this.turnMode(mode)}>
+                  <Ionicon icon="ios-bulb-outline" />
+                </IconButton>
+              </Tooltip>
+              <div className={classes.flexRowLeft}>
+                <Tooltip title="Buy" placement="bottom">
+                  <Button className={classes.buyBtn} variant="contained" color="secondary">
+                    <Ionicon icon="logo-usd" />
+                    <span className={classes.walletBtnText}>Buy</span>
+                  </Button>
+                </Tooltip>
+                {/* <Tooltip title="Language" placement="bottom">
+                  <span>EN</span>
+                </Tooltip> */}
+                <Tooltip title="Connect To Wallet" placement="bottom">
+                  <Button className={classes.walletBtn} variant="contained" color="secondary" onClick = {()=> this.connectToWallet()}>
                     <Ionicon icon="ios-card" />
                     <span className={classes.walletBtnText}>Wallet</span>
                   </Button>
-                  </Tooltip>
+                </Tooltip>
 
-                </div>
-                {/* <Tooltip title="Show Guide" placement="bottom">
+              </div>
+              {/* <Tooltip title="Show Guide" placement="bottom">
                   <IconButton className={classes.button} onClick={openGuide}>
                     <Ionicon icon="ios-help-circle-outline" />
                   </IconButton>
                 </Tooltip> */}
-              </div>
-              <Typography
-                component="h2"
-                className={classNames(classes.headerTitle, showTitle && classes.show)}
-              >
-                {title}
-              </Typography>
             </div>
+            <Typography
+              component="h2"
+              className={classNames(classes.headerTitle, showTitle && classes.show)}
+            >
+              {title}
+            </Typography>
+          </div>
           {/* </Hidden> */}
           {/* <div className={classes.searchWrapper}>
             <div className={classNames(classes.wrapper, classes.light)}>

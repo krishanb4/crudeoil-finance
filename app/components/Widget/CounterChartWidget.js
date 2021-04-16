@@ -17,37 +17,13 @@ class CounterChartWidget extends PureComponent {
         <Grid container spacing={2}>
           <Grid item md={3} xs={6}>
             <CounterWidget
-              color={colorfull[0]}
+              color={colorfull[2]}
               start={0}
-              end={20}
+              end={0}
               duration={3}
-              title="Monthly Income"
+              title="Vaults TVL"
               unitBefore="$ "
-              unitAfter="k"
-            >
-              <AssignmentReturned className={classes.counterIcon} />
-            </CounterWidget>
-          </Grid>
-          <Grid item md={3} xs={6}>
-            <CounterWidget
-              color={colorfull[3]}
-              start={0}
-              end={20}
-              duration={3}
-              title="Weekly Sales"
-            >
-              <BarChart width={100} height={40} data={data1}>
-                <Bar dataKey="uv" fill="#ffffff" />
-              </BarChart>
-            </CounterWidget>
-          </Grid>
-          <Grid item md={3} xs={6}>
-            <CounterWidget
-              color={colorfull[5]}
-              start={0}
-              end={321}
-              duration={3}
-              title="New Customers"
+              unitAfter="M"
             >
               <AreaChart width={100} height={60} data={data1}>
                 <Area type="monotone" dataKey="uv" stroke="#FFFFFF" fill="rgba(255,255,255,.5)" />
@@ -56,37 +32,117 @@ class CounterChartWidget extends PureComponent {
           </Grid>
           <Grid item md={3} xs={6}>
             <CounterWidget
-              color={colorfull[4]}
+              color={colorfull[3]}
               start={0}
-              end={82}
+              end={0}
               duration={3}
-              title="Active Users"
+              title="Active Vaults"
             >
-              <LineChart width={100} height={80} data={data1}>
-                <Line type="monotone" dataKey="pv" stroke="#FFFFFF" strokeWidth={2} />
-              </LineChart>
-            </CounterWidget>
-          </Grid>
-          <Grid item md={3} xs={6}>
-            <CounterWidget
-              color={colorfull[6]}
-              start={0}
-              end={20}
-              duration={3}
-              title="Monthly Income"
-              unitBefore="$ "
-              unitAfter="k"
-            >
-              <AssignmentReturned className={classes.counterIcon} />
+              <BarChart width={100} height={40} data={data1}>
+                <Bar dataKey="uv" fill="#ffffff" />
+              </BarChart>
             </CounterWidget>
           </Grid>
           <Grid item md={3} xs={6}>
             <CounterWidget
               color={colorfull[3]}
               start={0}
-              end={20}
+              end={0}
               duration={3}
-              title="Weekly Sales"
+              title="Daily Rewards (WBNB)"
+            >
+              <BarChart width={100} height={40} data={data1}>
+                <Bar dataKey="uv" fill="#ffffff" />
+              </BarChart>
+            </CounterWidget>
+          </Grid>
+          <Grid item md={3} xs={6}>
+            <CounterWidget
+              color={colorfull[3]}
+              start={0}
+              end={0}
+              duration={3}
+              title="Total Rewards (WBNB)"
+            >
+              <BarChart width={100} height={40} data={data1}>
+                <Bar dataKey="uv" fill="#ffffff" />
+              </BarChart>
+            </CounterWidget>
+          </Grid>
+          <Grid item md={3} xs={6}>
+            <CounterWidget
+              color={colorfull[3]}
+              start={0}
+              end={0}
+              duration={3}
+              title="% BIFI Staked"
+              unitBefore="$ "
+              unitAfter="%"
+            >
+              <BarChart width={100} height={40} data={data1}>
+                <Bar dataKey="uv" fill="#ffffff" />
+              </BarChart>
+            </CounterWidget>
+          </Grid>
+          <Grid item md={3} xs={6}>
+            <CounterWidget
+              color={colorfull[3]}
+              start={0}
+              end={0}
+              duration={3}
+              title="BIFI Holders"
+            >
+              <BarChart width={100} height={40} data={data1}>
+                <Bar dataKey="uv" fill="#ffffff" />
+              </BarChart>
+            </CounterWidget>
+          </Grid>
+          <Grid item md={3} xs={6}>
+            <CounterWidget
+              color={colorfull[3]}
+              start={0}
+              end={0}
+              duration={3}
+              title="Treasury (BIFI)"
+            >
+              <BarChart width={100} height={40} data={data1}>
+                <Bar dataKey="uv" fill="#ffffff" />
+              </BarChart>
+            </CounterWidget>
+          </Grid>
+          <Grid item md={3} xs={6}>
+            <CounterWidget
+              color={colorfull[3]}
+              start={0}
+              end={0}
+              duration={3}
+              title="Treasury (WBNB)"
+            >
+              <BarChart width={100} height={40} data={data1}>
+                <Bar dataKey="uv" fill="#ffffff" />
+              </BarChart>
+            </CounterWidget>
+          </Grid>
+          <Grid item md={3} xs={6}>
+            <CounterWidget
+              color={colorfull[3]}
+              start={0}
+              end={0}
+              duration={3}
+              title="BIFI Price"
+            >
+              <BarChart width={100} height={40} data={data1}>
+                <Bar dataKey="uv" fill="#ffffff" />
+              </BarChart>
+            </CounterWidget>
+          </Grid>
+          <Grid item md={3} xs={6}>
+            <CounterWidget
+              color={colorfull[3]}
+              start={0}
+              end={0}
+              duration={3}
+              title="Market Cap"
             >
               <BarChart width={100} height={40} data={data1}>
                 <Bar dataKey="uv" fill="#ffffff" />

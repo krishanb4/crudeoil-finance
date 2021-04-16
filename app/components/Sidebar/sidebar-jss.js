@@ -110,8 +110,8 @@ const styles = theme => ({
     margin: '3px 0px 15px',
   },
   bigAvatar: {
-    width: 80,
-    height: 80,
+    width: 50,
+    height: 50,
     boxShadow: theme.glow.light
   },
   brandBar: {
@@ -228,7 +228,7 @@ const styles = theme => ({
     height: 64,
     position: 'relative',
     textDecoration: 'none',
-    fontSize: 14,
+    fontSize: 18,
     margin: '0px 0px 0px -30px',
     fontWeight: 500,
     color: theme.palette.text.primary,
@@ -360,7 +360,9 @@ const styles = theme => ({
   },
   badge: {
     height: 'auto',
-    backgroundColor: '#fb9c24 !important'
+    backgroundColor: '#fb9c24 !important',
+    position: 'relative',
+    left: 12
   },
   menuFooter: {
     bottom: 0,
@@ -371,17 +373,46 @@ const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap'
   },
+  priceFooter: {
+    bottom: 50,
+    position: 'absolute',
+    padding: 15,
+    borderTop: '1px solid #e4e4e4',
+    width: '100%',
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'column',
+    fontSize: 14
+  },
+  hidePriceFooter: {
+    display: 'none'
+  },
+  mb8: {
+    marginBottom: 8
+  },
   avatarPos: {
-    top: -93,
-    left: 11,
+    top: -60,
+    left: 8,
+    position: 'relative'
+  },
+  avatarPosSm: {
+    top: -46,
+    left: 2,
     position: 'relative'
   },
   circleWrapper: {
     position: 'relative',
-    width: 100,
-    height: 100,
+    width: 65,
+    height: 65,
     float: 'left',
     margin: 10
+  },
+  circleWrapperSm: {
+    position: 'relative',
+    width: 45,
+    height: 45,
+    float: 'left',
+    margin: 0
   },
   circle: {
     display: 'block',
@@ -393,6 +424,9 @@ const styles = theme => ({
     animation: 'spin 10s linear infinite',
     backgroundColor: '#4BB543',
     border: '4px inset rgb(75 251 104)'
+  },
+  languageBtn: {
+    fontSize: 16
   }
 });
 

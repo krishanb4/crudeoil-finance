@@ -91,12 +91,13 @@ class SidebarContent extends React.Component {
                 marginTop: transform * -0.3,
               }}
             >
-              <div className={classes.circleWrapper}>
+              <div className={classNames(!drawerPaper ? classes.circleWrapperSm : classes.circleWrapper)}>
                 <div className={classes.circle}></div>
                 <Avatar
                   alt={dummy.network.title}
                   src={dummy.network.bscLogo}
-                  className={classNames(classes.avatar, classes.bigAvatar, classes.avatarPos)}
+                  className={classNames(classes.avatar, classes.bigAvatar, 
+                    !drawerPaper ? classes.avatarPosSm : classes.avatarPos)}
                 />
               </div>
               <style>{`
@@ -163,12 +164,23 @@ class SidebarContent extends React.Component {
             </div>
           )}
         </div>
+        <div className={classNames(!drawerPaper ? classes.hidePriceFooter : classes.priceFooter)}>
+          <div className={classes.mb8}>
+            <span>OIL Price: <b>$16.00</b></span>
+          </div>
+          <div>
+            <span>DIESEL Price: <b>$0.85</b></span>
+          </div>
+        </div>
         <div className={classes.menuFooter}>
           <IconButton>
             <Ionicon icon="logo-twitter" />
           </IconButton>
           <IconButton>
             <Ionicon icon="ios-send" />
+          </IconButton>
+          <IconButton>
+            <span className={classes.languageBtn}>EN</span>
           </IconButton>
         </div>
         <div

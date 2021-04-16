@@ -17,105 +17,49 @@ import messageStyles from 'dan-styles/Messages.scss';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 
 function createData(
-  id,
-  name,
-  date,
-  total,
-  avatar,
-  buyerName,
-  photo,
-  type,
-  currentStock,
-  totalStock,
-  status,
-  statusMessage
+  vault,
+  subVault,
+  address,
+  tvl
 ) {
   return {
-    id,
-    name,
-    date,
-    total,
-    avatar,
-    buyerName,
-    photo,
-    type,
-    currentStock,
-    totalStock,
-    status,
-    statusMessage,
+    vault,
+    subVault,
+    address,
+    tvl
   };
 }
 
 const data = [
   createData(
-    'QWE123',
-    'Woman Bag',
-    '23 Oct 2018',
-    300,
-    avatarApi[6],
-    'John Doe',
-    imgApi[21],
-    'blur_on',
-    14,
-    30,
-    'Error',
-    'Canceled'
+    'CAKE',
+    'Pancake (Auto) / AutoFarm',
+    '0xe0B34671qc928QQ7823c0218A921B9231',
+    '$0.00M'
   ),
   createData(
-    'ABC890',
-    'Laptop',
-    '11 Nov 2018',
-    230,
-    avatarApi[8],
-    'Jim Doe',
-    imgApi[29],
-    'computer',
-    25,
-    70,
-    'Success',
-    'Sent'
+    'BIFI Maxi',
+    'Beefy Finance / Beefy',
+    '0xfe12760A08v972V08891V09271aw008a2',
+    '$0.00M'
   ),
   createData(
-    'GHI556',
-    'Pinapple Jam',
-    '5 Nov 2018',
-    34,
-    avatarApi[2],
-    'Jane Doe',
-    imgApi[25],
-    'restaurant_menu',
-    35,
-    50,
-    'Warning',
-    'Pending'
+    'WBNB',
+    'Venus (Auto) / AutoFarm',
+    '0xq2123s9070Aj892890P9092Bw725798M9',
+    '$0.00M'
   ),
   createData(
-    'MNO444',
-    'Action Figure',
-    '22 Sept 2018',
-    17,
-    avatarApi[9],
-    'Jack Doe',
-    imgApi[30],
-    'toys',
-    9,
-    85,
-    'Info',
-    'Paid'
+    'CAKE',
+    'Pancake (Auto) / AutoFarm',
+    '0xe0B34671qc928QQ7823c0218A921B9231',
+    '$0.00M'
   ),
   createData(
-    'JKL345',
-    'Man Shoes',
-    '19 Sept 2018',
-    208,
-    avatarApi[5],
-    'Jessica Doe',
-    imgApi[22],
-    'blur_on',
-    18,
-    33,
-    'Default',
-    'Returned'
+    'BUSD/USDT/USDC/DAI',
+    'Belt / Belt',
+    '0qa054a99A020KKI9282190a00289l0019A',
+    '$0.00M'
   ),
 ];
 
@@ -152,58 +96,42 @@ function TableWidget(props) {
   return (
     <PapperBlock
       noMargin
-      title="Marketplace"
-      icon="ios-share-outline"
+      title="Vault Statistics"
       whiteBg
-      desc="Explore more than 10 cryptocurrancy markets"
     >
       <div className={classes.root}>
         <Table className={classNames(classes.tableLong, classes.stripped)}>
-          <TableHead>
+          <TableHead className={classes.tableHeaderBg}>
             <TableRow>
-              <TableCell padding="default">Products</TableCell>
-              <TableCell>Buyer</TableCell>
-              <TableCell>Total</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Stock</TableCell>
+              <TableCell padding="default"  className={classes.tableHeader}>Vault</TableCell>
+              <TableCell  className={classes.tableHeader}>Address</TableCell>
+              <TableCell className={classes.tableHeader}>TVL</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map(n => [
-              <TableRow key={n.id}>
+              <TableRow key={n.vault}>
                 <TableCell padding="default">
-                  <div className={classes.flex}>                    
-                    <div>
-                      <Typography variant="caption">{n.id}</Typography>                      
+                  <div className={classes.flex}>
+                    <div className={classes.flexCol}>
+                      <Typography>{n.vault}</Typography>
+                      <Typography>{n.subVault}</Typography>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className={classes.flex}>                    
+                  <div className={classes.flex}>
                     <div>
-                      <Typography>{n.buyerName}</Typography>                      
+                      <Typography>{n.address}</Typography>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell align="right">
-                <div className={classes.flex}>                    
+                  <div className={classes.flex}>
                     <div>
-                      <Typography>{n.buyerName}</Typography>                      
+                      <Typography>{n.tvl}</Typography>
                     </div>
                   </div>
-                </TableCell>
-                <TableCell>
-                  <Chip
-                    label={n.statusMessage}
-                    className={classNames(classes.chip, getStatus(n.status))}
-                  />
-                </TableCell>
-                <TableCell>
-                <a href="/app/pages/invoice" className={classes.downloadInvoice}>
-                        <ArrowDownward />
-                        &nbsp;INVOICE_
-                        {n.id}
-                      </a>
                 </TableCell>
               </TableRow>,
             ])}

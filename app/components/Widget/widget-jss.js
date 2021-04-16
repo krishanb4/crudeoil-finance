@@ -681,6 +681,16 @@ const styles = theme => ({
       backgroundImage: `url(${images[18]})`,
       backgroundPosition: '0 -120px'
     }
+  },
+  flexCol: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  tableHeaderBg: {
+    backgroundColor: '#199fe133'
+  },
+  tableHeader: {
+    fontSize: 14
   }
 });
 
