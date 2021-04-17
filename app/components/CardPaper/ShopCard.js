@@ -204,28 +204,30 @@ class ShopCard extends React.Component {
               <span className={classes.shopDetailsValue}>{data.get('reward')}</span>
               <span className={classes.shopDetailsLabel}>Reward</span>
             </Typography>
-            {list && <div className={classes.flexColumn}>
-              <span className={classes.detailsHeader}>Vault Details</span>
-              <span>Asset: <b>WBNB AUTO-LP</b></span>
-              <span>AUTO Multiplyer: <b>11.50x</b></span>
-              <span>Type: <b>Stalking</b></span>
-              <span>Farm Name: <b>AUTO</b></span>
-            </div>}
-            {list && <div className={classes.flexColumn}>
-              <span className={classes.detailsHeader}>APY Calculations</span>
-              <span>Farm APR: <b>0.00% (0.00% Daily)</b></span>
-              <span>Optimal Compunds per Year: <b>0</b></span>
-              <span>Farm APY: <b>0.00%</b></span>
-              <span>AUTO APR: <b>201.20% (0.55% Daily)</b></span>
-            </div>}
-            {list && <div className={classes.flexColumn}>
-              <span className={classes.detailsHeader}>Fees</span>
-              <span>Controller Fee: <b>None</b></span>
-              <span>Platform Fee: <b>None</b></span>
-              <span>XYZ Buyback Rate: <b>None</b></span>
-              <span>Max Entrance Fee: <b>None</b></span>
-            </div>}
           </div>
+          {list && <div className={classes.rowAdditonalGrid}>
+              <div className={classes.flexColumn}>
+                <span className={classes.detailsHeader}>Vault Details</span>
+                <span>Asset: <b>WBNB AUTO-LP</b></span>
+                <span>AUTO Multiplyer: <b>11.50x</b></span>
+                <span>Type: <b>Stalking</b></span>
+                <span>Farm Name: <b>AUTO</b></span>
+              </div>
+              <div className={classes.flexColumn}>
+                <span className={classes.detailsHeader}>APY Calculations</span>
+                <span>Farm APR: <b>0.00% (0.00% Daily)</b></span>
+                <span>Optimal Compunds per Year: <b>0</b></span>
+                <span>Farm APY: <b>0.00%</b></span>
+                <span>AUTO APR: <b>201.20% (0.55% Daily)</b></span>
+              </div>
+              <div className={classes.flexColumn}>
+                <span className={classes.detailsHeader}>Fees</span>
+                <span>Controller Fee: <b>None</b></span>
+                <span>Platform Fee: <b>None</b></span>
+                <span>AUTO Buyback Rate: <b>None</b></span>
+                <span>Max Entrance Fee: <b>None</b></span>
+              </div>
+            </div>}
 
 
         </CardContent>

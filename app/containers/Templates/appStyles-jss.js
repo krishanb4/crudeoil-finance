@@ -33,7 +33,7 @@ const styles = theme => ({
   appFrameLanding: {
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.default,
-    minHeight: 1000,
+    minHeight: '100vh',
   },
   appFrameSlider: {
     display: 'flex',

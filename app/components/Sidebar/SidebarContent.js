@@ -96,7 +96,7 @@ class SidebarContent extends React.Component {
                 <Avatar
                   alt={dummy.network.title}
                   src={dummy.network.bscLogo}
-                  className={classNames(classes.avatar, classes.bigAvatar, 
+                  className={classNames(classes.avatar, classes.bigAvatar,
                     !drawerPaper ? classes.avatarPosSm : classes.avatarPos)}
                 />
               </div>
@@ -165,6 +165,7 @@ class SidebarContent extends React.Component {
           )}
         </div>
         <div className={classNames(!drawerPaper ? classes.hidePriceFooter : classes.priceFooter)}>
+          <div className={classes.priceMenuDivider}></div>
           <div className={classes.mb8}>
             <span>OIL Price: <b>$16.00</b></span>
           </div>
@@ -173,15 +174,25 @@ class SidebarContent extends React.Component {
           </div>
         </div>
         <div className={classes.menuFooter}>
-          <IconButton>
-            <Ionicon icon="logo-twitter" />
-          </IconButton>
-          <IconButton>
-            <Ionicon icon="ios-send" />
-          </IconButton>
-          <IconButton>
-            <span className={classes.languageBtn}>EN</span>
-          </IconButton>
+          <div className={classNames(!drawerPaper ? classes.menuDividerSmall : classes.menuDivider)} ></div>
+          <div className={classes.flexWrap}>
+            <IconButton>
+              <Ionicon icon="logo-twitter" />
+            </IconButton>
+            <IconButton>
+              <Ionicon icon="ios-send" />
+            </IconButton>
+            <IconButton>
+              <Ionicon icon="md-globe" />
+            </IconButton>
+            <IconButton>
+              <img src="/images/logo/medium.png" width="24" />
+            </IconButton>
+            <IconButton>
+              <span className={classes.languageBtn}>EN</span>
+            </IconButton>
+          </div>
+
         </div>
         <div
           id="sidebar"
