@@ -50,9 +50,7 @@ export const fetchAction = items => ({
 });
 
 async function _connectWallet(dispatch, web3Modal) {
-  try {
-    console.log('asdas');
-    process;
+  try {  
     const provider = await web3Modal.connect();
     const web3 = new Web3(provider);
     web3.eth.extend({

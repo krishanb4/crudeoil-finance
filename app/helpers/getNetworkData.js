@@ -39,8 +39,7 @@ export const getNetworkMulticall = () => {
   }
 };
 
-export const getNetworkConnectors =(networkId)=> {
-  debugger;
+export const getNetworkConnectors =(networkId)=> {  
   process;
   switch (networkId) {
     case '56':
