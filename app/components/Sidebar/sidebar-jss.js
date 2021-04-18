@@ -175,6 +175,7 @@ const styles = theme => ({
   },
   nolist: {
     listStyle: 'none',
+    marginLeft: 40
   },
   primary: {
     whiteSpace: 'nowrap'
