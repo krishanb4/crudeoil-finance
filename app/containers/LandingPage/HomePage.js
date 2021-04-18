@@ -30,10 +30,12 @@ class HomePage extends React.Component {
           <Link className={classes.launchBtn} to="/app">Launch App</Link>
         </div>
         <div className={classes.oilTankDiv}>
+          <img className={classes.oilSmoke} src='/images/homepage/oil_smoke.gif' />
           <img src='/images/homepage/oil_tank.png' />
         </div>
         <div className={classes.oilRigDiv}>
-          <img src='/images/homepage/oil_rig.png' />
+          <img className={classes.oilRigGif} src='/images/homepage/oil_rig.gif' />
+          <img className={classes.oilRig}  src='/images/homepage/oil_rig_2.png' />
         </div>
       </div>
     );
