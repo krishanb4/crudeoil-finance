@@ -47,7 +47,9 @@ const styles = theme => ({
         color: '#f8d093',
         background: '#885505',
         borderRadius: 10,
-        fontWeight: 500
+        fontWeight: 500,
+        cursor: 'pointer',
+        zIndex: 9999
     },
     headingDiv: {
         [theme.breakpoints.down('sm')]: {
@@ -55,6 +57,27 @@ const styles = theme => ({
             marginLeft: -190,
             paddingTop: 40
         }
+    },
+    oilSmoke: {
+        position: 'relative',
+        top: 195,
+        width: 100,
+        left: 57,
+        [theme.breakpoints.down('sm')]: {
+            top: 160,
+            left: 38
+        }
+    },
+    oilRigGif: {
+        width: 600,
+        top: -33,
+        position: 'relative',
+        left: 72
+    },
+    oilRig: {
+        width: 135,
+        top: 0,
+        position: 'relative'
     }
 });
 
