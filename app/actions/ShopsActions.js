@@ -15,6 +15,7 @@ export function connectWallet(web3Modal) {
   return async dispatch => {
     dispatch(ConnectingToWallet());
      _connectWallet(dispatch,web3Modal);
+     document.getElementsByClassName('web3modal-modal-lightbox')[0].style.zIndex = '9999';
   };
 }
 
