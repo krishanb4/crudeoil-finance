@@ -78,6 +78,14 @@ const styles = theme => ({
         width: 135,
         top: 0,
         position: 'relative'
+    },
+    cloudDiv: {
+        position: 'absolute',
+        width: '100%',
+        opacity: .3
+    },
+    cloudDivImg: {
+        width: '100vw',
     }
 });
 
