@@ -23,6 +23,9 @@ class HomePage extends React.Component {
     return (
 
       <div className={classes.backgroundDiv}>
+        <div className={classes.cloudDiv}>
+          <img className={classes.cloudDivImg} src='/images/homepage/cloudz.gif' />
+        </div>
         <div className={classes.headingDiv}>
           <img src='/images/homepage/header.png' />
         </div>
