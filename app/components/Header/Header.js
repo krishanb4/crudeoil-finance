@@ -40,11 +40,12 @@ const Header = ({
   const [showTitle, setShowTitle] = useState(false);
   const [web3Modal, setWeb3Modal] = useState(null);
   const [flagDarker, setFlagDarker] = useState(false);
+  const [flagTitle, setFlagTitle] = useState(false);
 
   // Initial header style
   // var flagDarker = false;
 
-  var flagTitle = false;
+  // var flagTitle = false;
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -68,7 +69,8 @@ const Header = ({
     }
     if (flagTitle !== newFlagTitle) {
       setShowTitle(newFlagTitle);
-      flagTitle = newFlagTitle;
+      // flagTitle = newFlagTitle;
+      setFlagTitle(newFlagTitle);
     }
   };
 
