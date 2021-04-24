@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
@@ -10,42 +10,28 @@ import Ionicon from 'react-ionicons';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import styles from './header-jss';
 import Button from '@material-ui/core/Button';
 
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { closeToastAction, openToastAction } from 'dan-actions/ToastAction';
 import { connectWallet, disconnectWallet } from 'dan-actions/ShopsActions';
-
 import { createWeb3Modal } from '../../web3';
 
+import useStyles from '../../hooks/useStyles';
+
 const elem = document.documentElement;
-const Header = ({
-  classes,
-  toggleDrawerOpen,
-  margin,
-  position,
-  gradient,
-  mode,
-  title,
-  changeMode,
-  connectWallet,
-  openGuide,
-  history,
-}) => {
+
+const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, changeMode }) => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
   const [fullScreen, setFullScreen] = useState(false);
   const [turnDarker, setTurnDarker] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
-  const [web3Modal, setWeb3Modal] = useState(null);
-  const [flagDarker, setFlagDarker] = useState(false);
-  const [flagTitle, setFlagTitle] = useState(false);
+  const [web3Model, setWeb3Modal] = useState(null);
 
   // Initial header style
-  // var flagDarker = false;
-
-  // var flagTitle = false;
+  var flagDarker = false;
+  var flagTitle = false;
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -55,7 +41,9 @@ const Header = ({
     };
   }, []);
 
-  const connectToWallet = () => connectWallet(web3Model);
+  const connectToWallet = () => {
+    dispatch(connectWallet(web3Model));
+  };
 
   const handleScroll = () => {
     const doc = document.documentElement;
@@ -64,13 +52,11 @@ const Header = ({
     const newFlagTitle = scroll > 40;
     if (flagDarker !== newFlagDarker) {
       setTurnDarker(newFlagDarker);
-      // flagDarker = newFlagDarker;
-      setFlagDarker(newFlagDarker);
+      flagDarker = newFlagDarker;
     }
     if (flagTitle !== newFlagTitle) {
       setShowTitle(newFlagTitle);
-      // flagTitle = newFlagTitle;
-      setFlagTitle(newFlagTitle);
+      flagTitle = newFlagTitle;
     }
   };
 
@@ -194,7 +180,6 @@ const Header = ({
 };
 
 Header.propTypes = {
-  classes: PropTypes.object.isRequired,
   toggleDrawerOpen: PropTypes.func.isRequired,
   margin: PropTypes.bool.isRequired,
   gradient: PropTypes.bool.isRequired,
@@ -202,31 +187,6 @@ Header.propTypes = {
   mode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   changeMode: PropTypes.func.isRequired,
-  openGuide: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
 };
-const reducer = 'wallet';
-const mapStateToProps = state => ({
-  force: state, // force state from reducer
-  keyword: state.getIn([reducer, 'keywordValue']),
-  shopData: state.getIn([reducer, 'list']),
-  shopIndex: state.getIn([reducer, 'shopIndex']),
-  totalItems: state.getIn([reducer, 'totalItems']),
-  toastMessage: state.getIn(['toastMessage', 'toastMessage']),
-  toastType: state.getIn(['toastMessage', 'type']),
-  isLoading: state.getIn(['common', 'isLoading']),
-});
 
-const mapDispatchToProps = dispatch => ({
-  connectWallet: bindActionCreators(connectWallet, dispatch),
-  disconnectWallet: bindActionCreators(disconnectWallet, dispatch),
-  closeToast: bindActionCreators(closeToastAction, dispatch),
-  openToast: bindActionCreators(openToastAction, dispatch),
-});
-
-const HeaderMapped = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Header);
-
-export default withStyles(styles)(HeaderMapped);
+export default Header;
