@@ -34,9 +34,19 @@ const styles = theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-        marginTop: -150,
+        // marginTop: -150,
         [theme.breakpoints.down('sm')]: {
-            marginTop: 50,
+            // marginTop: 50,
+        }
+    },
+    socialMediaRow: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        margin: '15px 0px',
+        [theme.breakpoints.down('sm')]: {
+            // marginTop: 20,
         }
     },
     launchBtn: {
@@ -52,6 +62,9 @@ const styles = theme => ({
         zIndex: 9999
     },
     headingDiv: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
         [theme.breakpoints.down('sm')]: {
             width: 750,
             marginLeft: -190,
@@ -63,6 +76,7 @@ const styles = theme => ({
         top: 195,
         width: 100,
         left: 57,
+        zIndex: 99999,
         [theme.breakpoints.down('sm')]: {
             top: 160,
             left: 38
@@ -86,6 +100,24 @@ const styles = theme => ({
     },
     cloudDivImg: {
         width: '100vw',
+    },
+    headingText: {
+        fontSize: 22,
+        color: '#551515',
+        width: '50%',
+        textAlign: 'center',
+        marginTop: -20
+    },
+    socialMediaBtn: {
+        color: 'black !important',
+        cursor: 'pointer',
+        zIndex: 9999
+    },
+    headingImg: {
+        [theme.breakpoints.down('sm')]: {
+            width: 400,
+            marginBottom: 15
+        } 
     }
 });
 
