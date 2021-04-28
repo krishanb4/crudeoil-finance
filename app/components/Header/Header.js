@@ -14,13 +14,14 @@ import Button from '@material-ui/core/Button';
 
 import { connectWallet, disconnectWallet } from 'dan-actions/ShopsActions';
 import { createWeb3Modal } from '../../web3';
+import styles from './header-jss';
 
 import useStyles from '../../hooks/useStyles';
 
 const elem = document.documentElement;
 
 const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, changeMode }) => {
-  const classes = useStyles();
+  const classes = useStyles(styles)();
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);

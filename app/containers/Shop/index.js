@@ -1,33 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
-import { withStyles } from '@material-ui/core/styles';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import data from 'dan-api/apps/shopData';
 import { Toast } from 'dan-components';
+import brand from 'dan-api/dummy/brand';
 import SearchShop from './Operations/SearchShop';
 import ShopGallery from './Operations/ShopGallery';
 import ShopAddUpdate from './Operations/ShopAddUpdate';
-import Button from '@material-ui/core/Button';
-import { closeToastAction, openToastAction } from 'dan-actions/ToastAction';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { closeToastAction } from 'dan-actions/ToastAction';
 import { formatDate } from '../../utils/common';
 import ConfirmationModal from '../../components/Modal/ConfirmationModal';
 import { Pagination } from '../../components';
-import {
-  fetchAction,
-  connectWallet,
-  disconnectWallet,
-  detailAction,
-  updateAction,
-  searchAction,
-  addAction,
-  addNewShop,
-} from 'dan-actions/ShopsActions';
-import { reset } from 'redux-form';
+import { fetchAction, detailAction } from 'dan-actions/ShopsActions';
 import Ionicon from 'react-ionicons';
+import useStyles from '../../hooks/useStyles';
 
 const initData = {
   name: '',
@@ -41,25 +28,19 @@ const initData = {
   description: '',
 };
 
-const Shop = ({
-  shopData,
-  checkout,
-  showDetail,
-  shopIndex,
-  totalItems,
-  search,
-  keyword,
-  toastMessage,
-  toastType,
-  closeToast,
-  classes,
-  isLoading,
-  fetchData,
-  addNew,
-  resetForm,
-  updateShop,
-  saveNewShop,
-}) => {
+const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) => {
+  const classes = useStyles(styles)();
+  const stateData = useSelector(state => state);
+  const dispatch = useDispatch();
+
+  const keyword = stateData.getIn(['shop', 'keywordValue']);
+  const shopData = stateData.getIn(['shop', 'list']);
+  const shopIndex = stateData.getIn(['shop', 'shopIndex']);
+  const totalItems = stateData.getIn(['shop', 'totalItems']);
+  const toastMessage = stateData.getIn(['toastMessage', 'toastMessage']);
+  const toastType = stateData.getIn(['toastMessage', 'type']);
+  const isLoading = stateData.getIn(['common', 'isLoading']);
+
   const [listView, setListView] = useState('grid');
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -68,7 +49,7 @@ const Shop = ({
   const [pageNumbers, setPageNumbers] = useState(1);
 
   useEffect(() => {
-    fetchData(data);
+    dispatch(fetchAction(data));
   }, []);
 
   const handleClickOpen = title => {
@@ -154,7 +135,7 @@ const Shop = ({
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
-      <Toast message={toastMessage} type={toastType} onClose={() => closeToast()} />
+      <Toast message={toastMessage} type={toastType} onClose={() => dispatch(closeToastAction())} />
       <div className={classes.headDetails}>
         <span className={classes.tvlText}>TVL : $0.00</span>
         <span className={classes.depositedText}>Deposited : $0.00</span>
@@ -182,7 +163,7 @@ const Shop = ({
       <ShopGallery
         listView={listView}
         shopData={shopData}
-        showDetail={showDetail}
+        showDetail={shop => dispatch(detailAction(shop))}
         openAddOrUpdate={handleAddOrUpdate}
         deleteOpen={OpenDeleteModal}
         shopIndex={shopIndex}
@@ -220,44 +201,10 @@ const Shop = ({
 };
 
 Shop.propTypes = {
-  classes: PropTypes.object.isRequired,
-  fetchData: PropTypes.func.isRequired,
-  removeItem: PropTypes.func.isRequired,
-  showDetail: PropTypes.func.isRequired,
   search: PropTypes.func.isRequired,
-  keyword: PropTypes.string.isRequired,
-  shopData: PropTypes.object.isRequired,
-  shopIndex: PropTypes.number.isRequired,
-  totalItems: PropTypes.number.isRequired,
 };
 
-const reducer = 'shop';
-const mapStateToProps = state => ({
-  force: state, // force state from reducer
-  keyword: state.getIn([reducer, 'keywordValue']),
-  shopData: state.getIn([reducer, 'list']),
-  shopIndex: state.getIn([reducer, 'shopIndex']),
-  totalItems: state.getIn([reducer, 'totalItems']),
-  toastMessage: state.getIn(['toastMessage', 'toastMessage']),
-  toastType: state.getIn(['toastMessage', 'type']),
-  isLoading: state.getIn(['common', 'isLoading']),
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchData: bindActionCreators(fetchAction, dispatch),
-  connectWallet: bindActionCreators(connectWallet, dispatch),
-  disconnectWallet: bindActionCreators(disconnectWallet, dispatch),
-  showDetail: bindActionCreators(detailAction, dispatch),
-  closeToast: bindActionCreators(closeToastAction, dispatch),
-  openToast: bindActionCreators(openToastAction, dispatch),
-});
-
-const ShopMapped = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Shop);
-
-export default withStyles(styles)(ShopMapped);
+export default Shop;
 
 const styles = theme => ({
   button: {
