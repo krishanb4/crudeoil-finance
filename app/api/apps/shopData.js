@@ -159,22 +159,22 @@ const shopData = [
     paused: false,
     boosted: false
   },
-  // {
-  //   id: '11',
-  //   name: 'HPS',
-  //   image: '/images/dummy/hps.svg',
-  //   bgImage: '/images/logo/julswap.svg',
-  //   description: 'SWAMP',
-  //   balance: '$0.00',
-  //   deposited: '$0.00',
-  //   apy: '0.00%',
-  //   daily: '0.00%',
-  //   tvl: '$0.00M',
-  //   reward: '$0.00',
-  //   inactive: false,
-  //   paused: true,
-  //   boosted: false
-  // },
+  {
+    id: '11',
+    name: 'BAKE',
+    image: '/images/logo/bake.svg',
+    bgImage: '/images/logo/bake.svg',
+    description: 'BAKE',
+    balance: '$0.00',
+    deposited: '$0.00',
+    apy: '0.00%',
+    daily: '0.00%',
+    tvl: '$0.00M',
+    reward: '$0.00',
+    inactive: false,
+    paused: false,
+    boosted: false
+  },
   // {
   //   id: '12',
   //   name: 'HPS/BNB LP',

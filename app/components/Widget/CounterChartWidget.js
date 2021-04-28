@@ -75,7 +75,7 @@ class CounterChartWidget extends PureComponent {
               start={0}
               end={0}
               duration={3}
-              title="% BIFI Staked"
+              title="% XYZ Staked"
               unitBefore="$ "
               unitAfter="%"
             >
@@ -90,7 +90,7 @@ class CounterChartWidget extends PureComponent {
               start={0}
               end={0}
               duration={3}
-              title="BIFI Holders"
+              title="XYZ Holders"
             >
               <BarChart width={100} height={40} data={data1}>
                 <Bar dataKey="uv" fill="#ffffff" />
@@ -103,7 +103,7 @@ class CounterChartWidget extends PureComponent {
               start={0}
               end={0}
               duration={3}
-              title="Treasury (BIFI)"
+              title="Treasury (XYZ)"
             >
               <BarChart width={100} height={40} data={data1}>
                 <Bar dataKey="uv" fill="#ffffff" />
@@ -129,7 +129,7 @@ class CounterChartWidget extends PureComponent {
               start={0}
               end={0}
               duration={3}
-              title="BIFI Price"
+              title="XYZ Price"
             >
               <BarChart width={100} height={40} data={data1}>
                 <Bar dataKey="uv" fill="#ffffff" />

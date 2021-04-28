@@ -182,7 +182,7 @@ class ShopCard extends React.Component {
           )}>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>{data.get('balance')}</span>
-              <span className={classes.shopDetailsLabel}>Deposited</span>
+              <span className={classes.shopDetailsLabel}>Available</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>{data.get('deposited')}</span>
