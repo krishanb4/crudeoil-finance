@@ -167,10 +167,10 @@ class SidebarContent extends React.Component {
         <div className={classNames(!drawerPaper ? classes.hidePriceFooter : classes.priceFooter)}>
           <div className={classes.priceMenuDivider}></div>
           <div className={classes.mb8}>
-            <span>Oil Price: <b>$0.00</b></span>
+            <span>OIL Price: <b>$16.00</b></span>
           </div>
           <div>
-            <span>Diesel Price: <b>$0.00</b></span>
+            <span>DIESEL Price: <b>$0.85</b></span>
           </div>
         </div>
         <div className={classes.menuFooter}>

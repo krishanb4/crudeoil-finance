@@ -23,6 +23,7 @@ import calendar from './modules/calendar';
 import taskboard from './modules/taskboard';
 import toastMessage from './modules/toast';
 import shop from './modules/shop';
+import snackbar from './modules/snackbar';
 
 /**
  * Branching reducers to use one reducer for many components
@@ -57,6 +58,7 @@ export default function createReducer(injectedReducers = {}) {
     toastMessage,
     taskboard,
     shop,
+    snackbar,
     treeTableArrow: branchReducer(treeTable, 'treeTableArrow'),
     treeTablePM: branchReducer(treeTable, 'treeTablePM'),
     crudTableDemo: branchReducer(crudTable, 'crudTableDemo'),

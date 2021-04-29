@@ -1,8 +1,13 @@
-import { SERVER_INVOKING_STARTED, SERVER_INVOKING_STOPPED } from '../../constants/actionConstants';
+import {HOME_CONNECT_WALLET_BEGIN, HOME_CONNECT_WALLET_SUCCESS,HOME_CONNECT_WALLET_FAILURE } from '../../constants/actionConstants';
 import { fromJS } from 'immutable';
 
 const initialState = {  
-  isLoading: false
+  isLoading: false,
+  web3: null,
+  address: null,
+  networkId : 0,
+  connected : false,
+
 
 };
 
@@ -10,11 +15,11 @@ const initialImmutableState = fromJS(initialState);
 
 export default function reducer(state =initialImmutableState , action = {}) {
   switch (action.type) {
-    case SERVER_INVOKING_STARTED:
+    case HOME_CONNECT_WALLET_BEGIN:
         return state.withMutations((mutableState) => {
             mutableState.set('isLoading', true);
           });
-      case SERVER_INVOKING_STOPPED:
+      case HOME_CONNECT_WALLET_SUCCESS:
         return state.withMutations((mutableState) => {
             mutableState.set('isLoading', false);
           });

@@ -194,7 +194,8 @@ const styles = theme => ({
     width: '100%',
     marginTop: '-2px',
     border: '1px solid #eaeaea',
-    padding: '5px 15px'
+    padding: '5px 15px',
+    borderRadius: '8px'
   },
   platformFieldSetTitle: {
     border: '1px solid #eaeaea',
@@ -204,7 +205,8 @@ const styles = theme => ({
     top: 8,
     left: 10,
     background: theme.palette.type === 'dark' ? '#292929 !important' : 'white',
-    fontWeight: 600
+    fontWeight: 600,
+    borderRadius: '8px'
   },
   platformIcon: {
     width: 18,
