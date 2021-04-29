@@ -10,6 +10,7 @@ import {
   Infographics,
   MiniApps,
   NotFound,
+  ComingSoon
 } from '../pageListAsync';
 import BlankPage from '../Pages/BlankPage';
 
@@ -32,6 +33,9 @@ class Application extends React.Component {
 
           {/* Product */}
           <Route path="/app/product/types" component={Infographics} />
+
+          {/* Coming Soon */}
+          <Route path="/app/coming-soon" component={ComingSoon} />
 
           {/* Default */}
           <Route component={NotFound} />

@@ -39,7 +39,7 @@ module.exports = [
   {
     key: 'governance',
     name: 'Governance',
-    link: '',
+    link: '/app/coming-soon',
     badge: 'Coming Soon',
     icon: 'md-medal'
   },
