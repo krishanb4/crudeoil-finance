@@ -13,7 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import brand from 'dan-api/dummy/brand';
 import logo from 'dan-images/logo.svg';
-import styles from 'dan-components/Forms/user-jss';
+import styles from './coming-soon-jss';
 
 class ComingSoon extends React.Component {
   state = {
@@ -54,41 +54,17 @@ class ComingSoon extends React.Component {
             >
               <div className={classes.brandCenter}>
                 <div className={classes.brand}>
-                  <img src={logo} alt={brand.name} />
+                  <img src='/images/crudeoil_logo.png' alt={brand.name} />
                   {brand.name}
                 </div>
               </div>
-              <Typography variant="h2" className={classes.titleGradient} gutterBottom>
-                Coming Soon
+              <Typography variant="h4" className={classes.titleGradient} gutterBottom>
+                Our development team is working on this. It will be available soon...
               </Typography>
-              <Typography variant="h5" gutterBottom align="center">
-                Will come with performance in design
-              </Typography>
-              <section className={classes.pageFormWrap}>
-                <div className={classNames(classes.notifyForm, classes.centerAdornment)}>
-                  <FormControl>
-                    <TextField
-                      fullWidth
-                      id="standard-name"
-                      label="Email"
-                      className={classes.textField}
-                      value={email}
-                      onChange={this.handleChange('email')}
-                      margin="normal"
-                    />
-                  </FormControl>
-                  <aside>
-                    <Button variant="contained" color="secondary" type="submit">
-                      Notify me
-                    </Button>
-                  </aside>
-                </div>
-                <div className={classNames(classes.lockForm, classes.centerAdornment)}>
-                  <IconButton color="primary" className={classes.button} href="#"><Ionicon icon="logo-facebook" /></IconButton>
-                  <IconButton color="primary" className={classes.button} href="#"><Ionicon icon="logo-twitter" /></IconButton>
-                  <IconButton color="primary" className={classes.button} href="#"><Ionicon icon="logo-github" /></IconButton>
-                </div>
-              </section>
+              <div>
+                <img className={classes.comingSoonImg} src='/images/screen/comin_soon.gif' />
+              </div>
+
             </Paper>
           </div>
         </div>
