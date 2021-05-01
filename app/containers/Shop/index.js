@@ -12,7 +12,7 @@ import { closeToastAction } from 'dan-actions/ToastAction';
 import { formatDate } from '../../utils/common';
 import ConfirmationModal from '../../components/Modal/ConfirmationModal';
 import { Pagination } from '../../components';
-import { fetchAction, detailAction } from 'dan-actions/ShopsActions';
+import { fetchAction, detailAction } from 'dan-actions/WalletActions';
 import Ionicon from 'react-ionicons';
 import useStyles from '../../hooks/useStyles';
 

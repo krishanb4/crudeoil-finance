@@ -1,22 +1,28 @@
+import { useCallback } from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import * as types from '../constants/actionConstants';
-import {
-  ConnectingToWallet,
-  ConnectedToWallet,
-  ConnectedToWalletWithError,
-  DisConnectingToWallet,
-  DisConnectedToWallet,
-  DisConnectedToWalletWithError,
-  WalletAccountChanged,
-  WalletNetworkChanged,
-} from 'dan-actions/CommonActions';
 import Web3 from 'web3';
 
 export function connectWallet(web3Modal) {
   return async dispatch => {
     dispatch(ConnectingToWallet());
-     _connectWallet(dispatch,web3Modal);
-     document.getElementsByClassName('web3modal-modal-lightbox')[0].style.zIndex = '9999';
+    _connectWallet(dispatch, web3Modal);
+    document.getElementsByClassName('web3modal-modal-lightbox')[0].style.zIndex = '9999';
   };
+}
+
+export function useDisconnectWallet() {
+  const dispatch = useDispatch();
+  const disconnectWalletPending = useSelector(
+    state => state.home.disconnectWalletPending,
+    shallowEqual
+  );
+  const boundAction = useCallback(
+    (web3, web3Modal) => dispatch(disconnectWallet(web3, web3Modal)),
+    [dispatch]
+  );
+
+  return { disconnectWalletPending, disconnectWallet: boundAction };
 }
 
 export function disconnectWallet(web3, web3Modal) {
@@ -28,7 +34,9 @@ export function disconnectWallet(web3, web3Modal) {
         if (web3 && web3.currentProvider && web3.currentProvider.close) {
           await web3.currentProvider.close();
         }
+
         await web3Modal.clearCachedProvider();
+
         dispatch(DisConnectedToWallet());
         resolve();
       } catch (error) {
@@ -51,7 +59,7 @@ export const fetchAction = items => ({
 });
 
 async function _connectWallet(dispatch, web3Modal) {
-  try {  
+  try {
     const provider = await web3Modal.connect();
     const web3 = new Web3(provider);
     web3.eth.extend({
@@ -71,18 +79,19 @@ async function _connectWallet(dispatch, web3Modal) {
         dispatch(disconnectWallet(web3, web3Modal));
       });
       provider.on('disconnect', async () => {
+        debugger;
         dispatch(disconnectWallet(web3, web3Modal));
       });
       provider.on('accountsChanged', async accounts => {
         if (accounts[0]) {
-          dispatch({ type: HOME_ACCOUNTS_CHANGED, data: accounts[0] });
+          dispatch({ type: types.HOME_ACCOUNTS_CHANGED, data: accounts[0] });
         } else {
           dispatch(disconnectWallet(web3, web3Modal));
         }
       });
       provider.on('chainChanged', async chainId => {
         const networkId = web3.utils.isHex(chainId) ? web3.utils.hexToNumber(chainId) : chainId;
-        dispatch({ type: HOME_NETWORK_CHANGED, data: networkId });
+        dispatch({ type: types.HOME_NETWORK_CHANGED, data: networkId });
       });
     };
     subscribeProvider(provider);
@@ -101,3 +110,43 @@ async function _connectWallet(dispatch, web3Modal) {
     dispatch(ConnectedToWalletWithError());
   }
 }
+
+const ConnectingToWallet = items => ({
+  type: types.HOME_CONNECT_WALLET_BEGIN,
+  items,
+});
+
+const ConnectedToWallet = items => ({
+  type: types.HOME_CONNECT_WALLET_SUCCESS,
+  items,
+});
+
+const ConnectedToWalletWithError = items => ({
+  type: types.HOME_CONNECT_WALLET_FAILURE,
+  items,
+});
+
+const DisConnectingToWallet = items => ({
+  type: types.HOME_DISCONNECT_WALLET_BEGIN,
+  items,
+});
+
+const DisConnectedToWallet = items => ({
+  type: types.HOME_DISCONNECT_WALLET_SUCCESS,
+  items,
+});
+
+const DisConnectedToWalletWithError = items => ({
+  type: types.HOME_DISCONNECT_WALLET_FAILURE,
+  items,
+});
+
+const WalletNetworkChanged = items => ({
+  type: types.HOME_NETWORK_CHANGED,
+  items,
+});
+
+const WalletAccountChanged = items => ({
+  type: types.HOME_ACCOUNTS_CHANGED,
+  items,
+});

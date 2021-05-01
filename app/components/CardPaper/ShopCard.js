@@ -6,32 +6,16 @@ import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import classNames from "classnames";
 import Card from "@material-ui/core/Card";
 import IconButton from "@material-ui/core/IconButton";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Chip from "@material-ui/core/Chip";
-import EditBtn from "@material-ui/icons/Edit";
-import ReorderRoundedIcon from '@material-ui/icons/ReorderRounded';
-import SettingsPhoneRoundedIcon from '@material-ui/icons/SettingsPhoneRounded';
-import PinDropRoundedIcon from '@material-ui/icons/PinDropRounded';
-import RestoreFromTrashRoundedIcon from '@material-ui/icons/RestoreFromTrashRounded';
-import AlternateEmailRoundedIcon from '@material-ui/icons/AlternateEmailRounded';
 import styles from "./cardStyle-jss";
 import Button from '@material-ui/core/Button';
-import Modal from '@material-ui/core/Modal';
 import Slider from '@material-ui/core/Slider';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import Input from '@material-ui/core/Input';
@@ -182,7 +166,7 @@ class ShopCard extends React.Component {
           )}>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>{data.get('balance')}</span>
-              <span className={classes.shopDetailsLabel}>Available</span>
+              <span className={classes.shopDetailsLabel}>Deposited</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>{data.get('deposited')}</span>
