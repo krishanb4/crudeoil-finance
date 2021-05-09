@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
@@ -58,95 +58,52 @@ function valuetext(value) {
 
 
 
-class ShopCard extends React.Component {
+const PoolCard =({classes, width, pool,isListView }) => {
 
-  state = {
-    depositModalopen: false,
-    withdrawModalopen: false,
+  const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
+  const [isWithdrawModalOpen, setWithdrawModalOpen] = useState(false);
+
+ const openDepositModal = () => {
+    this.setState({ isDepositModalOpen: true });
+    setIsDepositModalOpen(true);
   };
 
-  openDepositModal = () => {
-    this.setState({ depositModalopen: true });
+  const closeDepositModal = () => {
+    setIsDepositModalOpen(false);
   };
 
-  closeDepositModal = () => {
-    this.setState({ depositModalopen: false });
+  const openWithdrawModal = () => {
+    setWithdrawModalOpen(true);
   };
 
-  openWithdrawModal = () => {
-    this.setState({ withdrawModalopen: true });
+  const closeWithdrawModal = () => {
+    setWithdrawModalOpen(false);
   };
 
-  closeWithdrawModal = () => {
-    this.setState({ withdrawModalopen: false });
-  };
-
-  handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  render() {
-    const { depositModalopen } = this.state;
-    const { withdrawModalopen } = this.state;
-    const Transition = React.forwardRef(function Transition(props, ref) { // eslint-disable-line
-      return <Slide direction="up" ref={ref} {...props} />;
-    });
-    const today = new Date();
-    const {
-      classes,
-      data,
-      list,
-      detailOpen,
-      addOrUpdateOpen,
-      width,
-      deleteOpen
-    } = this.props;
+  
     return (
       <Card
         className={classNames(
           classes.cardProduct,
-          isWidthUp("sm", width) && list ? classes.cardList : "",
-          data.get('boosted') ? classes.boostedCard : '',
-          data.get('paused') ? classes.pausedCard : ''
+          isWidthUp("sm", width) && isListView ? classes.cardList : "",
+          pool.get('boosted') ? classes.boostedCard : '',
+          pool.get('paused') ? classes.pausedCard : ''
         )}
       >
-        {/* <div className={classes.status}>
-          {new Date(data.get("closedFrom")) < today && new Date(data.get("closedTo")) >= today && (
-            <Chip
-              label={`Closed until : ${data.get('closedTo')} `}
-              className={classes.chipDiscount}
-            />
-          )}
-        </div> */}
-        {/* <CardMedia
-          className={classes.mediaProduct}
-          image={data.get('image')}
-          title={data.get('name')}
-        /> */}
-
         <CardContent className={classes.floatingButtonWrap}>
           <div className={classNames(
             classes.shopBgImgContainer,
-            list ? classes.shopBgImgContainerFull : ''
+            isListView ? classes.shopBgImgContainerFull : ''
           )}>
-            <img className={classes.shopBgImg} src={data.get('platformImage')} />
+            <img className={classes.shopBgImg} src={pool.get('platformImage')} />
           </div>
           <div className={classes.shopImg}>
-            <img src={data.get('logo')} width="35" />
-          </div>
-          {/* <section className={classes.boostedTagDiv}>
-            {data.get('boosted') && <div className={classNames(
-              classes.boostedTag,
-              list ? classes.listBoostedTag : ''
-            )}>
-              <img className={classes.boostBtnImg} src='/images/boost.svg' />
-            Boosted
-            </div>}
-          </section> */}
+            <img src={pool.get('logo')} width="35" />
+          </div>          
           <section className={classes.boostedTagDiv}>
-            {data.get('depositsPaused') && <div className={classNames(
+            {pool.get('depositsPaused') && <div className={classNames(
               classes.pausedTag,
-              list ? classes.listPausedTag : ''
+              isListView ? classes.listPausedTag : ''
             )}>
               Deposits Paused
             </div>}
@@ -158,38 +115,38 @@ class ShopCard extends React.Component {
             className={classes.title}
             component="h5"
           >
-            {data.get('name')}
+            {pool.get('name')}
           </Typography>
           <div className={classNames(
             classes.shopDetailsDescGrid,
-            list ? classes.shopDetailsDescGridLong : ''
+            isListView ? classes.shopDetailsDescGridLong : ''
           )}>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{data.get('balance')}</span>
+              <span className={classes.shopDetailsValue}>{pool.get('balance')}</span>
               <span className={classes.shopDetailsLabel}>Deposited</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{data.get('deposited')}</span>
+              <span className={classes.shopDetailsValue}>{pool.get('deposited')}</span>
               <span className={classes.shopDetailsLabel}>Available</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{data.get('apy')}</span>
+              <span className={classes.shopDetailsValue}>{pool.get('apy')}</span>
               <span className={classes.shopDetailsLabel}>APY </span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{data.get('daily')}</span>
+              <span className={classes.shopDetailsValue}>{pool.get('daily')}</span>
               <span className={classes.shopDetailsLabel}>Daily </span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{data.get('tvl')}</span>
+              <span className={classes.shopDetailsValue}>{pool.get('tvl')}</span>
               <span className={classes.shopDetailsLabel}>TVL</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{data.get('reward')}</span>
+              <span className={classes.shopDetailsValue}>{pool.get('reward')}</span>
               <span className={classes.shopDetailsLabel}>Reward</span>
             </Typography>
           </div>
-          {list && <div className={classes.rowAdditonalGrid}>
+          {isListView && <div className={classes.rowAdditonalGrid}>
               <div className={classes.flexColumn}>
                 <span className={classes.detailsHeader}>Vault Details</span>
                 <span>Asset: <b>OIL-BNB LP</b></span>
@@ -217,19 +174,19 @@ class ShopCard extends React.Component {
         </CardContent>
         <CardActions className={classes.actionRow}>
           <div className={classNames(
-            list ? classes.shopDetailsBtnCol : classes.shopDetailsBtnRow
+            isListView ? classes.shopDetailsBtnCol : classes.shopDetailsBtnRow
           )}>
             <Button color="secondary" variant="contained"
               className={classNames(
                 classes.shopDetailsBtnDeposit,
-                data.get('paused') ? classes.disabledBtn : '',
-                list ? classes.listBtn : ''
-              )} disabled={data.get('paused')} onClick={this.openWithdrawModal}>
+                pool.get('paused') ? classes.disabledBtn : '',
+                isListView ? classes.listBtn : ''
+              )} disabled={pool.get('paused')} onClick={openWithdrawModal}>
               <img className={classes.shopDetailsBtnImg} src='/images/deposit.svg' />
               <span className={classes.shopDetailsBtnText}>Deposit</span>
             </Button>
             <Button color="primary" variant="contained"
-              className={classes.shopDetailsBtnWithdraw} onClick={this.openWithdrawModal}>
+              className={classes.shopDetailsBtnWithdraw} onClick={openWithdrawModal}>
               <img className={classes.shopDetailsBtnImg} src='/images/withdraw.svg' />
               <span className={classes.shopDetailsBtnText}>Withdraw</span>
             </Button>
@@ -238,15 +195,15 @@ class ShopCard extends React.Component {
 
         <Dialog
           fullScreen
-          open={withdrawModalopen}
-          onClose={this.closeWithdrawModal}
+          open={isWithdrawModalOpen}
+          onClose={closeWithdrawModal}
           aria-labelledby="responsive-dialog-title"
         >
 
           <DialogTitle id="responsive-dialog-title">
             <div className={classes.dialogTitleRow}>
               <span>TVL : $0.00</span>
-              <IconButton color="inherit" onClick={this.closeWithdrawModal} aria-label="Close">
+              <IconButton color="inherit" onClick={closeWithdrawModal} aria-label="Close">
                 <CloseIcon />
               </IconButton>
             </div>
@@ -274,7 +231,7 @@ class ShopCard extends React.Component {
                   <Button color="secondary" variant="contained"
                     className={classNames(
                       classes.shopDetailsBtnDeposit, classes.mr15
-                    )} onClick={this.closeWithdrawModal}>
+                    )} onClick={closeWithdrawModal}>
                     <img className={classes.shopDetailsBtnImg} src='/images/deposit.svg' />
                     <span className={classes.shopDetailsBtnText}>Approve</span>
                   </Button>
@@ -301,14 +258,14 @@ class ShopCard extends React.Component {
                   <Button color="secondary" variant="contained"
                     className={classNames(
                       classes.shopDetailsBtnWithdraw, classes.mr15
-                    )} onClick={this.closeWithdrawModal}>
+                    )} onClick={closeWithdrawModal}>
                     <img className={classes.shopDetailsBtnImg} src='/images/withdraw.svg' />
                     <span className={classes.shopDetailsBtnText}>Withdraw</span>
                   </Button>
                   <Button color="secondary" variant="contained"
                     className={classNames(
                       classes.shopDetailsBtnWithdraw
-                    )} onClick={this.closeWithdrawModal}>
+                    )} onClick={closeWithdrawModal}>
                     <img className={classes.shopDetailsBtnImg} src='/images/withdraw.svg' />
                     <span className={classes.shopDetailsBtnText}>Withdraw All</span>
                   </Button>
@@ -376,22 +333,17 @@ class ShopCard extends React.Component {
       </Card>
 
     );
-  }
 }
 
-ShopCard.propTypes = {
+PoolCard.propTypes = {
   classes: PropTypes.object.isRequired,
   width: PropTypes.string.isRequired,
-  data: PropTypes.object.isRequired,
-  detailOpen: PropTypes.func.isRequired,
-  addOrUpdateOpen: PropTypes.func.isRequired,
-  deleteOpen: PropTypes.func.isRequired
+  pool: PropTypes.object.isRequired,
+  isListView: PropTypes.bool
 };
 
-ShopCard.defaultProps = {
-  list: false,
-  detailOpen: () => false,
+PoolCard.defaultProps = {
+  isListView: false
 };
 
-const ShopCardResponsive = withWidth()(ShopCard);
-export default withStyles(styles)(ShopCardResponsive);
+export default withStyles(styles)(PoolCard);

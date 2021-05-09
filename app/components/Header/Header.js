@@ -70,7 +70,7 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
 
   useEffect(() => {
     if (web3Modal && (web3Modal.cachedProvider || window.ethereum)) {
-      dispatch(connectWallet(web3, web3Modal));
+      dispatch(connectWallet(web3Modal));
     }
   }, [web3Modal, connectWallet]);
 
@@ -82,10 +82,10 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
       networkId &&
       Boolean(networkId !== Number(process.env.REACT_APP_NETWORK_ID))
     ) {
-      networkSetup(process.env.REACT_APP_NETWORK_ID).catch(e => {
-        console.error(e);
-        alert('Network-Error');
-      });
+      // networkSetup(process.env.REACT_APP_NETWORK_ID).catch(e => {
+      //   console.error(e);
+      //   alert('Network-Error');
+      // });
     }
   }, [web3, address, networkId, connectWalletPending]);
 

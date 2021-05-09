@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
-import ShopCard from '../../../components/CardPaper/ShopCard';
+import PoolCard from '../../../components/CardPaper/PoolCard';
 import ShopDetail from './ShopDetail';
 
 const ShopGallery = ({
@@ -52,12 +52,9 @@ const ShopGallery = ({
               xs={12}
               key={index.toString()}
             >
-              <ShopCard
-                list={listView === 'list'}
-                data={shop}
-                detailOpen={() => handleDetailOpen(shop)}
-                addOrUpdateOpen={() => openAddOrUpdate(shop)}
-                deleteOpen={() => deleteOpen(shop)}
+              <PoolCard
+                isListView={listView === 'list'}
+                pool={shop}
               />
             </Grid>
           );

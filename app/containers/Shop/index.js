@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual  } from 'react-redux';
 import data from 'dan-api/apps/shopData';
 import { Toast } from 'dan-components';
 import brand from 'dan-api/dummy/brand';
@@ -15,6 +15,7 @@ import { Pagination } from '../../components';
 import { fetchAction, detailAction } from 'dan-actions/WalletActions';
 import Ionicon from 'react-ionicons';
 import useStyles from '../../hooks/useStyles';
+import {fetchVaultsData, fetchBalances}  from '../../actions/VaultAndPoolActions';
 
 const initData = {
   name: '',
@@ -48,9 +49,36 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
   const [page, setPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
 
+  const { web3, address, pools, tokens  } = useSelector(
+    state => ({
+      web3: state.getIn(['wallet', 'web3']),
+      address: state.getIn(['wallet', 'address']),
+      pools : state.getIn(['vaults', 'pools']),
+      tokens : state.getIn(['vaults', 'tokens'])
+    }),
+    shallowEqual
+  );
+
   useEffect(() => {
-    dispatch(fetchAction(data));
+   // dispatch(fetchAction(data));
   }, []);
+
+  
+  useEffect(() => {
+    const fetch = () => {
+      if (address && web3) {
+       fetchBalances({ address, web3, tokens });
+      }
+      dispatch(fetchVaultsData({ address, web3, pools }));
+    };
+    fetch();
+
+    //const id = setInterval(fetch, 40000000);
+    //return () => clearInterval(id);
+
+    // Adding tokens and pools to this dep list, causes an endless loop, DDoSing the api
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address, web3, fetchVaultsData]);
 
   const handleClickOpen = title => {
     setOpen(true);
@@ -162,7 +190,7 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
       />
       <ShopGallery
         listView={listView}
-        shopData={shopData}
+        shopData={pools}
         showDetail={shop => dispatch(detailAction(shop))}
         openAddOrUpdate={handleAddOrUpdate}
         deleteOpen={OpenDeleteModal}
