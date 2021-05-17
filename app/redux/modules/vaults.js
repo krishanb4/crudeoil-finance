@@ -10,17 +10,19 @@ import { fromJS } from 'immutable';
 import { getNetworkPools } from '../../helpers/getNetworkData';
 
 const pools = getNetworkPools();
-const tokens = {};
+const tokens = [];
 
-pools.forEach(({ token, tokenAddress, earnedToken, earnedTokenAddress }) => {
-  tokens[token] = {
+pools.forEach(({ token, tokenAddress, earnedToken, earnedTokenAddress }) => {  
+  tokens.push({
+    token : token,
     tokenAddress: tokenAddress,
     tokenBalance: 0,
-  };
-  tokens[earnedToken] = {
+  });
+  tokens.push({
+    token : earnedToken,
     tokenAddress: earnedTokenAddress,
     tokenBalance: 0,
-  };
+  });
 });
 
 const initialState = {
@@ -39,15 +41,6 @@ const initialState = {
   fetchHarvestPending: {},
 };
 
-// const initialState = {
-//   isLoading: false,
-//   web3: null,
-//   address: null,
-//   networkId: 0,
-//   connected: false,
-//   connectWalletPending: false,
-// };
-
 const initialImmutableState = fromJS(initialState);
 
 export default function reducer(state = initialImmutableState, action = {}) {
@@ -58,38 +51,34 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('fetchVaultsDataPending', true);
       });
     case VAULT_FETCH_VAULTS_DATA_SUCCESS:
-      // return state.withMutations(mutableState => {
-      //   mutableState.set('isLoading', false);
-      //   mutableState.set('pools', action.items.data);
-      //   mutableState.set('isFetchVaultsDataPending', false);
-      //   mutableState.set('hasFetchVaultsDataDone', true);
-      // });
-      return {
-        ...state,
-        pools: action.items.data,
-        isLoading: false,
-        isFetchVaultsDataPending: false,
-        hasFetchVaultsDataDone: false,
-      };
+      return state.withMutations(mutableState => {
+        mutableState.set('isLoading', false);
+        mutableState.set('pools', action.data);
+        mutableState.set('isFetchVaultsDataPending', false);
+        mutableState.set('hasFetchVaultsDataDone', true);
+      });
+      // return {
+      //   ...state,
+      //   pools: action.items.data,
+      //   isLoading: false,
+      //   isFetchVaultsDataPending: false,
+      //   hasFetchVaultsDataDone: false,
+      // };
     case VAULT_FETCH_VAULTS_DATA_FAILURE:
       return state.withMutations(mutableState => {
         mutableState.set('isFetchVaultsDataPending', false);
       });
 
-    case VAULT_FETCH_BALANCES_BEGIN:
-      return {
-        ...state,
-        fetchBalancesPending: true,
-      };
+    case VAULT_FETCH_BALANCES_BEGIN:    
+      return state.withMutations(mutableState => {
+        mutableState.set('isFetchBalancesPending', true);
+      });
 
-    case VAULT_FETCH_BALANCES_SUCCESS:
-      return {
-        ...state,
-        tokens: action.data,
-        fetchBalancesDone: true,
-        fetchBalancesPending: false,
-      };
-
+    case VAULT_FETCH_BALANCES_SUCCESS:      
+      return state.withMutations(mutableState => {
+        mutableState.set('isFetchBalancesPending', false);
+        mutableState.set('tokens', action.data);
+      });
     case VAULT_FETCH_BALANCES_FAILURE:
       return {
         ...state,

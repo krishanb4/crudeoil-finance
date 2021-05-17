@@ -30,7 +30,7 @@
   "resolved" "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.13.15.tgz"
   "version" "7.13.15"
 
-"@babel/core@^7.0.0", "@babel/core@^7.0.0-0", "@babel/core@^7.4.0-0", "@babel/core@>=7.2.2", "@babel/core@7.4.3":
+"@babel/core@>=7.2.2", "@babel/core@7.4.3":
   "integrity" "sha512-oDpASqKFlbspQfzAE7yaeTmdljSH2ADIvBlb0RwbStltTuWa0+7CCI1fYVINNv9saHPa1W7oaKeuNuKj+RQCvA=="
   "resolved" "https://registry.npmjs.org/@babel/core/-/core-7.4.3.tgz"
   "version" "7.4.3"
@@ -3004,15 +3004,10 @@
   "resolved" "https://registry.npmjs.org/bignumber.js/-/bignumber.js-2.4.0.tgz"
   "version" "2.4.0"
 
-"bignumber.js@^9.0.0":
+"bignumber.js@^9.0.0", "bignumber.js@^9.0.1":
   "integrity" "sha512-IdZR9mh6ahOBv/hYGiXyVuyCetmGJhtYkqLBpTStdhEGjegpPlUawydyaF3pbIOFynJTpllEs+NP+CS9jKFLjA=="
   "resolved" "https://registry.npmjs.org/bignumber.js/-/bignumber.js-9.0.1.tgz"
   "version" "9.0.1"
-
-"bignumber@^1.1.0":
-  "integrity" "sha1-5qsKdD2l8+oBjlwXWX0SH3howVk="
-  "resolved" "https://registry.npmjs.org/bignumber/-/bignumber-1.1.0.tgz"
-  "version" "1.1.0"
 
 "binary-extensions@^1.0.0":
   "integrity" "sha512-Un7MIEDdUC5gNpcGDV97op1Ywk748MpHcFTHoYs6qnj1Z3j7I53VG3nwZhKzoBZmbdRNnb6WRdFlwl7tSDuZGw=="
@@ -5834,7 +5829,7 @@
   "resolved" "https://registry.npmjs.org/eth-sig-util/-/eth-sig-util-1.4.2.tgz"
   "version" "1.4.2"
   dependencies:
-    "ethereumjs-abi" "git+https://github.com/ethereumjs/ethereumjs-abi.git"
+    "ethereumjs-abi" "ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git"
     "ethereumjs-util" "^5.1.1"
 
 "ethereum-bloom-filters@^1.0.6":
@@ -5875,9 +5870,8 @@
     "secp256k1" "^4.0.1"
     "setimmediate" "^1.0.5"
 
-"ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
+"ethereumjs-abi@ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
   "resolved" "git+ssh://git@github.com/ethereumjs/ethereumjs-abi.git#1a27c59c15ab1e95ee8e5c4ed6ad814c49cc439e"
-  "version" "0.6.8"
   dependencies:
     "bn.js" "^4.11.8"
     "ethereumjs-util" "^6.0.0"
@@ -8217,7 +8211,7 @@
   "resolved" "https://registry.npmjs.org/js-levenshtein/-/js-levenshtein-1.1.6.tgz"
   "version" "1.1.6"
 
-"js-sha3@^0.5.7", "js-sha3@0.5.7":
+"js-sha3@^0.5.7":
   "integrity" "sha1-DU/9gALVMzqrr0oj7tL2N0yfKOc="
   "resolved" "https://registry.npmjs.org/js-sha3/-/js-sha3-0.5.7.tgz"
   "version" "0.5.7"
@@ -8226,6 +8220,11 @@
   "integrity" "sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q=="
   "resolved" "https://registry.npmjs.org/js-sha3/-/js-sha3-0.8.0.tgz"
   "version" "0.8.0"
+
+"js-sha3@0.5.7":
+  "integrity" "sha1-DU/9gALVMzqrr0oj7tL2N0yfKOc="
+  "resolved" "https://registry.npmjs.org/js-sha3/-/js-sha3-0.5.7.tgz"
+  "version" "0.5.7"
 
 "js-sha3@0.8.0":
   "integrity" "sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q=="
@@ -8353,7 +8352,7 @@
   "integrity" "sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss="
   "resolved" "https://registry.npmjs.org/jsonfile/-/jsonfile-4.0.0.tgz"
   "version" "4.0.0"
-  optionalDependencies:
+  dependencies:
     "graceful-fs" "^4.1.6"
 
 "jsonify@~0.0.0":
@@ -11729,7 +11728,7 @@
   "resolved" "https://registry.npmjs.org/react-display-name/-/react-display-name-0.2.4.tgz"
   "version" "0.2.4"
 
-"react-dom@^16.8.6", "react-dom@>= 16.8.0", "react-dom@16.8.6":
+"react-dom@^16.8.6", "react-dom@16.8.6":
   "integrity" "sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-16.8.6.tgz"
   "version" "16.8.6"
@@ -11837,7 +11836,7 @@
     "react-dom" "15.4.2"
     "styled-components" "2.2.3"
 
-"react-is@^16.3.2", "react-is@^16.5.2", "react-is@^16.6.0", "react-is@^16.7.0", "react-is@^16.8.1", "react-is@^16.8.4", "react-is@^16.8.6", "react-is@^16.9.0", "react-is@>= 16.8.0":
+"react-is@^16.3.2", "react-is@^16.5.2", "react-is@^16.6.0", "react-is@^16.7.0", "react-is@^16.8.1", "react-is@^16.8.4", "react-is@^16.8.6", "react-is@^16.9.0":
   "integrity" "sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q=="
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.12.0.tgz"
   "version" "16.12.0"
@@ -12201,7 +12200,7 @@
     "prop-types" "^15.0.0"
     "ultimate-pagination" "1.0.0"
 
-"react@^16.4.1", "react@^16.8.6", "react@>= 16.8.0", "react@16.8.6":
+"react@^16.4.1", "react@^16.8.6", "react@16.8.6":
   "integrity" "sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.8.6.tgz"
   "version" "16.8.6"
@@ -13867,7 +13866,7 @@
     "stylis" "3.x"
     "supports-color" "^3.2.3"
 
-"styled-components@^5.1.1", "styled-components@>= 2":
+"styled-components@^5.1.1":
   "integrity" "sha512-BlR+KrLW3NL1yhvEB+9Nu9Dt51CuOnHoxd+Hj+rYPdtyR8X11uIW9rvhpy3Dk4dXXBsiW1u5U78f00Lf/afGoA=="
   "resolved" "https://registry.npmjs.org/styled-components/-/styled-components-5.2.3.tgz"
   "version" "5.2.3"
@@ -15282,7 +15281,7 @@
     "source-list-map" "^2.0.0"
     "source-map" "~0.6.1"
 
-"webpack@^4 || ^5", "webpack@4.30.0":
+"webpack@4.30.0":
   "integrity" "sha512-4hgvO2YbAFUhyTdlR4FNyt2+YaYBYHavyzjCMbZzgglo02rlKi/pcsEzwCuCpsn1ryzIl1cq/u8ArIKu8JBYMg=="
   "resolved" "https://registry.npmjs.org/webpack/-/webpack-4.30.0.tgz"
   "version" "4.30.0"
@@ -15313,9 +15312,9 @@
     "webpack-sources" "^1.3.0"
 
 "websocket@^1.0.32":
-  "integrity" "sha512-XwNqM2rN5eh3G2CUQE3OHZj+0xfdH42+OFK6LdC2yqiC0YU8e5UK0nYre220T0IyyN031V/XOvtHvXozvJYFWA=="
-  "resolved" "https://registry.npmjs.org/websocket/-/websocket-1.0.33.tgz"
-  "version" "1.0.33"
+  "integrity" "sha512-PRDso2sGwF6kM75QykIesBijKSVceR6jL2G8NGYyq2XrItNC2P5/qL5XeR056GhA+Ly7JMFvJb9I312mJfmqnQ=="
+  "resolved" "https://registry.npmjs.org/websocket/-/websocket-1.0.34.tgz"
+  "version" "1.0.34"
   dependencies:
     "bufferutil" "^4.0.1"
     "debug" "^2.2.0"

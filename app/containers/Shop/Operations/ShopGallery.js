@@ -11,8 +11,7 @@ const ShopGallery = ({
   shopIndex,
   keyword,
   listView,
-  openAddOrUpdate,
-  deleteOpen,
+  tokens
 }) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
@@ -43,7 +42,7 @@ const ShopGallery = ({
               .indexOf(keyword) === -1
           ) {
             return false;
-          }
+          }         
           return (
             <Grid
               item
@@ -55,6 +54,7 @@ const ShopGallery = ({
               <PoolCard
                 isListView={listView === 'list'}
                 pool={shop}
+                tokens ={tokens}
               />
             </Grid>
           );

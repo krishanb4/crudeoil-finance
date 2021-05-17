@@ -67,7 +67,7 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
   useEffect(() => {
     const fetch = () => {
       if (address && web3) {
-       fetchBalances({ address, web3, tokens });
+        dispatch(fetchBalances({ address, web3, tokens }));
       }
       dispatch(fetchVaultsData({ address, web3, pools }));
     };
@@ -191,6 +191,7 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
       <ShopGallery
         listView={listView}
         shopData={pools}
+        tokens ={tokens}
         showDetail={shop => dispatch(detailAction(shop))}
         openAddOrUpdate={handleAddOrUpdate}
         deleteOpen={OpenDeleteModal}
@@ -211,7 +212,7 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
       />
       <Pagination
         curpage={page}
-        totpages={10}
+        totpages={1}
         boundaryPagesRange={1}
         onChange={onPageChange}
         siblingPagesRange={1}
