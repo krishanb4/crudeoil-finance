@@ -55,6 +55,7 @@ const ShopGallery = ({
                 isListView={listView === 'list'}
                 pool={shop}
                 tokens ={tokens}
+                index ={index}
               />
             </Grid>
           );

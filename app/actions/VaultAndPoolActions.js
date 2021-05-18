@@ -9,6 +9,7 @@ import { getNetworkMultiCall } from '../helpers/getNetworkData';
 import BigNumber from 'bignumber.js';
 import { MultiCall } from 'eth-multicall';
 import { fromJS } from 'immutable';
+import { approval } from '../web3';
 
 export function fetchVaultsData({address, web3, pools}) {
   return async dispatch => {
@@ -51,7 +52,7 @@ export function fetchVaultsData({address, web3, pools}) {
         const newPools =  [];
         pools.map((pool, i) => {
           let a  = data[1][i].pricePerFullShare == undefined ? 1 : data[1][i].pricePerFullShare;
-          const allowance = data[0][1] ? web3.utils.fromWei(data[0][i].allowance, 'ether') : 0;
+          const allowance = data[0][i] ? web3.utils.fromWei(data[0][i].allowance, 'ether') : 0;
           const pricePerFullShare = byDecimals(a, 18).toNumber();          
           
           var newPool = pool.set('allowance', new BigNumber(allowance).toNumber() || 0);
@@ -113,7 +114,7 @@ export function fetchBalances({ address, web3, tokens }) {
             newTokens[tokensList[i].token] = {
               token : tokensList[i].token,
               tokenAddress: tokensList[i].tokenAddress,
-              tokenBalance: new BigNumber(results[i].tokenBalance).toNumber() / 1000000000000000000 || 0,
+              tokenBalance: byDecimals(results[i].tokenBalance || 0, 18).toNumber(),
             };
           }
           var imPools = fromJS(newTokens);
@@ -128,6 +129,71 @@ export function fetchBalances({ address, web3, tokens }) {
             type: types.VAULT_FETCH_BALANCES_FAILURE,
           });
           return reject(error.message || error);
+        });
+    });
+
+    return promise;
+  };
+}
+
+export function fetchDeposit({ address, web3, isAll, amount, contractAddress, index }) {
+  return async dispatch => {
+    dispatch({
+      type: types.VAULT_FETCH_DEPOSIT_BEGIN,
+      index,
+    });
+
+    const promise = new Promise((resolve, reject) => {
+      deposit({ web3, address, isAll, amount, contractAddress, dispatch })
+        .then(data => {
+          dispatch({
+            type: types.VAULT_FETCH_DEPOSIT_SUCCESS,
+            data,
+            index,
+          });
+          resolve(data);
+        })
+        .catch(error => {
+          dispatch({
+            type: types.VAULT_FETCH_DEPOSIT_FAILURE,
+            index,
+          });
+          reject(error.message || error);
+        });
+    });
+    return promise;
+  };
+}
+
+export function fetchApproval({ address, web3, tokenAddress, contractAddress, index }) {
+  return async dispatch => {
+    dispatch({
+      type: types.VAULT_FETCH_APPROVAL_BEGIN,
+      index,
+    });
+
+    const promise = new Promise((resolve, reject) => {
+      approval({
+        web3,
+        address,
+        tokenAddress,
+        contractAddress,
+        dispatch,
+      })
+        .then(data => {
+          dispatch({
+            type: types.VAULT_FETCH_APPROVAL_SUCCESS,
+            data: { index, allowance: data },
+            index,
+          });
+          resolve();
+        })
+        .catch(error => {
+          dispatch({
+            type: types.VAULT_FETCH_APPROVAL_FAILURE,
+            index,
+          });
+          reject(error.message || error);
         });
     });
 

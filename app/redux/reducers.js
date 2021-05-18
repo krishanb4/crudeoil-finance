@@ -26,7 +26,6 @@ import shop from './modules/shop';
 import snackbar from './modules/snackbar';
 import wallet from './modules/wallet';
 import vaults from './modules/vaults';
-import testreducer from './modules/testreducer';
 
 /**
  * Branching reducers to use one reducer for many components
@@ -64,7 +63,6 @@ export default function createReducer(injectedReducers = {}) {
     wallet,
     vaults,
     snackbar,
-    testreducer,
     treeTableArrow: branchReducer(treeTable, 'treeTableArrow'),
     treeTablePM: branchReducer(treeTable, 'treeTablePM'),
     crudTableDemo: branchReducer(crudTable, 'crudTableDemo'),

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector, shallowEqual  } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
@@ -14,6 +15,7 @@ import styles from './cardStyle-jss';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
+import {fetchApproval}  from '../../actions/VaultAndPoolActions';
 
 const marks = [
   {
@@ -42,7 +44,30 @@ function valuetext(value) {
   return `${value}%`;
 }
 
-const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal }) => {
+const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, index }) => {
+  
+  const dispatch = useDispatch();
+
+  const { web3, address } = useSelector(
+    state => ({
+      web3: state.getIn(['wallet', 'web3']),
+      address: state.getIn(['wallet', 'address'])
+    }),
+    shallowEqual
+  );
+
+  const onClickApproval =()=> {
+        dispatch(
+          fetchApproval({
+            address,
+            web3,
+            tokenAddress: pool.get('tokenAddress'),
+            contractAddress: pool.get('earnContractAddress'),
+            index
+          }));
+        }
+  
+
   const closeWithdrawModal = () => {
     onCloseModal();
   };
@@ -87,7 +112,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal }) =>
                   color="secondary"
                   variant="contained"
                   className={classNames(classes.shopDetailsBtnDeposit, classes.mr15)}
-                  onClick={closeWithdrawModal}
+                  onClick={onClickApproval}
                 >
                   <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                   <span className={classes.shopDetailsBtnText}>Approve</span>
@@ -97,7 +122,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal }) =>
                   <Button
                     color="secondary"
                     variant="contained"
-                    className={classNames(classes.shopDetailsBtnWithdraw, classes.mr15)}
+                    className={classNames(classes.shopDetailsBtnDeposit, classes.mr15)}
                     onClick={closeWithdrawModal}
                   >
                     <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
@@ -106,7 +131,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal }) =>
                   <Button
                     color="secondary"
                     variant="contained"
-                    className={classNames(classes.shopDetailsBtnWithdraw)}
+                    className={classNames(classes.shopDetailsBtnDeposit)}
                     onClick={closeWithdrawModal}
                   >
                     <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />

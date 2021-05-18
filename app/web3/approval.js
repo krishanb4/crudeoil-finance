@@ -10,16 +10,17 @@ export const approval = ({ web3, address, tokenAddress, contractAddress, dispatc
       .approve(contractAddress, web3.utils.toWei('80000000000', 'ether'))
       .send({ from: address })
       .on('transactionHash', function (hash) {
-        dispatch(
-          enqueueSnackbar({
-            message: hash,
-            options: {
-              key: new Date().getTime() + Math.random(),
-              variant: 'success',
-            },
-            hash,
-          })
-        );
+        // dispatch(
+        //   enqueueSnackbar({
+        //     message: hash,
+        //     options: {
+        //       key: new Date().getTime() + Math.random(),
+        //       variant: 'success',
+        //     },
+        //     hash,
+        //   })
+        // );
+        console.log(hash);
       })
       .on('receipt', function (receipt) {
         resolve(new BigNumber(80000000000).toNumber());

@@ -11,7 +11,7 @@ import styles from "./cardStyle-jss";
 import Button from '@material-ui/core/Button';
 import PoolDetailPopup from './PoolDetailPopup';
 
-const PoolCard =({classes, width, tokens, pool,isListView }) => {
+const PoolCard =({classes, width, tokens, pool,isListView, index }) => {
 
   const [isOpenDetailModal, setIsOpenDetailModal] = useState(false);
 
@@ -139,7 +139,7 @@ const PoolCard =({classes, width, tokens, pool,isListView }) => {
             </Button>
           </div>
         </CardActions> 
-        <PoolDetailPopup isOpenModal ={isOpenDetailModal} pool={pool} onCloseModal= {closeDetailModal} token ={token} ></PoolDetailPopup>       
+        <PoolDetailPopup isOpenModal ={isOpenDetailModal} pool={pool} onCloseModal= {closeDetailModal} token ={token} index={index} ></PoolDetailPopup>       
       </Card>      
 
     );
