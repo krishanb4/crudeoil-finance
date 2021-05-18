@@ -182,16 +182,15 @@ export function fetchApproval({ address, web3, tokenAddress, contractAddress, in
       })
         .then(data => {
           dispatch({
-            type: types.VAULT_FETCH_APPROVAL_SUCCESS,
-            data: { index, allowance: data },
-            index,
+            type: types.OPEN_TOAST,
+            items: { type: 'success', hash: '', message: 'Transaction Success' }
           });
           resolve();
         })
         .catch(error => {
           dispatch({
-            type: types.VAULT_FETCH_APPROVAL_FAILURE,
-            index,
+            type: types.OPEN_TOAST,
+            items: { type: 'error', hash: '', message: `Transaction Failed : ${error.message || error} ` }
           });
           reject(error.message || error);
         });

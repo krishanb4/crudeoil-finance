@@ -123,7 +123,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                     color="secondary"
                     variant="contained"
                     className={classNames(classes.shopDetailsBtnDeposit, classes.mr15)}
-                    onClick={closeWithdrawModal}
+                    onClick={onClickApproval}
                   >
                     <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                     <span className={classes.shopDetailsBtnText}>Deposit</span>
@@ -132,7 +132,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                     color="secondary"
                     variant="contained"
                     className={classNames(classes.shopDetailsBtnDeposit)}
-                    onClick={closeWithdrawModal}
+                    onClick={onClickApproval}
                   >
                     <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                     <span className={classes.shopDetailsBtnText}>Deposit All</span>

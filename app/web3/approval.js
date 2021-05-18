@@ -1,6 +1,6 @@
 import { erc20ABI } from '../bscconfigure';
 import BigNumber from 'bignumber.js';
-import { enqueueSnackbar } from '../redux/modules/snackbar';
+import * as types from '../constants/actionConstants';
 
 export const approval = ({ web3, address, tokenAddress, contractAddress, dispatch }) => {
   return new Promise((resolve, reject) => {
@@ -20,6 +20,10 @@ export const approval = ({ web3, address, tokenAddress, contractAddress, dispatc
         //     hash,
         //   })
         // );
+        dispatch({
+          type: types.OPEN_TOAST,
+          items: { type: 'success', hash: hash, message: 'Transaction Pending' }
+        });
         console.log(hash);
       })
       .on('receipt', function (receipt) {

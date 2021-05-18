@@ -10,13 +10,21 @@ import CardContent from "@material-ui/core/CardContent";
 import styles from "./cardStyle-jss";
 import Button from '@material-ui/core/Button';
 import PoolDetailPopup from './PoolDetailPopup';
-
+import { useDispatch, useSelector, shallowEqual  } from 'react-redux';
+import * as types from '../../constants/actionConstants';
 const PoolCard =({classes, width, tokens, pool,isListView, index }) => {
+
+  const dispatch = useDispatch();
 
   const [isOpenDetailModal, setIsOpenDetailModal] = useState(false);
 
  const openDetailModal = () => {    
-  setIsOpenDetailModal(true);
+   setIsOpenDetailModal(true);
+
+  // dispatch({
+  //   type: types.OPEN_TOAST,
+  //   items: { type: 'success', hash: '210210291909012919029012', message: 'Transaction Pending' }
+  // });
   };
 
   var token = tokens.find(t => 

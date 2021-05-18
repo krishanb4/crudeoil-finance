@@ -38,8 +38,7 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
   const shopData = stateData.getIn(['shop', 'list']);
   const shopIndex = stateData.getIn(['shop', 'shopIndex']);
   const totalItems = stateData.getIn(['shop', 'totalItems']);
-  const toastMessage = stateData.getIn(['toastMessage', 'toastMessage']);
-  const toastType = stateData.getIn(['toastMessage', 'type']);
+  
   const isLoading = stateData.getIn(['common', 'isLoading']);
 
   const [listView, setListView] = useState('grid');
@@ -49,12 +48,15 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
   const [page, setPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
 
-  const { web3, address, pools, tokens  } = useSelector(
+  const { web3, address, pools, tokens,toastMessage, toastHash, toastType  } = useSelector(
     state => ({
       web3: state.getIn(['wallet', 'web3']),
       address: state.getIn(['wallet', 'address']),
       pools : state.getIn(['vaults', 'pools']),
-      tokens : state.getIn(['vaults', 'tokens'])
+      tokens : state.getIn(['vaults', 'tokens']),
+      toastMessage : state.getIn(['toastMessage', 'toastMessage']),
+      toastHash : state.getIn(['toastMessage', 'toastHash']),
+      toastType : state.getIn(['toastMessage', 'type']),
     }),
     shallowEqual
   );
@@ -163,7 +165,7 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
-      <Toast message={toastMessage} type={toastType} onClose={() => dispatch(closeToastAction())} />
+      <Toast message={toastMessage} hash={toastHash} type={toastType} onClose={() => dispatch(closeToastAction())} />
       <div className={classes.headDetails}>
         <span className={classes.tvlText}>TVL : $0.00</span>
         <span className={classes.depositedText}>Deposited : $0.00</span>
