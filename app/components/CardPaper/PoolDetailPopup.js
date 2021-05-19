@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector, shallowEqual  } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
@@ -15,7 +15,7 @@ import styles from './cardStyle-jss';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
-import {fetchApproval}  from '../../actions/VaultAndPoolActions';
+import { fetchApproval } from '../../actions/VaultAndPoolActions';
 
 const marks = [
   {
@@ -45,28 +45,32 @@ function valuetext(value) {
 }
 
 const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, index }) => {
-  
   const dispatch = useDispatch();
+  depositAmount;
+  const [depositSliderValue, setDepositSliderValue] = useState(0);
+  const [depositAmount, setDepositAmount] = useState(0);
+  const [withdrawAmount, setWithdrawAmount] = useState(0);
 
   const { web3, address } = useSelector(
     state => ({
       web3: state.getIn(['wallet', 'web3']),
-      address: state.getIn(['wallet', 'address'])
+      address: state.getIn(['wallet', 'address']),
     }),
     shallowEqual
   );
 
-  const onClickApproval =()=> {
-        dispatch(
-          fetchApproval({
-            address,
-            web3,
-            tokenAddress: pool.get('tokenAddress'),
-            contractAddress: pool.get('earnContractAddress'),
-            index
-          }));
-        closeModal();
-        }
+  const onClickApproval = () => {
+    dispatch(
+      fetchApproval({
+        address,
+        web3,
+        tokenAddress: pool.get('tokenAddress'),
+        contractAddress: pool.get('earnContractAddress'),
+        index,
+      })
+    );
+    closeModal();
+  };
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -77,6 +81,16 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
 
   const closeWithdrawModal = () => {
     onCloseModal();
+  };
+
+  const handleDepositSliderChangeRange = (e, newValue) => {    
+    let balance = token.get('tokenBalance');
+    setDepositAmount((balance / 100) * newValue);
+  };
+
+  const handleWithdrawSliderChangeRange = (e, newValue) => {    
+    let balance = token.get('tokenBalance');
+    setWithdrawAmount((balance / 100) * newValue);
   };
 
   return (
@@ -100,6 +114,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
             <span className={classes.inputLabel}>Balance : {token.get('tokenBalance')}</span>
             <Input
               placeholder="0"
+              value={depositAmount}
               className={classes.inputBox}
               inputProps={{
                 'aria-label': 'Balance',
@@ -112,6 +127,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
               step={1}
               marks={marks}
               valueLabelDisplay="on"
+              onChange={handleDepositSliderChangeRange}
             />
             <div className={classes.flexRowCenter}>
               {pool.get('allowance') === 0 ? (
@@ -152,6 +168,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
             <span className={classes.inputLabel}>Deposited : 0.00000000</span>
             <Input
               placeholder="0"
+              value ={withdrawAmount}
               className={classes.inputBox}
               inputProps={{
                 'aria-label': 'Balance',
@@ -164,6 +181,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
               step={1}
               marks={marks}
               valueLabelDisplay="on"
+              onChange={handleWithdrawSliderChangeRange}
             />
             <div className={classes.flexRowCenter}>
               <Button
