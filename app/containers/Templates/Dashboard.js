@@ -65,7 +65,6 @@ class Dashboard extends React.Component {
     const titleException = ['/app', '/app/crm-dashboard', '/app/crypto-dashboard'];
     const parts = history.location.pathname.split('/');
     const place = parts[parts.length - 1].replace('-', ' ');
-    console.log('layout', layout);
     return (
       <div
         className={classNames(
