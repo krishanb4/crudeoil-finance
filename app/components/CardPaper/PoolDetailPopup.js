@@ -65,8 +65,15 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
             contractAddress: pool.get('earnContractAddress'),
             index
           }));
+        closeModal();
         }
-  
+
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+
+  const closeModal = async () => {
+    await delay(10000);
+    closeWithdrawModal();
+  };
 
   const closeWithdrawModal = () => {
     onCloseModal();

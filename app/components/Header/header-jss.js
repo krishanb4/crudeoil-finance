@@ -491,7 +491,7 @@ const styles = theme => ({
   },
   walletBtn: {
     marginLeft: '10px',
-    backgroundColor: '#ef5350 !important'
+    backgroundColor: '#1a5982 !important'
   },
   buyBtn: {
     marginRight: '10px',
@@ -499,6 +499,13 @@ const styles = theme => ({
   },
   walletBtnText: {
     marginLeft: '2px'
+  },
+  logoutBtn: {
+    marginLeft: '10px',
+    backgroundColor: '#ef5350 !important'
+  },
+  logoutBtnText: {
+    marginLeft: '5px'
   }
 });
 

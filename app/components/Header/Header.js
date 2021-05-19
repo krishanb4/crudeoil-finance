@@ -233,6 +233,18 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
                   
                 </Button>
               </Tooltip>
+              
+              {connected && <Tooltip title="Logout" placement="bottom">
+                <Button
+                  className={classes.logoutBtn}
+                  variant="contained"
+                  color="secondary"
+                  onClick={diConnectToWallet}>
+                  <Ionicon icon="ios-power" />
+                  <span className={classes.logoutBtnText}>Logout</span>
+                </Button>
+              </Tooltip>}
+              
             </div>
           </div>
           <Typography

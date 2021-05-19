@@ -22,7 +22,7 @@ export const approval = ({ web3, address, tokenAddress, contractAddress, dispatc
         // );
         dispatch({
           type: types.OPEN_TOAST,
-          items: { type: 'success', hash: hash, message: 'Transaction Pending' }
+          items: { type: 'warning', hash: hash, message: 'Transaction Pending' }
         });
         console.log(hash);
       })
