@@ -33,13 +33,14 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
   
   const dispatch = useDispatch();
 
-  const { web3, address, networkId, connected, connectWalletPending } = useSelector(
+  const { web3, address, networkId, connected, connectWalletPending, test } = useSelector(
     state => ({
       web3: state.getIn(['wallet', 'web3']),
       address: state.getIn(['wallet', 'address']),
       networkId: state.getIn(['wallet', 'networkId']),
       connected: state.getIn(['wallet', 'connected']),
-      connectWalletPending: state.getIn(['wallet', 'connectWalletPending'])
+      connectWalletPending: state.getIn(['wallet', 'connectWalletPending']),
+      test : state.testreducer
     }),
     shallowEqual
   );
@@ -52,6 +53,7 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
     if (!connected) {
       return;
     }
+    const asd = test;
     
     if (address.length < 11) {
       setShortAddress(address);
@@ -231,6 +233,18 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
                   
                 </Button>
               </Tooltip>
+              
+              {connected && <Tooltip title="Logout" placement="bottom">
+                <Button
+                  className={classes.logoutBtn}
+                  variant="contained"
+                  color="secondary"
+                  onClick={diConnectToWallet}>
+                  <Ionicon icon="ios-power" />
+                  <span className={classes.logoutBtnText}>Logout</span>
+                </Button>
+              </Tooltip>}
+              
             </div>
           </div>
           <Typography

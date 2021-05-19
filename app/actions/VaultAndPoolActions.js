@@ -8,6 +8,8 @@ import { byDecimals } from '../helpers/bignumber';
 import { getNetworkMultiCall } from '../helpers/getNetworkData';
 import BigNumber from 'bignumber.js';
 import { MultiCall } from 'eth-multicall';
+import { fromJS } from 'immutable';
+import { approval } from '../web3';
 
 export function fetchVaultsData({address, web3, pools}) {
   return async dispatch => {
@@ -37,8 +39,8 @@ export function fetchVaultsData({address, web3, pools}) {
        pools.map(pool => {
         const vault = new web3.eth.Contract(vaultABI, pool.get('earnedTokenAddress'));
         vaultCalls.push({
-          pricePerFullShare: vault.methods.getPricePerFullShare(),
-          tvl: vault.methods.balance(),
+          pricePerFullShare: vault.methods.getPricePerFullShare() == undefined ? 0 : vault.methods.getPricePerFullShare() ,
+          tvl: vault.methods.totalSupply() == undefined ? 0 : vault.methods.totalSupply(),
         });
       });
 
@@ -47,20 +49,23 @@ export function fetchVaultsData({address, web3, pools}) {
         multiCall.all([vaultCalls]).then(result => result[0]),
         //whenPricesLoaded() // need to wait until prices are loaded in cache
       ]).then(data => {
-        const newPools = pools.map((pool, i) => {
-          const allowance = data[0][1] ? web3.utils.fromWei(data[0][i].allowance, 'ether') : 0;
-          const pricePerFullShare = byDecimals(data[1][i].pricePerFullShare, 18).toNumber();
-          return {
-            ...pool,
-            allowance: new BigNumber(allowance).toNumber() || 0,
-            pricePerFullShare: new BigNumber(pricePerFullShare).toNumber() || 1,
-            tvl: byDecimals(data[1][i].tvl, 18).toNumber(),
-            oraclePrice: fetchPrice({ id: pool.get('oracleId') }) || 0,
-          };
+        const newPools =  [];
+        pools.map((pool, i) => {
+          let a  = data[1][i].pricePerFullShare == undefined ? 1 : data[1][i].pricePerFullShare;
+          const allowance = data[0][i] ? web3.utils.fromWei(data[0][i].allowance, 'ether') : 0;
+          const pricePerFullShare = byDecimals(a, 18).toNumber();          
+          
+          var newPool = pool.set('allowance', new BigNumber(allowance).toNumber() || 0);
+          newPool = newPool.set('pricePerFullShare', new BigNumber(pricePerFullShare).toNumber() || 1);
+          newPool = newPool.set('tvl', byDecimals(data[1][i].tvl, 18).toNumber());
+          newPool = newPool.set('oraclePrice', 0.4);
+          // newPools.push(newPool);
+          newPools.push(newPool);
         });
+        var imPools = fromJS(newPools);
         dispatch({
           type: types.VAULT_FETCH_VAULTS_DATA_SUCCESS,
-          data: newPools,
+          data: imPools,
         });
         resolve();
       }).catch(error => {
@@ -76,36 +81,29 @@ export function fetchVaultsData({address, web3, pools}) {
 }
 
 export function fetchBalances({ address, web3, tokens }) {
-  return dispatch => {
+  return async dispatch => {
     dispatch({
       type: types.VAULT_FETCH_BALANCES_BEGIN,
     });
 
     const promise = new Promise((resolve, reject) => {
       const tokensList = [];
-      for (let key in tokens) {
+
+      tokens.map(t=> {
         tokensList.push({
-          token: key,
-          tokenAddress: tokens[key].tokenAddress,
-          tokenBalance: tokens[key].tokenBalance,
+          token: t.get('token'),
+          tokenAddress: t.get('tokenAddress'),
+          tokenBalance: t.get('tokenBalance')
         });
-      }
+      });      
 
       const multiCall = new MultiCall(web3, getNetworkMultiCall());
 
       const calls = tokensList.map(token => {
-        if (!token.tokenAddress) {
-          const shimAddress = '0xC72E5edaE5D7bA628A2Acb39C8Aa0dbbD06daacF';
-          const shimContract = new web3.eth.Contract(multiCallBnbShimABI, shimAddress);
-          return {
-            tokenBalance: shimContract.methods.balanceOf(address),
-          };
-        } else {
-          const tokenContract = new web3.eth.Contract(erc20ABI, token.tokenAddress);
+        const tokenContract = new web3.eth.Contract(erc20ABI, token.tokenAddress);
           return {
             tokenBalance: tokenContract.methods.balanceOf(address),
           };
-        }
       });
 
       multiCall
@@ -114,14 +112,15 @@ export function fetchBalances({ address, web3, tokens }) {
           const newTokens = {};
           for (let i = 0; i < tokensList.length; i++) {
             newTokens[tokensList[i].token] = {
+              token : tokensList[i].token,
               tokenAddress: tokensList[i].tokenAddress,
-              tokenBalance: new BigNumber(results[i].tokenBalance).toNumber() || 0,
+              tokenBalance: byDecimals(results[i].tokenBalance || 0, 18).toNumber(),
             };
           }
-
+          var imPools = fromJS(newTokens);
           dispatch({
             type: types.VAULT_FETCH_BALANCES_SUCCESS,
-            data: newTokens,
+            data: imPools,
           });
           resolve();
         })
@@ -137,105 +136,71 @@ export function fetchBalances({ address, web3, tokens }) {
   };
 }
 
-export const detailAction = item => ({
-  type: types.SHOW_DETAIL_SHOP,
-  item,
-});
-
-export const fetchAction = items => ({
-  type: types.FETCH_SHOP_DATA,
-  items,
-});
-
-async function _connectWallet(dispatch, web3Modal) {
-  try {
-    const provider = await web3Modal.connect();
-    const web3 = new Web3(provider);
-    web3.eth.extend({
-      methods: [
-        {
-          name: 'chainId',
-          call: 'eth_chainId',
-          outputFormatter: web3.utils.hexToNumber,
-        },
-      ],
+export function fetchDeposit({ address, web3, isAll, amount, contractAddress, index }) {
+  return async dispatch => {
+    dispatch({
+      type: types.VAULT_FETCH_DEPOSIT_BEGIN,
+      index,
     });
-    const subscribeProvider = provider => {
-      if (!provider.on) {
-        return;
-      }
-      provider.on('close', () => {
-        dispatch(disconnectWallet(web3, web3Modal));
-      });
-      provider.on('disconnect', async () => {
-        debugger;
-        dispatch(disconnectWallet(web3, web3Modal));
-      });
-      provider.on('accountsChanged', async accounts => {
-        if (accounts[0]) {
-          dispatch({ type: types.HOME_ACCOUNTS_CHANGED, data: accounts[0] });
-        } else {
-          dispatch(disconnectWallet(web3, web3Modal));
-        }
-      });
-      provider.on('chainChanged', async chainId => {
-        const networkId = web3.utils.isHex(chainId) ? web3.utils.hexToNumber(chainId) : chainId;
-        dispatch({ type: types.HOME_NETWORK_CHANGED, data: networkId });
-      });
-    };
-    subscribeProvider(provider);
 
-    const accounts = await web3.eth.getAccounts();
-    const address = accounts[0];
-    let networkId = await web3.eth.getChainId();
-    if (networkId === 86) {
-      // Trust provider returns an incorrect chainId for BSC.
-      networkId = 56;
-    }
+    const promise = new Promise((resolve, reject) => {
+      deposit({ web3, address, isAll, amount, contractAddress, dispatch })
+        .then(data => {
+          dispatch({
+            type: types.VAULT_FETCH_DEPOSIT_SUCCESS,
+            data,
+            index,
+          });
+          resolve(data);
+        })
+        .catch(error => {
+          dispatch({
+            type: types.VAULT_FETCH_DEPOSIT_FAILURE,
+            index,
+          });
+          reject(error.message || error);
+        });
+    });
+    return promise;
+  };
+}
 
-    dispatch(ConnectedToWallet({ web3, address, networkId }));
-  } catch (error) {
-    console.log(error);
-    dispatch(ConnectedToWalletWithError());
-  }
+export function fetchApproval({ address, web3, tokenAddress, contractAddress, index }) {
+  return async dispatch => {
+    dispatch({
+      type: types.VAULT_FETCH_APPROVAL_BEGIN,
+      index,
+    });
+
+    const promise = new Promise((resolve, reject) => {
+      approval({
+        web3,
+        address,
+        tokenAddress,
+        contractAddress,
+        dispatch,
+      })
+        .then(data => {
+          dispatch({
+            type: types.OPEN_TOAST,
+            items: { type: 'success', hash: '', message: 'Transaction Success' }
+          });
+          resolve();
+        })
+        .catch(error => {
+          dispatch({
+            type: types.OPEN_TOAST,
+            items: { type: 'error', hash: '', message: `Transaction Failed : ${error.message || error} ` }
+          });
+          reject(error.message || error);
+        });
+    });
+
+    return promise;
+  };
 }
 
 const FetchBeginningVaultData = items => ({
   type: types.VAULT_FETCH_VAULTS_DATA_BEGIN,
-  items,
-});
-
-const ConnectedToWallet = items => ({
-  type: types.HOME_CONNECT_WALLET_SUCCESS,
-  items,
-});
-
-const ConnectedToWalletWithError = items => ({
-  type: types.HOME_CONNECT_WALLET_FAILURE,
-  items,
-});
-
-const DisConnectingToWallet = items => ({
-  type: types.HOME_DISCONNECT_WALLET_BEGIN,
-  items,
-});
-
-const DisConnectedToWallet = items => ({
-  type: types.HOME_DISCONNECT_WALLET_SUCCESS,
-  items,
-});
-
-const DisConnectedToWalletWithError = items => ({
-  type: types.HOME_DISCONNECT_WALLET_FAILURE,
-  items,
-});
-
-const WalletNetworkChanged = items => ({
-  type: types.HOME_NETWORK_CHANGED,
-  items,
-});
-
-const WalletAccountChanged = items => ({
-  type: types.HOME_ACCOUNTS_CHANGED,
   items,
 });
