@@ -69,7 +69,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
         index,
       })
     );
-    closeModal();
+    // closeModal();
   };
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
