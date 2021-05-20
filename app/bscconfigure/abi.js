@@ -225,8 +225,8 @@ export const vaultABI = [
   },
   {
     constant: false,
-    inputs: [{ internalType: 'uint256', name: '_amount', type: 'uint256' }],
-    name: 'deposit',
+    inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
+    name: 'stake',
     outputs: [],
     payable: false,
     stateMutability: 'nonpayable',
@@ -769,7 +769,7 @@ export const bnbVaultABI = [
 export const strategyABI = [
   { inputs: [], name: 'harvest', outputs: [], stateMutability: 'nonpayable', type: 'function' },
 ];
-export const multicallBnbShimABI = [
+export const multiCallBnbShimABI = [
   {
     inputs: [
       { internalType: 'address', name: '', type: 'address' },

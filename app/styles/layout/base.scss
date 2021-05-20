@@ -44,3 +44,7 @@
       transform: rotateZ(360deg);
     }
   }
+
+  .MuiSnackbar-anchorOriginTopRight {
+    z-index: 999999;
+  }

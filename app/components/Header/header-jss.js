@@ -491,14 +491,28 @@ const styles = theme => ({
   },
   walletBtn: {
     marginLeft: '10px',
-    backgroundColor: '#ef5350 !important'
+    backgroundColor: '#ef5350 !important',
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 0
+    },
   },
   buyBtn: {
     marginRight: '10px',
-    backgroundColor: '#2981bb !important'
+    backgroundColor: '#2981bb !important',
+    [theme.breakpoints.down('sm')]: {
+      marginRight: 4,
+      marginLeft: -4
+    },
   },
   walletBtnText: {
     marginLeft: '2px'
+  },
+  logoutBtn: {
+    marginLeft: '10px',
+    backgroundColor: '#ef5350 !important'
+  },
+  logoutBtnText: {
+    marginLeft: '5px'
   }
 });
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
@@ -11,10 +10,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
+import { useDispatch, useSelector, shallowEqual  } from 'react-redux';
 
-import { connectWallet, disconnectWallet } from 'dan-actions/ShopsActions';
+import { disconnectWallet, connectWallet } from 'dan-actions/WalletActions';
 import { createWeb3Modal } from '../../web3';
 import styles from './header-jss';
+import networkSetup from  '../../utils/networkSetup';
 
 import useStyles from '../../hooks/useStyles';
 
@@ -22,29 +23,83 @@ const elem = document.documentElement;
 
 const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, changeMode }) => {
   const classes = useStyles(styles)();
-  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
   const [fullScreen, setFullScreen] = useState(false);
   const [turnDarker, setTurnDarker] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
-  const [web3Model, setWeb3Modal] = useState(null);
+  const [web3Modal, setWeb3Modal] = useState(null);
+  const [shortAddress, setShortAddress] = useState('');
+  
+  const dispatch = useDispatch();
+
+  const { web3, address, networkId, connected, connectWalletPending, test } = useSelector(
+    state => ({
+      web3: state.getIn(['wallet', 'web3']),
+      address: state.getIn(['wallet', 'address']),
+      networkId: state.getIn(['wallet', 'networkId']),
+      connected: state.getIn(['wallet', 'connected']),
+      connectWalletPending: state.getIn(['wallet', 'connectWalletPending']),
+      test : state.testreducer
+    }),
+    shallowEqual
+  );
 
   // Initial header style
   var flagDarker = false;
   var flagTitle = false;
 
   useEffect(() => {
+    if (!connected) {
+      return;
+    }
+    const asd = test;
+    
+    if (address.length < 11) {
+      setShortAddress(address);
+    } else {
+      setShortAddress(`${address.slice(0, 6)}...${address.slice(-4)}`);
+    }
+  }, [address, connected]);
+
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    setWeb3Modal(web3Model => createWeb3Modal());
+    setWeb3Modal(createWeb3Modal());
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [setWeb3Modal]);
+
+  useEffect(() => {
+    if (web3Modal && (web3Modal.cachedProvider || window.ethereum)) {
+      dispatch(connectWallet(web3Modal));
+    }
+  }, [web3Modal, connectWallet]);
+
+  useEffect(() => {
+    if (
+      web3 &&
+      address &&
+      !connectWalletPending &&
+      networkId &&
+      Boolean(networkId !== Number(process.env.REACT_APP_NETWORK_ID))
+    ) {
+      // networkSetup(process.env.REACT_APP_NETWORK_ID).catch(e => {
+      //   console.error(e);
+      //   alert('Network-Error');
+      // });
+    }
+  }, [web3, address, networkId, connectWalletPending]);
+
 
   const connectToWallet = () => {
-    dispatch(connectWallet(web3Model));
+    dispatch(connectWallet(web3Modal));
   };
+
+  const diConnectToWallet = () => {
+    dispatch(disconnectWallet(web3,web3Modal));
+  };
+
 
   const handleScroll = () => {
     const doc = document.documentElement;
@@ -160,12 +215,25 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
                   className={classes.walletBtn}
                   variant="contained"
                   color="secondary"
-                  onClick={() => connectToWallet()}
+                  onClick={connected ? diConnectToWallet : connectToWallet}
                 >
-                  <Ionicon icon="ios-card" />
+                  {connected ? (
+            <>
+              
+              <Ionicon icon="ios-power" />
+                  <span className={classes.walletBtnText}>{shortAddress}</span>
+              
+            </>
+          ) : (
+            <>
+              <Ionicon icon="ios-card" />
                   <span className={classes.walletBtnText}>Wallet</span>
+            </>
+          )}
+                  
                 </Button>
               </Tooltip>
+              
             </div>
           </div>
           <Typography

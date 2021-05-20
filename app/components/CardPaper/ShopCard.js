@@ -6,32 +6,16 @@ import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import classNames from "classnames";
 import Card from "@material-ui/core/Card";
 import IconButton from "@material-ui/core/IconButton";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Chip from "@material-ui/core/Chip";
-import EditBtn from "@material-ui/icons/Edit";
-import ReorderRoundedIcon from '@material-ui/icons/ReorderRounded';
-import SettingsPhoneRoundedIcon from '@material-ui/icons/SettingsPhoneRounded';
-import PinDropRoundedIcon from '@material-ui/icons/PinDropRounded';
-import RestoreFromTrashRoundedIcon from '@material-ui/icons/RestoreFromTrashRounded';
-import AlternateEmailRoundedIcon from '@material-ui/icons/AlternateEmailRounded';
 import styles from "./cardStyle-jss";
 import Button from '@material-ui/core/Button';
-import Modal from '@material-ui/core/Modal';
 import Slider from '@material-ui/core/Slider';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import Input from '@material-ui/core/Input';
@@ -145,10 +129,10 @@ class ShopCard extends React.Component {
             classes.shopBgImgContainer,
             list ? classes.shopBgImgContainerFull : ''
           )}>
-            <img className={classes.shopBgImg} src={data.get('bgImage')} />
+            <img className={classes.shopBgImg} src={data.get('platformImage')} />
           </div>
           <div className={classes.shopImg}>
-            <img src={data.get('image')} width="35" />
+            <img src={data.get('logo')} width="35" />
           </div>
           {/* <section className={classes.boostedTagDiv}>
             {data.get('boosted') && <div className={classNames(
@@ -160,7 +144,7 @@ class ShopCard extends React.Component {
             </div>}
           </section> */}
           <section className={classes.boostedTagDiv}>
-            {data.get('paused') && <div className={classNames(
+            {data.get('depositsPaused') && <div className={classNames(
               classes.pausedTag,
               list ? classes.listPausedTag : ''
             )}>
@@ -182,11 +166,11 @@ class ShopCard extends React.Component {
           )}>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>{data.get('balance')}</span>
-              <span className={classes.shopDetailsLabel}>Available</span>
+              <span className={classes.shopDetailsLabel}>Deposited</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>{data.get('deposited')}</span>
-              <span className={classes.shopDetailsLabel}>Deposited</span>
+              <span className={classes.shopDetailsLabel}>Available</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>{data.get('apy')}</span>
@@ -389,93 +373,6 @@ class ShopCard extends React.Component {
 
           </DialogActions>
         </Dialog>
-
-
-        {/* <Modal
-          aria-labelledby="Deposit Modal"
-          aria-describedby="simple-modal-description"
-          open={depositModalopen}
-          onClose={this.closeDepositModal}
-        >
-          <div style={getModalStyle()} className={classes.paper}>
-            <Typography className={classes.mb40} variant="h6" id="modal-title">
-              Deposit
-            </Typography>
-            <Slider
-              defaultValue={10}
-              getAriaValueText={valuetext}
-              aria-labelledby="discrete-slider-always"
-              step={1}
-              marks={marks}
-              valueLabelDisplay="on"
-            />
-            <div className={classes.flexRow}>
-              <div>
-                <span>Balance : </span>
-                <span>0.00</span>
-              </div>
-              <div className={classes.mlAuto}>
-                <Button color="secondary" variant="contained"
-                  className={classNames(
-                    classes.shopDetailsBtnDeposit, classes.mr15
-                  )} onClick={this.closeWithdrawModal}>
-                  <img className={classes.shopDetailsBtnImg} src='/images/deposit.svg' />
-                  <span className={classes.shopDetailsBtnText}>Deposit</span>
-                </Button>
-                <Button color="secondary" variant="contained"
-                  className={classNames(
-                    classes.shopDetailsBtnDeposit
-                  )} onClick={this.closeWithdrawModal}>
-                  <img className={classes.shopDetailsBtnImg} src='/images/deposit.svg' />
-                  <span className={classes.shopDetailsBtnText}>Deposit All</span>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Modal> */}
-
-        {/* <Modal
-          aria-labelledby="Withdraw Modal"
-          aria-describedby="simple-modal-description"
-          open={withdrawModalopen}
-          onClose={this.closeWithdrawModal}
-        >
-          <div style={getModalStyle()} className={classes.paper}>
-            <Typography className={classes.mb40} variant="h6" id="modal-title">
-              Withdraw
-            </Typography>
-            <Slider
-              defaultValue={10}
-              getAriaValueText={valuetext}
-              aria-labelledby="discrete-slider-always"
-              step={1}
-              marks={marks}
-              valueLabelDisplay="on"
-            />
-            <div className={classes.flexRow}>
-              <div>
-                <span>Balance : </span>
-                <span>0.00</span>
-              </div>
-              <div className={classes.mlAuto}>
-                <Button color="secondary" variant="contained"
-                  className={classNames(
-                    classes.shopDetailsBtnWithdraw, classes.mr15
-                  )} onClick={this.closeWithdrawModal}>
-                  <img className={classes.shopDetailsBtnImg} src='/images/withdraw.svg' />
-                  <span className={classes.shopDetailsBtnText}>Withdraw</span>
-                </Button>
-                <Button color="secondary" variant="contained"
-                  className={classNames(
-                    classes.shopDetailsBtnWithdraw
-                  )} onClick={this.closeWithdrawModal}>
-                  <img className={classes.shopDetailsBtnImg} src='/images/withdraw.svg' />
-                  <span className={classes.shopDetailsBtnText}>Withdraw All</span>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Modal> */}
       </Card>
 
     );

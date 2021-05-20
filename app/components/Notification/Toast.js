@@ -45,10 +45,13 @@ const styles1 = (theme) => ({
     display: "flex",
     alignItems: "center",
   },
+  messagetxt: {
+    marginRight: 10
+  }
 });
 
 function MySnackbarContent(props) {
-  const { classes, className, message, onClose, variant, ...other } = props;
+  const { classes, className, message, hash, onClose, variant, ...other } = props;
   const Icon = variantIcon[variant];
 
   return (
@@ -56,10 +59,16 @@ function MySnackbarContent(props) {
       className={classNames(classes[variant], className)}
       aria-describedby="client-snackbar"
       message={
-        <span id="client-snackbar" className={classes.message}>
+        <div>
+          <span id="client-snackbar" className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)} />
-          {message}
+          <span className={classes.messagetxt}>{message}</span>
+          <span>
+         { hash ? <Button onClick={() => window.open(`https://bscscan.com/tx/${hash}`, '_blank')}>View</Button> : null }
         </span>
+        </span>
+     
+        </div>        
       }
       action={[
         <IconButton
@@ -81,6 +90,7 @@ MySnackbarContent.propTypes = {
   classes: PropTypes.object,
   className: PropTypes.string,
   message: PropTypes.node,
+  hash: PropTypes.string,
   onClose: PropTypes.func,
   variant: PropTypes.oneOf(["success", "warning", "error", "info"]),
 };
@@ -121,7 +131,7 @@ class Toast extends React.Component {
   };
 
   render() {
-    const { message, type } = this.props;
+    const { message, type, hash } = this.props;
     return (
       <Snackbar
         anchorOrigin={{
@@ -129,13 +139,14 @@ class Toast extends React.Component {
           horizontal: "right",
         }}
         open={message !== ""}
-        autoHideDuration={6000}
+        autoHideDuration={60000}
         onClose={this.handleCloseStyle}
       >
         <MySnackbarContentWrapper
           onClose={this.handleCloseStyle}
           variant= {type}
           message= {message}
+          hash= {hash}
         />
       </Snackbar>
     );
@@ -145,13 +156,15 @@ class Toast extends React.Component {
 Toast.propTypes = {
   classes: PropTypes.object.isRequired,
   message: PropTypes.string.isRequired,
+  hash: PropTypes.string,
   type: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
 Toast.defaultProps = {
   type: "success",
-  message: ""
+  message: "",
+  hash: "",
 };
 
 export default withStyles(styles)(Toast);
