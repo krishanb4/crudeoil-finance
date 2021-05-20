@@ -45,6 +45,9 @@ const styles1 = (theme) => ({
     display: "flex",
     alignItems: "center",
   },
+  messagetxt: {
+    marginRight: 10
+  }
 });
 
 function MySnackbarContent(props) {
@@ -59,11 +62,12 @@ function MySnackbarContent(props) {
         <div>
           <span id="client-snackbar" className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)} />
-          {message}
-        </span>
-        <span>
+          <span className={classes.messagetxt}>{message}</span>
+          <span>
          { hash ? <Button onClick={() => window.open(`https://bscscan.com/tx/${hash}`, '_blank')}>View</Button> : null }
         </span>
+        </span>
+     
         </div>        
       }
       action={[
