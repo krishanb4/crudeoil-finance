@@ -16,6 +16,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
 import { fetchApproval } from '../../actions/VaultAndPoolActions';
+import { Toast } from 'dan-components';
+import { closeToastAction } from 'dan-actions/ToastAction';
 
 const marks = [
   {
@@ -51,10 +53,13 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawAmount, setWithdrawAmount] = useState(0);
 
-  const { web3, address } = useSelector(
+  const { web3, address, toastMessage, toastHash, toastType } = useSelector(
     state => ({
       web3: state.getIn(['wallet', 'web3']),
       address: state.getIn(['wallet', 'address']),
+      toastMessage : state.getIn(['toastMessage', 'toastMessage']),
+      toastHash : state.getIn(['toastMessage', 'toastHash']),
+      toastType : state.getIn(['toastMessage', 'type']),
     }),
     shallowEqual
   );
@@ -109,6 +114,8 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
         </div>
       </DialogTitle>
       <DialogContent>
+        
+      <Toast message={toastMessage} hash={toastHash} type={toastType} onClose={() => dispatch(closeToastAction())} />
         <div className={classes.dialogSliderGrid}>
           <div className={classes.flexColumn}>
             <span className={classes.inputLabel}>Balance : {token.get('tokenBalance')}</span>
