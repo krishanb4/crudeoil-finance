@@ -10,16 +10,6 @@ export const approval = ({ web3, address, tokenAddress, contractAddress, dispatc
       .approve(contractAddress, web3.utils.toWei('80000000000', 'ether'))
       .send({ from: address })
       .on('transactionHash', function (hash) {
-        // dispatch(
-        //   enqueueSnackbar({
-        //     message: hash,
-        //     options: {
-        //       key: new Date().getTime() + Math.random(),
-        //       variant: 'success',
-        //     },
-        //     hash,
-        //   })
-        // );
         dispatch({
           type: types.OPEN_TOAST,
           items: { type: 'warning', hash: hash, message: 'Transaction Pending' }

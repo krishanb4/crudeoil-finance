@@ -140,9 +140,9 @@ export function format(number) {
     .toNumber();
 }
 
-export function byDecimals(number, tokenDecimals = 18) {
+export function byDecimals(amount, tokenDecimals = 18) {
   const decimals = new BigNumber(10).exponentiatedBy(tokenDecimals);
-  return new BigNumber(number).dividedBy(decimals);
+  return new BigNumber(amount).dividedBy(decimals);
 }
 
 export function calculateReallyNum(total, sliderNum) {

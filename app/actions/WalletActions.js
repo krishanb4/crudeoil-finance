@@ -79,7 +79,6 @@ async function _connectWallet(dispatch, web3Modal) {
         dispatch(disconnectWallet(web3, web3Modal));
       });
       provider.on('disconnect', async () => {
-        debugger;
         dispatch(disconnectWallet(web3, web3Modal));
       });
       provider.on('accountsChanged', async accounts => {

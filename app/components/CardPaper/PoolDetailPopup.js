@@ -15,7 +15,7 @@ import styles from './cardStyle-jss';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
-import { fetchApproval } from '../../actions/VaultAndPoolActions';
+import { fetchApproval, fetchDeposit } from '../../actions/VaultAndPoolActions';
 
 const marks = [
   {
@@ -83,14 +83,24 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
     onCloseModal();
   };
 
-  const handleDepositSliderChangeRange = (e, newValue) => {    
+  const handleDepositSliderChangeRange = (e, newValue) => {
     let balance = token.get('tokenBalance');
     setDepositAmount((balance / 100) * newValue);
   };
 
-  const handleWithdrawSliderChangeRange = (e, newValue) => {    
+  const handleWithdrawSliderChangeRange = (e, newValue) => {
     let balance = token.get('tokenBalance');
     setWithdrawAmount((balance / 100) * newValue);
+  };
+
+  const onDeposit = isAll => {
+    let contractAddress = pool.get('earnContractAddress');
+    if (isAll) {
+      let amount = token.get('tokenBalance');
+      dispatch(fetchDeposit({ address, web3, amount, contractAddress, index }));
+    }else{
+      dispatch(fetchDeposit({ address, web3, amount: depositAmount, contractAddress, index }));
+    }
   };
 
   return (
@@ -115,6 +125,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
             <Input
               placeholder="0"
               value={depositAmount}
+              onChange ={(e)=>setDepositAmount(e.value)}
               className={classes.inputBox}
               inputProps={{
                 'aria-label': 'Balance',
@@ -146,7 +157,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                     color="secondary"
                     variant="contained"
                     className={classNames(classes.shopDetailsBtnDeposit, classes.mr15)}
-                    onClick={onClickApproval}
+                    onClick={()=>onDeposit(false)}
                   >
                     <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                     <span className={classes.shopDetailsBtnText}>Deposit</span>
@@ -155,7 +166,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                     color="secondary"
                     variant="contained"
                     className={classNames(classes.shopDetailsBtnDeposit)}
-                    onClick={onClickApproval}
+                    onClick={() => onDeposit(true)}
                   >
                     <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                     <span className={classes.shopDetailsBtnText}>Deposit All</span>
@@ -168,7 +179,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
             <span className={classes.inputLabel}>Deposited : 0.00000000</span>
             <Input
               placeholder="0"
-              value ={withdrawAmount}
+              value={withdrawAmount}
               className={classes.inputBox}
               inputProps={{
                 'aria-label': 'Balance',
