@@ -15,9 +15,10 @@ import styles from './cardStyle-jss';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
-import { fetchApproval, fetchDeposit } from '../../actions/VaultAndPoolActions';
+import { fetchApproval, fetchDeposit,fetchVaultsData } from '../../actions/VaultAndPoolActions';
 import { Toast } from 'dan-components';
 import { closeToastAction } from 'dan-actions/ToastAction';
+import { convertAmountFromRawNumber } from '../../helpers/bignumber';
 
 const marks = [
   {
@@ -72,6 +73,10 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
         tokenAddress: pool.get('tokenAddress'),
         contractAddress: pool.get('earnContractAddress'),
         index,
+      }).then(()=>{
+            dispatch(fetchVaultsData(address,web3,pool));
+      }).catch((error)=> {
+          console.log(error);
       })
     );
     // closeModal();
