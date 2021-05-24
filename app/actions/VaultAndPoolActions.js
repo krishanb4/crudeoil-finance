@@ -162,7 +162,7 @@ export function fetchDeposit({ address, web3, amount, contractAddress, index }) 
           });
           dispatch({
             type: types.OPEN_TOAST,
-            items: { type: 'success', hash: '', message: 'Transaction Success' },
+            items: { type: 'success', hash: '', message: 'Transaction Successfull' },
           });
           resolve(data);
         })
