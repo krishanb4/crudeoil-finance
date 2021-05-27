@@ -2,41 +2,22 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import PoolCard from '../../../components/CardPaper/PoolCard';
-import ShopDetail from './ShopDetail';
 
 const ShopGallery = ({
   showDetail,
-  shopData,
-  handleAddToCart,
-  shopIndex,
+  pools,
   keyword,
   listView,
-  tokens
+  tokens,
+  apys
 }) => {
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
-
-  const handleDetailOpen = shop => {
-    setIsDetailOpen(true);
-    showDetail(shop);
-  };
-
-  const handleClose = () => {
-    setIsDetailOpen(false);
-  };
-
+  
   return (
-    <div>
-      <ShopDetail
-        open={isDetailOpen}
-        close={handleClose}
-        detailContent={shopData}
-        shopIndex={shopIndex}
-        handleAddToCart={handleAddToCart}
-      />
+    <div>      
       <Grid container alignItems="flex-start" justify="flex-start" direction="row" spacing={3}>
-        {shopData.map((shop, index) => {
+        {pools.map((pool, index) => {
           if (
-            shop
+            pool
               .get('name')
               .toLowerCase()
               .indexOf(keyword) === -1
@@ -53,8 +34,10 @@ const ShopGallery = ({
             >
               <PoolCard
                 isListView={listView === 'list'}
-                pool={shop}
+                pool={pool}
                 tokens ={tokens}
+                apys ={apys}
+                key ={pool.get('id')}
                 index ={index}
               />
             </Grid>
@@ -66,11 +49,9 @@ const ShopGallery = ({
 };
 
 ShopGallery.propTypes = {
-  shopData: PropTypes.object.isRequired,
+  pools: PropTypes.object.isRequired,
+  apys: PropTypes.object,
   showDetail: PropTypes.func.isRequired,
-  openAddOrUpdate: PropTypes.func.isRequired,
-  deleteOpen: PropTypes.func,
-  shopIndex: PropTypes.number.isRequired,
   keyword: PropTypes.string.isRequired,
   listView: PropTypes.string.isRequired,
 };

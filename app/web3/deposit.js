@@ -16,7 +16,7 @@ const _deposit = ({ web3, contract, amount, address, dispatch }) => {
         console.log(hash);        
         dispatch({
           type: types.OPEN_TOAST,
-          items: { type: 'success', hash: hash, message: 'Transaction Pending' }
+          items: { type: 'warning', hash: hash, message: 'Transaction Pending' }
         });
       })
       .on('receipt', function(receipt) {

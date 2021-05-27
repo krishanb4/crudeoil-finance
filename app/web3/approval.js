@@ -12,7 +12,7 @@ export const approval = ({ web3, address, tokenAddress, contractAddress, dispatc
       .on('transactionHash', function (hash) {
         dispatch({
           type: types.OPEN_TOAST,
-          items: { type: 'warning', hash: hash, message: 'Transaction Pending' }
+          items: { type: 'success', hash: hash, message: 'Transaction Pending' }
         });
         console.log(hash);
       })

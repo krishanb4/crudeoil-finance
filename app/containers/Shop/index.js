@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector, shallowEqual  } from 'react-redux';
-import data from 'dan-api/apps/shopData';
 import { Toast } from 'dan-components';
 import brand from 'dan-api/dummy/brand';
 import SearchShop from './Operations/SearchShop';
 import ShopGallery from './Operations/ShopGallery';
-import ShopAddUpdate from './Operations/ShopAddUpdate';
 import { closeToastAction } from 'dan-actions/ToastAction';
 import { formatDate } from '../../utils/common';
 import ConfirmationModal from '../../components/Modal/ConfirmationModal';
@@ -15,7 +13,9 @@ import { Pagination } from '../../components';
 import { fetchAction, detailAction } from 'dan-actions/WalletActions';
 import Ionicon from 'react-ionicons';
 import useStyles from '../../hooks/useStyles';
-import {fetchVaultsData, fetchBalances}  from '../../actions/VaultAndPoolActions';
+import {fetchVaultsData, fetchBalances, fetchApys, fetchApproval}  from '../../actions/VaultAndPoolActions';
+import { usePoolsTvl, useUserTvl } from '../../hooks/usePoolsTvl';
+import { initializePriceCache } from '../../web3/fetchPrice';
 
 const initData = {
   name: '',
@@ -44,16 +44,16 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
   const [listView, setListView] = useState('grid');
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [settingTitle, setSettingTitle] = useState(' Add new Shop ');
   const [page, setPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
 
-  const { web3, address, pools, tokens,toastMessage, toastHash, toastType  } = useSelector(
+  const { web3, address, pools, tokens,toastMessage, toastHash, toastType, apys  } = useSelector(
     state => ({
       web3: state.getIn(['wallet', 'web3']),
       address: state.getIn(['wallet', 'address']),
       pools : state.getIn(['vaults', 'pools']),
       tokens : state.getIn(['vaults', 'tokens']),
+      apys : state.getIn(['vaults', 'apys']),
       toastMessage : state.getIn(['toastMessage', 'toastMessage']),
       toastHash : state.getIn(['toastMessage', 'toastHash']),
       toastType : state.getIn(['toastMessage', 'type']),
@@ -61,11 +61,30 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
     shallowEqual
   );
 
+  const { poolsTvl } = usePoolsTvl(pools);
+  const { userTvl } = useUserTvl(pools, tokens);
+
+  const FETCH_INTERVAL_MS = 30 * 1000;
+
   useEffect(() => {
    // dispatch(fetchAction(data));
+
+   initializePriceCache();
   }, []);
 
   
+  useEffect(() => {    
+
+    const fetch = () => {     
+        dispatch(fetchApys());
+     
+    };
+    fetch();
+    
+    const id = setInterval(fetchApys, FETCH_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, [fetch]);
+
   useEffect(() => {
     const fetch = () => {
       if (address && web3) {
@@ -75,12 +94,10 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
     };
     fetch();
 
-    //const id = setInterval(fetch, 40000000);
-    //return () => clearInterval(id);
+    const id = setInterval(fetch, 40000000);
+    return () => clearInterval(id);
 
-    // Adding tokens and pools to this dep list, causes an endless loop, DDoSing the api
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, web3, fetchVaultsData]);
+  }, [address, web3, fetchVaultsData, fetchApproval]);
 
   const handleClickOpen = title => {
     setOpen(true);
@@ -167,8 +184,8 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
       </Helmet>
       <Toast message={toastMessage} hash={toastHash} type={toastType} onClose={() => dispatch(closeToastAction())} />
       <div className={classes.headDetails}>
-        <span className={classes.tvlText}>TVL : $0.00</span>
-        <span className={classes.depositedText}>Deposited : $0.00</span>
+        <span className={classes.tvlText}>TVL : ${poolsTvl}</span>
+        <span className={classes.depositedText}>Deposited : $ {userTvl}</span>
         <span className={classes.detailsText}>
           There is a 0.05%-0.1% withdrawal or deposit fee on all vaults
         </span>
@@ -192,20 +209,11 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
       />
       <ShopGallery
         listView={listView}
-        shopData={pools}
+        pools={pools}
         tokens ={tokens}
+        apys ={apys}
         showDetail={shop => dispatch(detailAction(shop))}
-        openAddOrUpdate={handleAddOrUpdate}
-        deleteOpen={OpenDeleteModal}
-        shopIndex={shopIndex}
         keyword={keyword}
-      />
-      <ShopAddUpdate
-        open={open}
-        handleClose={handleClose}
-        title={settingTitle}
-        onSubmit={sendValues}
-        afterDataValidate={sendValues}
       />
       <ConfirmationModal
         isOpen={isModalOpen}

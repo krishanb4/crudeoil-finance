@@ -47,6 +47,16 @@ const styles1 = (theme) => ({
   },
   messagetxt: {
     marginRight: 10
+  },
+  subTextDiv: {
+    display: 'flex',
+    alignItems: 'center',
+    marginLeft: 28
+  },
+  transactionLink: {
+    cursor: 'pointer',
+    color: '#2b2d80',
+    fontWeight: 600
   }
 });
 
@@ -62,11 +72,19 @@ function MySnackbarContent(props) {
         <div>
           <span id="client-snackbar" className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)} />
+        
           <span className={classes.messagetxt}>{message}</span>
           <span>
-         { hash ? <Button onClick={() => window.open(`https://bscscan.com/tx/${hash}`, '_blank')}>View</Button> : null }
+         {/* { hash ? <Button onClick={() => window.open(`https://bscscan.com/tx/${hash}`, '_blank')}>View</Button> : null } */}
         </span>
         </span>
+
+          <div className={classes.subTextDiv}>
+          { hash && 
+          <span> Confirmation is in progress. Check your transction on <span className={classes.transactionLink} onClick={() => window.open(`https://bscscan.com/tx/${hash}`, '_blank')}>here</span>
+          </span>
+           }
+          </div>  
      
         </div>        
       }
@@ -121,6 +139,9 @@ const action = (
 
 class Toast extends React.Component {
 
+
+
+
   
   handleCloseStyle = (event, reason) => {
     if (reason === "clickaway") {
@@ -139,7 +160,7 @@ class Toast extends React.Component {
           horizontal: "right",
         }}
         open={message !== ""}
-        autoHideDuration={60000}
+        autoHideDuration={4000}
         onClose={this.handleCloseStyle}
       >
         <MySnackbarContentWrapper
@@ -152,6 +173,7 @@ class Toast extends React.Component {
     );
   }
 }
+
 
 Toast.propTypes = {
   classes: PropTypes.object.isRequired,
