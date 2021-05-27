@@ -144,6 +144,7 @@
     "minimist": "1.2.0",
     "moment": "^2.22.2",
     "mui-datatables": "^2.13.1",
+    "notistack": "^1.0.9",
     "prop-types": "15.7.2",
     "rcolor": "^1.0.1",
     "react": "16.8.6",
