@@ -139,7 +139,7 @@ class Toast extends React.Component {
           horizontal: "right",
         }}
         open={message !== ""}
-        autoHideDuration={60000}
+        autoHideDuration={4000}
         onClose={this.handleCloseStyle}
       >
         <MySnackbarContentWrapper

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -15,10 +15,19 @@ import styles from './cardStyle-jss';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
-import { fetchApproval, fetchDeposit,fetchVaultsData } from '../../actions/VaultAndPoolActions';
+import {
+  fetchApproval,
+  fetchBalances,
+  fetchDeposit,
+  fetchVaultsData,
+  fetchWithdraw,
+} from '../../actions/VaultAndPoolActions';
 import { Toast } from 'dan-components';
 import { closeToastAction } from 'dan-actions/ToastAction';
-import { convertAmountFromRawNumber } from '../../helpers/bignumber';
+import { inputLimitPass, inputFinalVal, shouldHideFromHarvest } from '../../helpers/utils';
+import BigNumber from 'bignumber.js';
+import { byDecimals } from '../../helpers/bignumber';
+import { formatApy, formatTvl, calcDaily } from '../../helpers/format';
 
 const marks = [
   {
@@ -49,18 +58,21 @@ function valuetext(value) {
 
 const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, index }) => {
   const dispatch = useDispatch();
-  depositAmount;
+
   const [depositSliderValue, setDepositSliderValue] = useState(0);
+  const [withdrawSliderValue, setWithdrawSliderValue] = useState(0);
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawAmount, setWithdrawAmount] = useState(0);
 
-  const { web3, address, toastMessage, toastHash, toastType } = useSelector(
+  const { web3, address, toastMessage, toastHash, toastType, pools, tokens } = useSelector(
     state => ({
       web3: state.getIn(['wallet', 'web3']),
+      pools: state.getIn(['vaults', 'pools']),
+      tokens : state.getIn(['vaults', 'tokens']),
       address: state.getIn(['wallet', 'address']),
-      toastMessage : state.getIn(['toastMessage', 'toastMessage']),
-      toastHash : state.getIn(['toastMessage', 'toastHash']),
-      toastType : state.getIn(['toastMessage', 'type']),
+      toastMessage: state.getIn(['toastMessage', 'toastMessage']),
+      toastHash: state.getIn(['toastMessage', 'toastHash']),
+      toastType: state.getIn(['toastMessage', 'type']),
     }),
     shallowEqual
   );
@@ -73,71 +85,171 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
         tokenAddress: pool.get('tokenAddress'),
         contractAddress: pool.get('earnContractAddress'),
         index,
-      }).then(()=>{
-            dispatch(fetchVaultsData(address,web3,pool));
-      }).catch((error)=> {
-          console.log(error);
       })
-    );
-    // closeModal();
+    )
+      .then(e => {
+        dispatch(fetchVaultsData({ address, web3, pools }));
+        dispatch(fetchBalances({ address, web3, tokens }));
+        resetForm();
+      })
+      .catch(() => {
+
+      });
   };
 
-  const delay = ms => new Promise(res => setTimeout(res, ms));
 
-  const closeModal = async () => {
-    await delay(10000);
-    closeWithdrawModal();
-  };
-
-  const closeWithdrawModal = () => {
+  const onClosePopUp = () => {
     onCloseModal();
+  };
+
+  const onChangeWithdrawAmount = event => {
+    let value = event.target.value;
+    const total = new BigNumber(pool.get('pricePerFullShare')).toNumber();
+
+    if (!inputLimitPass(value, pool.get('tokenDecimals'))) {
+      return;
+    }
+
+    let sliderNum = 0;
+    let inputVal = 0;
+    if (value) {
+      inputVal = Number(value.replace(',', ''));
+      sliderNum = byDecimals(inputVal / total, 0).toFormat(2) * 100;
+    }
+
+    setWithdrawAmount(inputFinalVal(value, total, pool.get('tokenDecimals')));
+    setWithdrawSliderValue(sliderNum);
+  };
+
+  const onChangeDepositAmount = event => {
+    let value = event.target.value;
+    const walletBalance = new BigNumber(token.get('tokenBalance')).toNumber();
+
+    if (!inputLimitPass(value, token.get('tokenDecimals'))) {
+      return;
+    }
+
+    let sliderNum = 0;
+    let inputVal = 0;
+    if (value) {
+      inputVal = Number(value.replace(',', ''));
+      sliderNum = byDecimals(inputVal / walletBalance, 0).toFormat(2) * 100;
+    }
+
+    setDepositAmount(inputFinalVal(value, walletBalance, token.get('tokenDecimals')));
+    setDepositSliderValue(sliderNum);
   };
 
   const handleDepositSliderChangeRange = (e, newValue) => {
     let balance = token.get('tokenBalance');
     setDepositAmount((balance / 100) * newValue);
+    setDepositSliderValue(newValue);
   };
 
   const handleWithdrawSliderChangeRange = (e, newValue) => {
-    let balance = token.get('tokenBalance');
+    let balance = pool.get('pricePerFullShare');
     setWithdrawAmount((balance / 100) * newValue);
+    setWithdrawSliderValue(newValue);
   };
 
   const onDeposit = isAll => {
     let contractAddress = pool.get('earnContractAddress');
     if (isAll) {
-      let amount = token.get('tokenBalance');
-      dispatch(fetchDeposit({ address, web3, amount, contractAddress, index }));
-    }else{
-      dispatch(fetchDeposit({ address, web3, amount: depositAmount, contractAddress, index }));
+      let balance = token.get('tokenBalance');
+      var amount = new BigNumber(balance).multipliedBy(new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals')))
+        .toString(10);
+
+      setDepositAmount(balance);
+      setDepositSliderValue(100);
+      dispatch(fetchDeposit({ address, web3, amount, contractAddress, index }))
+        .then(e => {
+          dispatch(fetchVaultsData({ address, web3, pools }));
+          dispatch(fetchBalances({ address, web3, tokens }));
+          resetForm();
+        })
+        .catch(() => {});
+    } else {
+      let tDecimal = new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals'));
+      let amount = new BigNumber(depositAmount).multipliedBy(tDecimal).toString(10);
+
+      dispatch(fetchDeposit({ address, web3, amount, contractAddress, index }))
+        .then(e => {
+          dispatch(fetchVaultsData({ address, web3, pools }));
+          dispatch(fetchBalances({ address, web3, tokens }));
+          resetForm();
+        })
+        .catch(() => {});
     }
+  };
+
+  const onWithdraw = isAll => {
+    let contractAddress = pool.get('earnContractAddress');
+    if (isAll) {
+      let balance = pool.get('pricePerFullShare');
+      let amount = new BigNumber(balance)
+        .multipliedBy(new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals')))
+        .toString(10);
+      setWithdrawAmount(balance);
+      setWithdrawSliderValue(100);
+
+      dispatch(fetchWithdraw({ address, web3, amount, contractAddress, index }))
+        .then(e => {
+          dispatch(fetchVaultsData({ address, web3, pools }));
+          dispatch(fetchBalances({ address, web3, tokens }));
+          resetForm();
+        })
+        .catch(() => {});
+    } else {
+      let tDecimal = new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals'));
+      const formatValue = withdrawAmount.replace(',','');
+      let amount = new BigNumber(formatValue).multipliedBy(tDecimal).toString(10);
+
+      dispatch(fetchWithdraw({ address, web3, amount, contractAddress, index }))
+        .then(e => {
+          dispatch(fetchVaultsData({ address, web3, pools }));
+          dispatch(fetchBalances({ address, web3, tokens }));
+          resetForm();
+        })
+        .catch(() => {});
+    }
+  };
+
+  const resetForm = () => {
+    setWithdrawAmount(0);
+    setWithdrawSliderValue(0);
+    setDepositSliderValue(0);
+    setDepositAmount(0);
   };
 
   return (
     <Dialog
       fullScreen
       open={isOpenModal}
-      onClose={closeWithdrawModal}
+      onClose={onClosePopUp}
       aria-labelledby="responsive-dialog-title"
     >
       <DialogTitle id="responsive-dialog-title">
         <div className={classes.dialogTitleRow}>
-          <span>TVL : $0.00</span>
-          <IconButton color="inherit" onClick={closeWithdrawModal} aria-label="Close">
+          <span>TVL : {formatTvl(pool.get('tvl'), pool.get('oraclePrice'))} </span>
+          <IconButton color="inherit" onClick={onClosePopUp} aria-label="Close">
             <CloseIcon />
           </IconButton>
         </div>
       </DialogTitle>
       <DialogContent>
-        
-      <Toast message={toastMessage} hash={toastHash} type={toastType} onClose={() => dispatch(closeToastAction())} />
+        <Toast
+          message={toastMessage}
+          hash={toastHash}
+          type={toastType}
+          onClose={() => dispatch(closeToastAction())}
+        />
         <div className={classes.dialogSliderGrid}>
           <div className={classes.flexColumn}>
             <span className={classes.inputLabel}>Balance : {token.get('tokenBalance')}</span>
             <Input
               placeholder="0"
               value={depositAmount}
-              onChange ={(e)=>setDepositAmount(e.value)}
+              onChange={e => onChangeDepositAmount(e)}
               className={classes.inputBox}
               inputProps={{
                 'aria-label': 'Balance',
@@ -151,6 +263,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
               marks={marks}
               valueLabelDisplay="on"
               onChange={handleDepositSliderChangeRange}
+              value={depositSliderValue}
             />
             <div className={classes.flexRowCenter}>
               {pool.get('allowance') === 0 ? (
@@ -158,7 +271,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                   color="secondary"
                   variant="contained"
                   className={classNames(classes.shopDetailsBtnDeposit, classes.mr15)}
-                  onClick={onClickApproval}
+                  onClick={onClickApproval}                  
                 >
                   <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                   <span className={classes.shopDetailsBtnText}>Approve</span>
@@ -169,7 +282,8 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                     color="secondary"
                     variant="contained"
                     className={classNames(classes.shopDetailsBtnDeposit, classes.mr15)}
-                    onClick={()=>onDeposit(false)}
+                    onClick={() => onDeposit(false)}
+                    disabled = {token.get('tokenBalance') <=0}
                   >
                     <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                     <span className={classes.shopDetailsBtnText}>Deposit</span>
@@ -179,6 +293,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                     variant="contained"
                     className={classNames(classes.shopDetailsBtnDeposit)}
                     onClick={() => onDeposit(true)}
+                    disabled = {token.get('tokenBalance') <=0}
                   >
                     <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                     <span className={classes.shopDetailsBtnText}>Deposit All</span>
@@ -188,10 +303,11 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
             </div>
           </div>
           <div className={classes.flexColumn}>
-            <span className={classes.inputLabel}>Deposited : 0.00000000</span>
+            <span className={classes.inputLabel}>Deposited : {pool.get('pricePerFullShare')}</span>
             <Input
               placeholder="0"
               value={withdrawAmount}
+              onChange={e => onChangeWithdrawAmount(e)}
               className={classes.inputBox}
               inputProps={{
                 'aria-label': 'Balance',
@@ -205,13 +321,15 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
               marks={marks}
               valueLabelDisplay="on"
               onChange={handleWithdrawSliderChangeRange}
+              value={withdrawSliderValue}
             />
             <div className={classes.flexRowCenter}>
               <Button
                 color="secondary"
                 variant="contained"
                 className={classNames(classes.shopDetailsBtnWithdraw, classes.mr15)}
-                onClick={closeWithdrawModal}
+                disabled = {pool.get('pricePerFullShare') <=0}
+                onClick={() => onWithdraw(false)}
               >
                 <img className={classes.shopDetailsBtnImg} src="/images/withdraw.svg" />
                 <span className={classes.shopDetailsBtnText}>Withdraw</span>
@@ -220,7 +338,8 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                 color="secondary"
                 variant="contained"
                 className={classNames(classes.shopDetailsBtnWithdraw)}
-                onClick={closeWithdrawModal}
+                disabled = {pool.get('pricePerFullShare') <=0}
+                onClick={() => onWithdraw(true)}
               >
                 <img className={classes.shopDetailsBtnImg} src="/images/withdraw.svg" />
                 <span className={classes.shopDetailsBtnText}>Withdraw All</span>

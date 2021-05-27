@@ -8,6 +8,12 @@ import {
   VAULT_FETCH_DEPOSIT_BEGIN,
   VAULT_FETCH_DEPOSIT_SUCCESS,
   VAULT_FETCH_DEPOSIT_FAILURE,
+  VAULT_FETCH_WITHDRAW_BEGIN,
+  VAULT_FETCH_WITHDRAW_SUCCESS,
+  VAULT_FETCH_WITHDRAW_FAILURE,
+  VAULT_FETCH_APYS_BEGIN,
+  VAULT_FETCH_APYS_SUCCESS,
+  VAULT_FETCH_APYS_FAILURE,
 } from '../../constants/actionConstants';
 import { fromJS } from 'immutable';
 import { getNetworkPools } from '../../helpers/getNetworkData';
@@ -31,7 +37,7 @@ pools.forEach(({ token, tokenAddress, earnedToken, earnedTokenAddress }) => {
 const initialState = {
   pools: pools,
   tokens: tokens,
-  apys: {},
+  apys: [],
   fetchApysDone: false,
   fetchApysPending: false,
   fetchVaultsDataDone: false,
@@ -60,13 +66,6 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('isFetchVaultsDataPending', false);
         mutableState.set('hasFetchVaultsDataDone', true);
       });
-    // return {
-    //   ...state,
-    //   pools: action.items.data,
-    //   isLoading: false,
-    //   isFetchVaultsDataPending: false,
-    //   hasFetchVaultsDataDone: false,
-    // };
     case VAULT_FETCH_VAULTS_DATA_FAILURE:
       return state.withMutations(mutableState => {
         mutableState.set('isFetchVaultsDataPending', false);
@@ -83,21 +82,46 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('tokens', action.data);
       });
     case VAULT_FETCH_BALANCES_FAILURE:
-      return {
-        ...state,
-        fetchBalancesPending: false,
-      };
+      return state.withMutations(mutableState => {
+        mutableState.set('isFetchBalancesPending', false);
+      });
     case VAULT_FETCH_DEPOSIT_BEGIN:
       return state.withMutations(mutableState => {
         mutableState.set('isDepositingPending', true);
+      });
+    case VAULT_FETCH_DEPOSIT_SUCCESS:
+      return state.withMutations(mutableState => {
+        mutableState.set('isDepositingPending', false);
       });
     case VAULT_FETCH_DEPOSIT_FAILURE:
       return state.withMutations(mutableState => {
         mutableState.set('isDepositingPending', false);
       });
-    case VAULT_FETCH_DEPOSIT_SUCCESS:
+
+    case VAULT_FETCH_WITHDRAW_BEGIN:
       return state.withMutations(mutableState => {
-        mutableState.set('isDepositingPending', false);
+        mutableState.set('isWithdrawingPending', true);
+      });
+    case VAULT_FETCH_WITHDRAW_SUCCESS:
+      return state.withMutations(mutableState => {
+        mutableState.set('isWithdrawingPending', false);
+      });
+    case VAULT_FETCH_WITHDRAW_FAILURE:
+      return state.withMutations(mutableState => {
+        mutableState.set('isWithdrawingPending', false);
+      });
+    case VAULT_FETCH_APYS_BEGIN:
+      return state.withMutations(mutableState => {
+        mutableState.set('isApysPending', true);
+      });
+    case VAULT_FETCH_APYS_SUCCESS:
+      return state.withMutations(mutableState => {
+        mutableState.set('isApysPending', false);
+        mutableState.set('apys', action.data);
+      });
+    case VAULT_FETCH_APYS_FAILURE:
+      return state.withMutations(mutableState => {
+        mutableState.set('isApysPending', false);
       });
     default:
       return state;

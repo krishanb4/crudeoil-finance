@@ -1,6 +1,6 @@
 import { strategyABI } from '../bscconfigure';
-import { enqueueSnackbar } from '../redux/modules/snackbar';
 import { fetchStrategy } from './fetchStrategy';
+import * as types from '../constants/actionConstants';
 
 export const harvest = async ({ web3, address, vaultContractAddress, dispatch }) => {
   const strategyContractAddress = await fetchStrategy({ web3, contractAddress: vaultContractAddress });
@@ -16,16 +16,10 @@ const _harvest = ({ contract, address, dispatch }) => {
       .send({ from: address })
       .on('transactionHash', function (hash) {
         console.log(hash);
-        dispatch(
-          enqueueSnackbar({
-            message: hash,
-            options: {
-              key: new Date().getTime() + Math.random(),
-              variant: 'success',
-            },
-            hash,
-          })
-        );
+        dispatch({
+          type: types.OPEN_TOAST,
+          items: { type: 'success', hash: hash, message: 'Transaction Pending' }
+        });
       })
       .on('receipt', function (receipt) {
         console.log(receipt);
