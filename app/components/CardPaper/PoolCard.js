@@ -23,10 +23,6 @@ const PoolCard =({classes, width, tokens, pool, apys, isListView, index }) => {
  const openDetailModal = () => {    
    setIsOpenDetailModal(true);
 
-  // dispatch({
-  //   type: types.OPEN_TOAST,
-  //   items: { type: 'success', hash: '210210291909012919029012', message: 'Transaction Pending' }
-  // });
   };
 
   var token = tokens.find(t => 

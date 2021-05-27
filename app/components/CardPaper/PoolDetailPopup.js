@@ -15,6 +15,7 @@ import styles from './cardStyle-jss';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
+import * as types from '../../constants/actionConstants';
 import {
   fetchApproval,
   fetchBalances,
@@ -221,6 +222,13 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
     setDepositAmount(0);
   };
 
+  const harvestReward =()=> {
+    dispatch({
+      type: types.OPEN_TOAST,
+      items: { type: 'success', hash: '210210291909012919029012', message: 'Transaction Pending' }
+    });
+  }
+
   return (
     <Dialog
       fullScreen
@@ -352,7 +360,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
           <div className={classes.autoRewardsSection}>
             <span className={classes.autoRewardsHeading}>XYZ Rewards</span>
             <span className={classes.autoRewardsValue}>$0.00</span>
-            <Button color="secondary" variant="contained" className={classes.autoRewardsBtn}>
+            <Button color="secondary" variant="contained" className={classes.autoRewardsBtn} onClick ={harvestReward}>
               <span className={classes.detailsBtnText}>Harvest</span>
               <Ionicon icon="ios-open" />
             </Button>

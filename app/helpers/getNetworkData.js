@@ -16,8 +16,8 @@ export const getNetworkStables = () => {
 };
 
 export const getNetworkMultiCall = () => {
-  //return '0xB94858b0bB5437498F5453A16039337e5Fdc269C';
-  return '0x2a5De02CD1feDc31CdcEa1b844433f26a829bD97';
+  return '0xB94858b0bB5437498F5453A16039337e5Fdc269C';
+  //return '0x2a5De02CD1feDc31CdcEa1b844433f26a829bD97';
 };
 
 export const getNetworkConnectors = networkId => {
