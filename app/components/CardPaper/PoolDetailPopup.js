@@ -507,6 +507,8 @@ const PoolDetailPopup = ({
             <Button
               color="secondary"
               variant="contained"
+              href={pool.get('addLiquidityUrl')}
+              target="_blank"
               className={classNames(classes.detailsBtn, classes.mr15)}
             >
               <Ionicon icon="md-create" />
