@@ -19,6 +19,8 @@ import { fetchApproval, fetchDeposit,fetchVaultsData } from '../../actions/Vault
 import { Toast } from 'dan-components';
 import { closeToastAction } from 'dan-actions/ToastAction';
 import { convertAmountFromRawNumber } from '../../helpers/bignumber';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const marks = [
   {
@@ -129,7 +131,11 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
         </div>
       </DialogTitle>
       <DialogContent>
-        
+      <ToastContainer position="top-right"
+        autoClose={20000}
+        closeOnClick={false}
+        newestOnTop
+        pauseOnHover/>
       <Toast message={toastMessage} hash={toastHash} type={toastType} onClose={() => dispatch(closeToastAction())} />
         <div className={classes.dialogSliderGrid}>
           <div className={classes.flexColumn}>

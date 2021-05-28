@@ -17,6 +17,8 @@ import FontFaceObserver from 'fontfaceobserver';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
 import { SnackbarProvider } from 'notistack';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Import root app
 import App from 'containers/App';
@@ -55,6 +57,7 @@ const render = messages => {
         <ConnectedRouter history={history}>
         <SnackbarProvider maxSnack={3}>
           <App />
+          <ToastContainer />
           </SnackbarProvider>
         </ConnectedRouter>
       </LanguageProvider>

@@ -10,6 +10,17 @@ import BigNumber from 'bignumber.js';
 import { MultiCall } from 'eth-multicall';
 import { fromJS } from 'immutable';
 import { approval, deposit } from '../web3';
+import { toast } from 'react-toastify';
+import React from 'react';
+import Ionicon from 'react-ionicons';
+import 'react-toastify/dist/ReactToastify.css';
+
+const SuccessMsg = () => (
+  <div style={{ display: 'flex', alignItems: 'center'}}>
+      <Ionicon icon="ios-checkmark-circle" /> 
+      <span style={{ marginLeft: 5}}>Transaction Successfull</span>
+  </div>
+)
 
 export function fetchVaultsData({ address, web3, pools }) {
   return async dispatch => {
@@ -160,10 +171,11 @@ export function fetchDeposit({ address, web3, amount, contractAddress, index }) 
             data,
             index,
           });
-          dispatch({
-            type: types.OPEN_TOAST,
-            items: { type: 'success', hash: '', message: 'Transaction Successfull' },
-          });
+          toast.success(SuccessMsg);  
+          // dispatch({
+          //   type: types.OPEN_TOAST,
+          //   items: { type: 'success', hash: '', message: 'Transaction Successfull' },
+          // });
           resolve(data);
         })
         .catch(error => {
@@ -171,14 +183,15 @@ export function fetchDeposit({ address, web3, amount, contractAddress, index }) 
             type: types.VAULT_FETCH_DEPOSIT_FAILURE,
             index,
           });
-          dispatch({
-            type: types.OPEN_TOAST,
-            items: {
-              type: 'error',
-              hash: '',
-              message: `Transaction Failed : ${error.message || error} `,
-            },
-          });
+          // dispatch({
+          //   type: types.OPEN_TOAST,
+          //   items: {
+          //     type: 'error',
+          //     hash: '',
+          //     message: `Transaction Failed : ${error.message || error} `,
+          //   },
+          // });
+          toast.error(`Transaction Failed : ${error.message || error} `);
           reject(error.message || error);
         });
     });
@@ -202,21 +215,23 @@ export function fetchApproval({ address, web3, tokenAddress, contractAddress, in
         dispatch,
       })
         .then(data => {
-          dispatch({
-            type: types.OPEN_TOAST,
-            items: { type: 'success', hash: '', message: 'Transaction Success' },
-          });
+          toast.success(SuccessMsg);  
+          // dispatch({
+          //   type: types.OPEN_TOAST,
+          //   items: { type: 'success', hash: '', message: 'Transaction Success' },
+          // });
           resolve();
         })
         .catch(error => {
-          dispatch({
-            type: types.OPEN_TOAST,
-            items: {
-              type: 'error',
-              hash: '',
-              message: `Transaction Failed : ${error.message || error} `,
-            },
-          });
+          toast.error(`Transaction Failed : ${error.message || error} `);  
+          // dispatch({
+          //   type: types.OPEN_TOAST,
+          //   items: {
+          //     type: 'error',
+          //     hash: '',
+          //     message: `Transaction Failed : ${error.message || error} `,
+          //   },
+          // });
           reject(error.message || error);
         });
     });
