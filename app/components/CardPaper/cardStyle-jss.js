@@ -9,6 +9,9 @@ const styles = theme => ({
   divider: {
     margin: `${theme.spacing(3)}px 0`
   },
+  progress: {
+    margin: theme.spacing(2),
+  },
   card: {
     minWidth: 275,
   },

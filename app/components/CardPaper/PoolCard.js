@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector, shallowEqual  } from 'react-redux';
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
@@ -10,15 +11,25 @@ import CardContent from "@material-ui/core/CardContent";
 import styles from "./cardStyle-jss";
 import Button from '@material-ui/core/Button';
 import PoolDetailPopup from './PoolDetailPopup';
-import { useDispatch } from 'react-redux';
 import * as types from '../../constants/actionConstants';
 import { formatApy, formatTvl, calcDaily } from '../../helpers/format';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const PoolCard =({classes, width, tokens, pool, apys, isListView, index }) => {
 
   const dispatch = useDispatch();
 
   const [isOpenDetailModal, setIsOpenDetailModal] = useState(false);
+
+  const { isFetchBalancesPending, isFetchVaultsDataPending, isApysPending  } = useSelector(
+    state => ({
+      isFetchBalancesPending: state.getIn(['vaults', 'isFetchBalancesPending']),      
+      isFetchVaultsDataPending : state.getIn(['vaults', 'isFetchVaultsDataPending']),
+      isApysPending : state.getIn(['vaults', 'isApysPending']),
+      
+    }),
+    shallowEqual
+  );
 
  const openDetailModal = () => {    
    setIsOpenDetailModal(true);
@@ -92,19 +103,27 @@ const calAPYDaily =()=> {
             isListView ? classes.shopDetailsDescGridLong : ''
           )}>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{pool.get('deposited')}</span>
+              <span className={classes.shopDetailsValue}>                
+                {isFetchVaultsDataPending ? <CircularProgress className={classes.progress} size={20}/> : pool.get('deposited')}
+                </span>
               <span className={classes.shopDetailsLabel}>Deposited</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{token.get('tokenBalance')}</span>
+              <span className={classes.shopDetailsValue}>
+              {isFetchBalancesPending ? <CircularProgress className={classes.progress} size={20}/> : token.get('tokenBalance')} 
+                </span>
               <span className={classes.shopDetailsLabel}>Available</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{formatApy(poolApy || 0)}</span>
+              <span className={classes.shopDetailsValue}>                
+                {isApysPending ? <CircularProgress className={classes.progress} size={20}/> : formatApy(poolApy || 0)} 
+                </span>
               <span className={classes.shopDetailsLabel}>APY </span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{calcDaily(poolApy || 0)}</span>
+              <span className={classes.shopDetailsValue}>               
+                {isApysPending ? <CircularProgress className={classes.progress} size={20}/> : calcDaily(poolApy || 0)} 
+                </span>
               <span className={classes.shopDetailsLabel}>Daily </span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
@@ -112,7 +131,9 @@ const calAPYDaily =()=> {
               <span className={classes.shopDetailsLabel}>TVL</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{pool.get('reward')}</span>
+              <span className={classes.shopDetailsValue}>                
+                {isFetchVaultsDataPending ? <CircularProgress className={classes.progress} size={20}/> : pool.get('reward')} 
+                </span>
               <span className={classes.shopDetailsLabel}>Reward</span>
             </Typography>
           </div>

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import PoolCard from '../../../components/CardPaper/PoolCard';
 
 const ShopGallery = ({
-  showDetail,
   pools,
   keyword,
   listView,
@@ -51,7 +50,6 @@ const ShopGallery = ({
 ShopGallery.propTypes = {
   pools: PropTypes.object.isRequired,
   apys: PropTypes.object,
-  showDetail: PropTypes.func.isRequired,
   keyword: PropTypes.string.isRequired,
   listView: PropTypes.string.isRequired,
 };

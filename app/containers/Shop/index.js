@@ -9,7 +9,6 @@ import ShopGallery from './Operations/ShopGallery';
 import { closeToastAction } from 'dan-actions/ToastAction';
 import { formatDate } from '../../utils/common';
 import { Pagination } from '../../components';
-import { fetchAction, detailAction } from 'dan-actions/WalletActions';
 import Ionicon from 'react-ionicons';
 import useStyles from '../../hooks/useStyles';
 import {fetchVaultsData, fetchBalances, fetchApys, fetchApproval}  from '../../actions/VaultAndPoolActions';
@@ -170,8 +169,7 @@ const Shop = ({ checkout, search }) => {
         listView={listView}
         pools={pools}
         tokens ={tokens}
-        apys ={apys}
-        showDetail={shop => dispatch(detailAction(shop))}
+        apys ={apys}        
         keyword={keyword}
       />      
       <Pagination
