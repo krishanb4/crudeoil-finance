@@ -15,6 +15,7 @@ import * as types from '../../constants/actionConstants';
 import { formatApy, formatTvl, calcDaily } from '../../helpers/format';
 import Ionicon from 'react-ionicons';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const PoolCard =({classes, width, tokens, pool, apys, isListView, index }) => {
 
@@ -105,25 +106,25 @@ const calAPYDaily =()=> {
           )}>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>                
-                {isFetchVaultsDataPending ? <CircularProgress className={classes.progress} size={20}/> : pool.get('deposited')}
+                {isFetchVaultsDataPending ? <LinearProgress /> : pool.get('deposited')}
                 </span>
               <span className={classes.shopDetailsLabel}>Deposited</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>
-              {isFetchBalancesPending ? <CircularProgress className={classes.progress} size={20}/> : token.get('tokenBalance')} 
+              {isFetchBalancesPending ? <LinearProgress /> : token.get('tokenBalance')} 
                 </span>
               <span className={classes.shopDetailsLabel}>Available</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>                
-                {isApysPending ? <CircularProgress className={classes.progress} size={20}/> : formatApy(poolApy || 0)} 
+                {isApysPending ? <LinearProgress /> : formatApy(poolApy || 0)} 
                 </span>
               <span className={classes.shopDetailsLabel}>APY </span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>               
-                {isApysPending ? <CircularProgress className={classes.progress} size={20}/> : calcDaily(poolApy || 0)} 
+                {isApysPending ? <LinearProgress /> : calcDaily(poolApy || 0)} 
                 </span>
               <span className={classes.shopDetailsLabel}>Daily </span>
             </Typography>
@@ -133,7 +134,7 @@ const calAPYDaily =()=> {
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>                
-                {isFetchVaultsDataPending ? <CircularProgress className={classes.progress} size={20}/> : pool.get('reward')} 
+                {isFetchVaultsDataPending ? <LinearProgress /> : pool.get('reward')} 
                 </span>
               <span className={classes.shopDetailsLabel}>Reward</span>
             </Typography>
