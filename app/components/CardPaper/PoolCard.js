@@ -53,10 +53,14 @@ const calAPYDaily =()=> {
           classes.cardProduct,
           isWidthUp("sm", width) && isListView ? classes.cardList : "",
           pool.get('boosted') ? classes.boostedCard : '',
-          pool.get('paused') ? classes.pausedCard : ''
+          pool.get('paused') ? classes.pausedCard : '',
+          isListView ? classes.cardFlex : ""
         )}
       >
-        <CardContent className={classes.floatingButtonWrap}>
+        <CardContent className={classNames(
+            classes.floatingButtonWrap,
+            isListView ? classes.cardFlexGrow : ''
+          )}>
           <div className={classNames(
             classes.shopBgImgContainer,
             isListView ? classes.shopBgImgContainerFull : ''

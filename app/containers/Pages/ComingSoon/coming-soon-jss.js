@@ -44,7 +44,7 @@ const styles = theme => ({
   fullWrap: {
     ...wrapper(theme, 0.9),
     height: '100%',
-    borderRadius: 0,
+    borderRadius: 8,
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',

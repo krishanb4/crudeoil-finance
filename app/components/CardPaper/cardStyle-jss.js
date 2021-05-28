@@ -650,7 +650,7 @@ const styles = theme => ({
     borderRadius: 7
   },
   detailsBtnText: {
-    marginRight: 5
+    marginLeft: 5
   },
   autoRewardsRow: {
     display: 'flex',
@@ -685,6 +685,27 @@ const styles = theme => ({
   autoRewardsBtn: {
     backgroundColor: '#2981bb !important',
     borderRadius: 7
+  },
+  cardFlex: {
+    display: 'flex'
+  },
+  cardFlexGrow: {
+    flexGrow: 2
+  },
+  loaderDiv: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    background: '#9494941f',
+    width: '100vw',
+    height: '100vh',
+    zIndex: 1000,
+    display: 'flex'
+  },
+  loaderInit: {
+    position: 'absolute',
+    top: 'calc(50% - 65px)',
+    left: 'calc(50% - 65px)'
   }
 });
 

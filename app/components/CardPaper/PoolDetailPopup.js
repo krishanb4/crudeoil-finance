@@ -74,6 +74,7 @@ const PoolDetailPopup = ({
   const [withdrawSliderValue, setWithdrawSliderValue] = useState(0);
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawAmount, setWithdrawAmount] = useState(0);
+  const [showLoader, setShowLoader] = useState(false);
 
   const { web3, address, toastMessage, toastHash, toastType, pools, tokens } = useSelector(
     state => ({
@@ -89,6 +90,7 @@ const PoolDetailPopup = ({
   );
 
   const onClickApproval = () => {
+    setShowLoader(true);
     dispatch(
       fetchApproval({
         address,
@@ -102,12 +104,14 @@ const PoolDetailPopup = ({
         dispatch(fetchVaultsData({ address, web3, pools }));
         dispatch(fetchBalances({ address, web3, tokens }));
         resetForm();
+        setShowLoader(false);
       })
       .catch(error => {
         dispatch({
           type: types.OPEN_TOAST,
           items: { type: 'error', message: error },
         });
+        setShowLoader(false);
       });
   };
 
@@ -176,34 +180,39 @@ const PoolDetailPopup = ({
 
       setDepositAmount(balance);
       setDepositSliderValue(100);
+      setShowLoader(true);
       dispatch(fetchDeposit({ address, web3, pid, amount, contractAddress, index }))
         .then(e => {
           dispatch(fetchVaultsData({ address, web3, pools }));
           dispatch(fetchBalances({ address, web3, tokens }));
           resetForm();
+          setShowLoader(false);
         })
         .catch(error => {
           dispatch({
             type: types.OPEN_TOAST,
             items: { type: 'error', message: error },
           });
+          setShowLoader(false);
         });
     } else {
       let tDecimal = new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals'));
       const amount = new BigNumber(depositAmount).multipliedBy(tDecimal).toString(10);
       const pid = pool.get('pid');
-
+      setShowLoader(true);
       dispatch(fetchDeposit({ address, web3, pid, amount, contractAddress, index }))
         .then(e => {
           dispatch(fetchVaultsData({ address, web3, pools }));
           dispatch(fetchBalances({ address, web3, tokens }));
           resetForm();
+          setShowLoader(false);
         })
         .catch(error => {
           dispatch({
             type: types.OPEN_TOAST,
             items: { type: 'error', message: error },
           });
+          setShowLoader(false);
         });
     }
   };
@@ -218,36 +227,40 @@ const PoolDetailPopup = ({
       setWithdrawAmount(balance);
       setWithdrawSliderValue(100);
       const pid = pool.get('pid');
-
+      setShowLoader(true);
       dispatch(fetchWithdraw({ address, web3, amount, pid, contractAddress, index }))
         .then(e => {
           dispatch(fetchVaultsData({ address, web3, pools }));
           dispatch(fetchBalances({ address, web3, tokens }));
           resetForm();
+          setShowLoader(false);
         })
         .catch(error => {
           dispatch({
             type: types.OPEN_TOAST,
             items: { type: 'error', message: error },
           });
+          setShowLoader(false);
         });
     } else {
       let tDecimal = new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals'));
       const formatValue = withdrawAmount.toString().replace(',', '');
       let amount = new BigNumber(formatValue).multipliedBy(tDecimal).toString(10);
       const pid = pool.get('pid');
-
+      setShowLoader(true);
       dispatch(fetchWithdraw({ address, web3, amount, pid, contractAddress, index }))
         .then(e => {
           dispatch(fetchVaultsData({ address, web3, pools }));
           dispatch(fetchBalances({ address, web3, tokens }));
           resetForm();
+          setShowLoader(false);
         })
         .catch(error => {
           dispatch({
             type: types.OPEN_TOAST,
             items: { type: 'error', message: error },
           });
+          setShowLoader(false);
         });
     }
   };
@@ -260,19 +273,21 @@ const PoolDetailPopup = ({
   };
 
   const harvestReward = () => {
-    
     const pid = pool.get('pid');
     let contractAddress = pool.get('earnContractAddress');
+    setShowLoader(true);
     dispatch(fetchHarvest({ web3, address, pid, contractAddress, index }))
       .then(e => {
         dispatch(fetchVaultsData({ address, web3, pools }));
         dispatch(fetchBalances({ address, web3, tokens }));        
+        setShowLoader(false);
       })
       .catch(error => {
         dispatch({
           type: types.OPEN_TOAST,
           items: { type: 'error', message: error },
         });
+        setShowLoader(false);
       });
   };
 
@@ -298,6 +313,10 @@ const PoolDetailPopup = ({
           type={toastType}
           onClose={() => dispatch(closeToastAction())}
         />
+        {showLoader && <div className={classes.loaderDiv}>
+          <img src="/images/spinner.gif"  className={classes.loaderInit} alt="spinner" />
+          </div>
+        }
         <div className={classes.dialogSliderGrid}>
           <div className={classes.flexColumn}>
             <span className={classes.inputLabel}>Balance : {token.get('tokenBalance')}</span>
@@ -413,8 +432,8 @@ const PoolDetailPopup = ({
               className={classes.autoRewardsBtn}
               onClick={harvestReward}
             >
-              <span className={classes.detailsBtnText}>Harvest</span>
               <Ionicon icon="ios-open" />
+              <span className={classes.detailsBtnText}>Harvest</span>
             </Button>
           </div>
         </div>
@@ -472,8 +491,8 @@ const PoolDetailPopup = ({
               className={classNames(classes.detailsBtn, classes.mr15)}
               href={pool.get('farmContract')}
             >
-              <span className={classes.detailsBtnText}>Farm Contract</span>
               <Ionicon icon="ios-open" />
+              <span className={classes.detailsBtnText}>Farm Contract</span>
             </Button>
             <Button
               color="secondary"
@@ -482,8 +501,8 @@ const PoolDetailPopup = ({
               href={pool.get('vaultContract')}
               target="_blank"
             >
-              <span className={classes.detailsBtnText}>Vault Contract</span>
               <Ionicon icon="ios-open" />
+              <span className={classes.detailsBtnText}>Vault Contract</span>
             </Button>
           </div>
         </DialogContentText>
