@@ -432,7 +432,7 @@ const PoolDetailPopup = ({
               className={classes.autoRewardsBtn}
               onClick={harvestReward}
             >
-              <Ionicon icon="ios-open" />
+              <img src="/images/shovel.svg" width="20" height="20" />
               <span className={classes.detailsBtnText}>Harvest</span>
             </Button>
           </div>

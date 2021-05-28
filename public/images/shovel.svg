@@ -1,0 +1,10 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+	<title>shovel</title>
+	<defs>
+		<image  width="64" height="64" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAAXNSR0IB2cksfwAAAMNQTFRF////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////WcU9VgAAAEF0Uk5TAAJy27c7nv/4SJZXuuoe8LEGLYbY6xYifTBJRyF62ekUibm0WIra1yAjaQ9U+9IVUzMT4EKw/XHK8+/Dp3MJ+sBDqQ7sAAABXElEQVR4nO3WyXKCQBCA4VaBIYZEMNGIosZgNre47xrf/6nCDLgEpEJPV+VEX5g+fH9xGKoAwE4mm1NUtLrwGmNMv6F5QiHw8oU8Y6TCrbDGnWzhvsClaRVlCw/cKRaAbOHRU6UyP8kVnjiq+Gepgs1NFX4VUHdSBGrHzS8omIDDRf24WQZfc5gANDzRfA68Ke5EFhVocfIiCmVFeC2D8ZYrULNeq1ZKMt5koaH6PM0X2hh+9u7rG3+8tz7kvOl9Sp+2jdMhLzGpT33qkd7udEm+12eDL5pnQUHe+wWK5wWa9wouzZ/mP/2Q6Ed61LsIP55E/elGJRnjiscUplc9ojCLCSQtOPO4ABt0/+YAi1jPWCdJQIv3fTtJYBnve0k8rIge1kQv/j4pHjZED1uihx3Rgxr1+hDhYf8d9pMRxgMcQt4Y4zwUDxfvMJ9NkZzPXt1tN431aqktHDT+Ac4ENJ4W3aARAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+	</style>
+	<use id="Background" href="#img1" x="0" y="0" />
+</svg>
