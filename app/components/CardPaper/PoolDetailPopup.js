@@ -30,7 +30,7 @@ import { inputLimitPass, inputFinalVal, shouldHideFromHarvest } from '../../help
 import BigNumber from 'bignumber.js';
 import { byDecimals } from '../../helpers/bignumber';
 import { formatApy, formatTvl, calcDaily } from '../../helpers/format';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const marks = [
@@ -80,6 +80,13 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
     }),
     shallowEqual
   );
+
+  const SuccessMsg = () => (
+    <div style={{ display: 'flex', alignItems: 'center'}}>
+        <Ionicon icon="ios-checkmark-circle" />
+        <span style={{ marginLeft: 5}}>Transaction Successfull</span>
+    </div>
+  )
 
   const onClickApproval = () => {
     dispatch(
@@ -225,11 +232,32 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
     setDepositAmount(0);
   };
 
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+
+  const showSuccessMsgTest = async () => {
+    await delay(5000);
+    toast.success(SuccessMsg); 
+  };
+
   const harvestReward =()=> {
-    dispatch({
-      type: types.OPEN_TOAST,
-      items: { type: 'success', hash: '210210291909012919029012', message: 'Transaction Pending' }
-    });
+    // dispatch({
+    //   type: types.OPEN_TOAST,
+    //   items: { type: 'success', hash: '210210291909012919029012', message: 'Transaction Pending' }
+    // });
+    const hash = '210210291909012919029012';
+    const PendingMsg = () => (
+      <div style={{ display: 'flex', flexDirection: 'column'}}>
+        <div style={{ display: 'flex', alignItems: 'center'}}>
+          <Ionicon icon="ios-alert-outline" /> 
+          <span style={{ marginLeft: 5}}>Transaction Pending</span>
+        </div>
+        <div style={{ marginLeft: 28}}> Confirmation is in progress. Check your transction on 
+          <span style={{ cursor: 'pointer', color: '#2b2d80', fontWeight: 600, marginLeft: 5}} onClick={() => window.open(`https://bscscan.com/tx/${hash}`, '_blank')}>here</span>
+        </div>
+      </div>
+    )
+    toast.warn(PendingMsg); 
+    showSuccessMsgTest(); 
   }
 
   return (

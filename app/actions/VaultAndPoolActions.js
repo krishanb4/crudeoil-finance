@@ -208,10 +208,11 @@ export function fetchWithdraw({ address, web3, amount, contractAddress, index })
           dispatch({
             type: types.VAULT_FETCH_WITHDRAW_SUCCESS
           });
-          dispatch({
-            type: types.OPEN_TOAST,
-            items: { type: 'success', hash: '', message: 'Transaction Success' },
-          });
+          // dispatch({
+          //   type: types.OPEN_TOAST,
+          //   items: { type: 'success', hash: '', message: 'Transaction Success' },
+          // });
+          toast.success(SuccessMsg);
           resolve(data);
         })
         .catch(error => {
@@ -219,14 +220,15 @@ export function fetchWithdraw({ address, web3, amount, contractAddress, index })
             type: types.VAULT_FETCH_WITHDRAW_FAILURE,
             index,
           });
-          dispatch({
-            type: types.OPEN_TOAST,
-            items: {
-              type: 'error',
-              hash: '',
-              message: `Transaction Failed : ${error.message || error} `,
-            },
-          });
+          // dispatch({
+          //   type: types.OPEN_TOAST,
+          //   items: {
+          //     type: 'error',
+          //     hash: '',
+          //     message: `Transaction Failed : ${error.message || error} `,
+          //   },
+          // });
+          toast.error(`Transaction Failed : ${error.message || error} `);
           reject(error.message || error);
         });
     });
