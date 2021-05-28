@@ -659,6 +659,9 @@ const styles = theme => ({
       marginBottom: 12
     }
   },
+  rowCenter: {
+    justifyContent: 'center',
+  },
   detailsBtnText: {
     marginLeft: 5
   },

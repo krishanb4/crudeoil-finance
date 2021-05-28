@@ -181,10 +181,11 @@ const styles = theme => ({
   clearBtnRow: {
     display: 'flex', 
     alignItems: 'center', 
-    marginLeft: -42, 
+    marginLeft: -20, 
     marginTop: '-3px',
     [theme.breakpoints.down('sm')]: {
-      marginLeft: 0
+      marginLeft: 0,
+      justifyContent: 'space-between'
     },
   },
   platformFieldset:{
@@ -215,7 +216,7 @@ const styles = theme => ({
     marginRight: 25
   },
   refreshBtn : { 
-    marginRight: '10px', 
+    marginLeft: 70, 
     backgroundColor: '#2981bb !important'
   }
 });
