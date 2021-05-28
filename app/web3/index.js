@@ -8,3 +8,4 @@ export { withdrawBnb } from './withdrawBnb';
 export { fetchPrice, whenPricesLoaded } from './fetchPrice';
 export { harvest } from './harvest';
 export { createWeb3Modal } from './createWeb3Modal';
+export { fetchStrategy } from './fetchStrategy';

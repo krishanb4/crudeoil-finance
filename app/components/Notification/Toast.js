@@ -81,7 +81,7 @@ function MySnackbarContent(props) {
 
           <div className={classes.subTextDiv}>
           { hash && 
-          <span> Confirmation is in progress. Check your transction on <span className={classes.transactionLink} onClick={() => window.open(`https://bscscan.com/tx/${hash}`, '_blank')}>here</span>
+          <span> Confirmation is in progress. Check your transaction on <span className={classes.transactionLink} onClick={() => window.open(`https://bscscan.com/tx/${hash}`, '_blank')}>here</span>
           </span>
            }
           </div>  

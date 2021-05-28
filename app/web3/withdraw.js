@@ -5,16 +5,16 @@ import React from 'react';
 import Ionicon from 'react-ionicons';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const withdraw = async ({ web3, address, amount, contractAddress, dispatch }) => {
+export const withdraw = async ({ web3, address, amount, pid, contractAddress, dispatch }) => {
   const contract = new web3.eth.Contract(vaultABI, contractAddress);
-  const data = await _withdraw({ web3, contract, amount, address, dispatch });
+  const data = await _withdraw({ web3, contract, amount, address, pid, dispatch });
   return data;
 };
 
-const _withdraw = ({ web3, contract, address, amount, dispatch }) => {
+const _withdraw = ({ web3, contract, address, pid, amount, dispatch }) => {
   return new Promise((resolve, reject) => {
     contract.methods
-      .withdraw(amount)
+      .withdraw(pid, amount)
       .send({ from: address })
       .on('transactionHash', function(hash) {
         console.log(hash);

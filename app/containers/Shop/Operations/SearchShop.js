@@ -75,8 +75,17 @@ const SearchShop = ({ handleSwitchView, listView }) => {
                     id: 'age-simple',
                   }}
                 >
-                  <MenuItem value="">
-                    <em>None</em>
+                  <MenuItem value="all" selected = {true}>
+                    <em>All</em>
+                  </MenuItem>
+                  <MenuItem value="lp">
+                    <em>Stable LPs</em>
+                  </MenuItem>
+                  <MenuItem value="single-lp">
+                    <em>Single Assets</em>
+                  </MenuItem>
+                  <MenuItem value="stable">
+                    <em>Stables</em>
                   </MenuItem>
                 </Select>
               </FormControl>
@@ -88,8 +97,23 @@ const SearchShop = ({ handleSwitchView, listView }) => {
                     id: 'age-simple',
                   }}
                 >
-                  <MenuItem value="">
-                    <em>None</em>
+                  <MenuItem value="all" selected = {true}>
+                    <em>All</em>
+                  </MenuItem>
+                  <MenuItem value="bnb">
+                    <em>BNB</em>
+                  </MenuItem>
+                  <MenuItem value="diesel">
+                    <em>DIESEL</em>
+                  </MenuItem>
+                  <MenuItem value="oil">
+                    <em>OIL</em>
+                  </MenuItem>
+                  <MenuItem value="cake">
+                    <em>CAKE</em>
+                  </MenuItem>
+                  <MenuItem value="busd">
+                    <em>BUSD</em>
                   </MenuItem>
                 </Select>
               </FormControl>

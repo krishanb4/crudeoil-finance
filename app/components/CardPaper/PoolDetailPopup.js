@@ -25,13 +25,10 @@ import {
 } from '../../actions/VaultAndPoolActions';
 import { Toast } from 'dan-components';
 import { closeToastAction } from 'dan-actions/ToastAction';
-import { convertAmountFromRawNumber } from '../../helpers/bignumber';
 import { inputLimitPass, inputFinalVal, shouldHideFromHarvest } from '../../helpers/utils';
 import BigNumber from 'bignumber.js';
 import { byDecimals } from '../../helpers/bignumber';
-import { formatApy, formatTvl, calcDaily } from '../../helpers/format';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { formatTvl} from '../../helpers/format';
 
 const marks = [
   {
@@ -60,7 +57,7 @@ function valuetext(value) {
   return `${value}%`;
 }
 
-const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, index }) => {
+const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, index, apy, apyDaily }) => {
   const dispatch = useDispatch();
 
   const [depositSliderValue, setDepositSliderValue] = useState(0);
@@ -81,13 +78,6 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
     shallowEqual
   );
 
-  const SuccessMsg = () => (
-    <div style={{ display: 'flex', alignItems: 'center'}}>
-        <Ionicon icon="ios-checkmark-circle" />
-        <span style={{ marginLeft: 5}}>Transaction Successfull</span>
-    </div>
-  )
-
   const onClickApproval = () => {
     dispatch(
       fetchApproval({
@@ -103,8 +93,11 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
         dispatch(fetchBalances({ address, web3, tokens }));
         resetForm();
       })
-      .catch(() => {
-
+      .catch((error) => {
+        dispatch({
+          type: types.OPEN_TOAST,
+          items: { type: 'error', message: error }
+        });
       });
   };
 
@@ -115,7 +108,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
 
   const onChangeWithdrawAmount = event => {
     let value = event.target.value;
-    const total = new BigNumber(pool.get('pricePerFullShare')).toNumber();
+    const total = new BigNumber(pool.get('deposited')).toNumber();
 
     if (!inputLimitPass(value, pool.get('tokenDecimals'))) {
       return;
@@ -129,7 +122,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
     }
 
     setWithdrawAmount(inputFinalVal(value, total, pool.get('tokenDecimals')));
-    setWithdrawSliderValue(sliderNum);
+    setWithdrawSliderValue(sliderNum.toFixed(0));
   };
 
   const onChangeDepositAmount = event => {
@@ -148,7 +141,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
     }
 
     setDepositAmount(inputFinalVal(value, walletBalance, token.get('tokenDecimals')));
-    setDepositSliderValue(sliderNum);
+    setDepositSliderValue(sliderNum.toFixed(0));
   };
 
   const handleDepositSliderChangeRange = (e, newValue) => {
@@ -158,7 +151,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
   };
 
   const handleWithdrawSliderChangeRange = (e, newValue) => {
-    let balance = pool.get('pricePerFullShare');
+    let balance = pool.get('deposited');
     setWithdrawAmount((balance / 100) * newValue);
     setWithdrawSliderValue(newValue);
   };
@@ -167,61 +160,85 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
     let contractAddress = pool.get('earnContractAddress');
     if (isAll) {
       let balance = token.get('tokenBalance');
+      const pid = pool.get('pid');
       var amount = new BigNumber(balance).multipliedBy(new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals')))
         .toString(10);
 
       setDepositAmount(balance);
       setDepositSliderValue(100);
-      dispatch(fetchDeposit({ address, web3, amount, contractAddress, index }))
+      dispatch(fetchDeposit({ address, web3, pid, amount, contractAddress, index }))
         .then(e => {
           dispatch(fetchVaultsData({ address, web3, pools }));
           dispatch(fetchBalances({ address, web3, tokens }));
           resetForm();
         })
-        .catch(() => {});
+        .catch((error) => {
+          dispatch({
+            type: types.OPEN_TOAST,
+            items: { type: 'error', message: error }
+          });
+        });
     } else {
       let tDecimal = new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals'));
-      let amount = new BigNumber(depositAmount).multipliedBy(tDecimal).toString(10);
+      const amount = new BigNumber(depositAmount).multipliedBy(tDecimal).toString(10);
+      const pid = pool.get('pid');
 
-      dispatch(fetchDeposit({ address, web3, amount, contractAddress, index }))
+      dispatch(fetchDeposit({ address, web3, pid, amount, contractAddress, index }))
         .then(e => {
           dispatch(fetchVaultsData({ address, web3, pools }));
           dispatch(fetchBalances({ address, web3, tokens }));
           resetForm();
         })
-        .catch(() => {});
+        .catch((error) => {
+          dispatch({
+            type: types.OPEN_TOAST,
+            items: { type: 'error', message: error }
+          });
+        });
     }
   };
 
   const onWithdraw = isAll => {
     let contractAddress = pool.get('earnContractAddress');
     if (isAll) {
-      let balance = pool.get('pricePerFullShare');
+      let balance = pool.get('deposited');
       let amount = new BigNumber(balance)
         .multipliedBy(new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals')))
         .toString(10);
       setWithdrawAmount(balance);
       setWithdrawSliderValue(100);
+      const pid = pool.get('pid');
 
-      dispatch(fetchWithdraw({ address, web3, amount, contractAddress, index }))
+      dispatch(fetchWithdraw({ address, web3, amount, pid, contractAddress, index }))
         .then(e => {
           dispatch(fetchVaultsData({ address, web3, pools }));
           dispatch(fetchBalances({ address, web3, tokens }));
           resetForm();
         })
-        .catch(() => {});
+        .catch((error) => {
+          dispatch({
+            type: types.OPEN_TOAST,
+            items: { type: 'error', message: error }
+          });
+        });
     } else {
       let tDecimal = new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals'));
-      const formatValue = withdrawAmount.replace(',','');
+      const formatValue = withdrawAmount.toString().replace(',','');
       let amount = new BigNumber(formatValue).multipliedBy(tDecimal).toString(10);
+      const pid = pool.get('pid');
 
-      dispatch(fetchWithdraw({ address, web3, amount, contractAddress, index }))
+      dispatch(fetchWithdraw({ address, web3, amount, pid, contractAddress, index }))
         .then(e => {
           dispatch(fetchVaultsData({ address, web3, pools }));
           dispatch(fetchBalances({ address, web3, tokens }));
           resetForm();
         })
-        .catch(() => {});
+        .catch((error) => {
+          dispatch({
+            type: types.OPEN_TOAST,
+            items: { type: 'error', message: error }
+          });
+        });
     }
   };
 
@@ -232,32 +249,11 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
     setDepositAmount(0);
   };
 
-  const delay = ms => new Promise(res => setTimeout(res, ms));
-
-  const showSuccessMsgTest = async () => {
-    await delay(5000);
-    toast.success(SuccessMsg); 
-  };
-
   const harvestReward =()=> {
-    // dispatch({
-    //   type: types.OPEN_TOAST,
-    //   items: { type: 'success', hash: '210210291909012919029012', message: 'Transaction Pending' }
-    // });
-    const hash = '210210291909012919029012';
-    const PendingMsg = () => (
-      <div style={{ display: 'flex', flexDirection: 'column'}}>
-        <div style={{ display: 'flex', alignItems: 'center'}}>
-          <Ionicon icon="ios-alert-outline" /> 
-          <span style={{ marginLeft: 5}}>Transaction Pending</span>
-        </div>
-        <div style={{ marginLeft: 28}}> Confirmation is in progress. Check your transction on 
-          <span style={{ cursor: 'pointer', color: '#2b2d80', fontWeight: 600, marginLeft: 5}} onClick={() => window.open(`https://bscscan.com/tx/${hash}`, '_blank')}>here</span>
-        </div>
-      </div>
-    )
-    toast.warn(PendingMsg); 
-    showSuccessMsgTest(); 
+    dispatch({
+      type: types.OPEN_TOAST,
+      items: { type: 'success', hash: '210210291909012919029012', message: 'Transaction Pending' }
+    });
   }
 
   return (
@@ -276,12 +272,12 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
         </div>
       </DialogTitle>
       <DialogContent>
-      <ToastContainer position="top-right"
-        autoClose={20000}
-        closeOnClick={false}
-        newestOnTop
-        pauseOnHover/>
-      <Toast message={toastMessage} hash={toastHash} type={toastType} onClose={() => dispatch(closeToastAction())} />
+        <Toast
+          message={toastMessage}
+          hash={toastHash}
+          type={toastType}
+          onClose={() => dispatch(closeToastAction())}
+        />
         <div className={classes.dialogSliderGrid}>
           <div className={classes.flexColumn}>
             <span className={classes.inputLabel}>Balance : {token.get('tokenBalance')}</span>
@@ -310,7 +306,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                   color="secondary"
                   variant="contained"
                   className={classNames(classes.shopDetailsBtnDeposit, classes.mr15)}
-                  onClick={onClickApproval}
+                  onClick={onClickApproval}                  
                 >
                   <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                   <span className={classes.shopDetailsBtnText}>Approve</span>
@@ -342,7 +338,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
             </div>
           </div>
           <div className={classes.flexColumn}>
-            <span className={classes.inputLabel}>Deposited : {pool.get('pricePerFullShare')}</span>
+            <span className={classes.inputLabel}>Deposited : {pool.get('deposited')}</span>
             <Input
               placeholder="0"
               value={withdrawAmount}
@@ -367,7 +363,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                 color="secondary"
                 variant="contained"
                 className={classNames(classes.shopDetailsBtnWithdraw, classes.mr15)}
-                disabled = {pool.get('pricePerFullShare') <=0}
+                disabled = {pool.get('deposited') <=0}
                 onClick={() => onWithdraw(false)}
               >
                 <img className={classes.shopDetailsBtnImg} src="/images/withdraw.svg" />
@@ -377,7 +373,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                 color="secondary"
                 variant="contained"
                 className={classNames(classes.shopDetailsBtnWithdraw)}
-                disabled = {pool.get('pricePerFullShare') <=0}
+                disabled = {pool.get('deposited') <=0}
                 onClick={() => onWithdraw(true)}
               >
                 <img className={classes.shopDetailsBtnImg} src="/images/withdraw.svg" />
@@ -390,7 +386,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
         <div className={classes.autoRewardsRow}>
           <div className={classes.autoRewardsSection}>
             <span className={classes.autoRewardsHeading}>XYZ Rewards</span>
-            <span className={classes.autoRewardsValue}>$0.00</span>
+            <span className={classes.autoRewardsValue}>{pool.get('reward')}</span>
             <Button color="secondary" variant="contained" className={classes.autoRewardsBtn} onClick ={harvestReward}>
               <span className={classes.detailsBtnText}>Harvest</span>
               <Ionicon icon="ios-open" />
@@ -403,40 +399,34 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
             <div className={classes.flexColumn}>
               <span className={classes.detailsHeader}>Vault Details</span>
               <span>
-                Asset: <b>OIL-BNB LP</b>
+                Asset: <b> {pool.get('name')}</b>
               </span>
               <span>
-                XYZ Multiplyer: <b>11.50x</b>
+                XYZ Multiplyer: <b>2.50x</b>
               </span>
               <span>
-                Type: <b>Stalking</b>
+                Type: <b>auto-compounding</b>
               </span>
               <span>
-                Farm Name: <b>XYZ</b>
+                Farm Name: <b>{pool.get('platform')}</b>
               </span>
             </div>
             <div className={classes.flexColumn}>
               <span className={classes.detailsHeader}>APY Calculations</span>
               <span>
-                Farm APR: <b>0.00% (0.00% Daily)</b>
+                Farm APY: <b>{apy}( {apyDaily} Daily)</b>
               </span>
               <span>
-                Optimal Compunds per Year: <b>0</b>
-              </span>
+                Optimal Compounds per Year: <b>0</b>
+              </span>              
               <span>
-                Farm APY: <b>0.00%</b>
-              </span>
-              <span>
-                XYZ APR: <b>201.20% (0.55% Daily)</b>
+                XYZ APY: <b>201.20% (0.55% Daily)</b>
               </span>
             </div>
             <div className={classes.flexColumn}>
-              <span className={classes.detailsHeader}>Fees</span>
+              <span className={classes.detailsHeader}>Fees</span>              
               <span>
-                Controller Fee: <b>None</b>
-              </span>
-              <span>
-                Platform Fee: <b>None</b>
+                Platform Fee: <b>0.1% - 0.05% withdraw or deposit fee</b>
               </span>
               <span>
                 XYZ Buyback Rate: <b>None</b>
@@ -448,14 +438,16 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
           </div>
           <div className={classes.detailsBtnRow}>
             <Button
+              target ="_blank"
               color="secondary"
               variant="contained"
               className={classNames(classes.detailsBtn, classes.mr15)}
+              href={pool.get('farmContract')}
             >
               <span className={classes.detailsBtnText}>Farm Contract</span>
               <Ionicon icon="ios-open" />
             </Button>
-            <Button color="secondary" variant="contained" className={classes.detailsBtn}>
+            <Button color="secondary" variant="contained" className={classes.detailsBtn} href={pool.get('vaultContract')}  target ="_blank">
               <span className={classes.detailsBtnText}>Vault Contract</span>
               <Ionicon icon="ios-open" />
             </Button>

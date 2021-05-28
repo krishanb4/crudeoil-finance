@@ -8,7 +8,6 @@ import SearchShop from './Operations/SearchShop';
 import ShopGallery from './Operations/ShopGallery';
 import { closeToastAction } from 'dan-actions/ToastAction';
 import { formatDate } from '../../utils/common';
-import ConfirmationModal from '../../components/Modal/ConfirmationModal';
 import { Pagination } from '../../components';
 import { fetchAction, detailAction } from 'dan-actions/WalletActions';
 import Ionicon from 'react-ionicons';
@@ -16,6 +15,7 @@ import useStyles from '../../hooks/useStyles';
 import {fetchVaultsData, fetchBalances, fetchApys, fetchApproval}  from '../../actions/VaultAndPoolActions';
 import { usePoolsTvl, useUserTvl } from '../../hooks/usePoolsTvl';
 import { initializePriceCache } from '../../web3/fetchPrice';
+import { formatGlobalTvl } from '../../helpers/format';
 
 const initData = {
   name: '',
@@ -29,7 +29,7 @@ const initData = {
   description: '',
 };
 
-const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) => {
+const Shop = ({ checkout, search }) => {
   const classes = useStyles(styles)();
   const stateData = useSelector(state => state);
   const dispatch = useDispatch();
@@ -42,8 +42,7 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
   const isLoading = stateData.getIn(['common', 'isLoading']);
 
   const [listView, setListView] = useState('grid');
-  const [open, setOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const [page, setPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
 
@@ -64,12 +63,10 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
   const { poolsTvl } = usePoolsTvl(pools);
   const { userTvl } = useUserTvl(pools, tokens);
 
-  const FETCH_INTERVAL_MS = 30 * 1000;
+  const FETCH_INTERVAL_MS = 120000;
 
   useEffect(() => {
-   // dispatch(fetchAction(data));
-
-   initializePriceCache();
+     initializePriceCache();
   }, []);
 
   
@@ -81,7 +78,7 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
     };
     fetch();
     
-    const id = setInterval(fetchApys, FETCH_INTERVAL_MS);
+    const id = setInterval(fetch, FETCH_INTERVAL_MS);
     return () => clearInterval(id);
   }, [fetch]);
 
@@ -94,53 +91,15 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
     };
     fetch();
 
-    const id = setInterval(fetch, 40000000);
+    const id = setInterval(fetch, FETCH_INTERVAL_MS);
     return () => clearInterval(id);
 
   }, [address, web3, fetchVaultsData, fetchApproval]);
-
-  const handleClickOpen = title => {
-    setOpen(true);
-    addNew(initData);
-  };
-
-  const handleClose = () => {
-    resetForm('formAddOrUpdateShop');
-    setOpen(false);
-  };
 
   const handleSwitchView = (event, value) => {
     setListView(value);
   };
 
-  const handleAddOrUpdate = value => {
-    setOpen(true);
-    updateShop(value);
-  };
-
-  const sendValues = (values, image) => {
-    if (values) {
-      const formValue = {};
-      values.map((val, i) => {
-        formValue[i] = val;
-      });
-      formValue['image'] = image;
-      saveNewShop(formValue);
-      handleClose();
-    }
-  };
-
-  const OpenDeleteModal = shop => {
-    setIsModalOpen(true);
-  };
-
-  const onConfirmDelete = () => {
-    setIsModalOpen(false);
-  };
-
-  const onRejectDelete = () => {
-    setIsModalOpen(false);
-  };
   const onPageChange = page => {
     setPage(page);
   };
@@ -184,8 +143,8 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
       </Helmet>
       <Toast message={toastMessage} hash={toastHash} type={toastType} onClose={() => dispatch(closeToastAction())} />
       <div className={classes.headDetails}>
-        <span className={classes.tvlText}>TVL : ${poolsTvl}</span>
-        <span className={classes.depositedText}>Deposited : $ {userTvl}</span>
+        <span className={classes.tvlText}>TVL : {formatGlobalTvl(poolsTvl)}</span>
+        <span className={classes.depositedText}>Deposited : {formatGlobalTvl(userTvl)}</span>
         <span className={classes.detailsText}>
           There is a 0.05%-0.1% withdrawal or deposit fee on all vaults
         </span>
@@ -214,12 +173,7 @@ const Shop = ({ checkout, search, addNew, resetForm, updateShop, saveNewShop }) 
         apys ={apys}
         showDetail={shop => dispatch(detailAction(shop))}
         keyword={keyword}
-      />
-      <ConfirmationModal
-        isOpen={isModalOpen}
-        onAgree={onConfirmDelete}
-        onDisagree={onRejectDelete}
-      />
+      />      
       <Pagination
         curpage={page}
         totpages={1}

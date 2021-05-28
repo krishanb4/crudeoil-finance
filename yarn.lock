@@ -4045,7 +4045,7 @@
   "resolved" "https://registry.npmjs.org/clone/-/clone-2.1.2.tgz"
   "version" "2.1.2"
 
-"clsx@^1.0.2", "clsx@^1.0.4", "clsx@^1.1.0":
+"clsx@^1.0.2", "clsx@^1.0.4", "clsx@^1.1.0", "clsx@^1.1.1":
   "integrity" "sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA=="
   "resolved" "https://registry.npmjs.org/clsx/-/clsx-1.1.1.tgz"
   "version" "1.1.1"
@@ -11974,7 +11974,7 @@
   "resolved" "https://registry.npmjs.org/react-display-name/-/react-display-name-0.2.4.tgz"
   "version" "0.2.4"
 
-"react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.6", "react-dom@16.8.6":
+"react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.6", "react-dom@>=16", "react-dom@16.8.6":
   "integrity" "sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-16.8.6.tgz"
   "version" "16.8.6"
@@ -12392,6 +12392,13 @@
   dependencies:
     "prop-types" "^15.7.2"
 
+"react-toastify@^7.0.4":
+  "integrity" "sha512-Rol7+Cn39hZp5hQ/k6CbMNE2CKYV9E5OQdC/hBLtIQU2xz7DdAm7xil4NITQTHR6zEbE5RVFbpgSwTD7xRGLeQ=="
+  "resolved" "https://registry.npmjs.org/react-toastify/-/react-toastify-7.0.4.tgz"
+  "version" "7.0.4"
+  dependencies:
+    "clsx" "^1.1.1"
+
 "react-transition-group@^2.2.1":
   "integrity" "sha512-+HzNTCHpeQyl4MJ/bdE0u6XRMe9+XG/+aL4mCxVN4DnPBQ0/5bfHWPDuOZUzYdMj94daZaZdCCc1Dzt9R/xSSg=="
   "resolved" "https://registry.npmjs.org/react-transition-group/-/react-transition-group-2.9.0.tgz"
@@ -12446,7 +12453,7 @@
     "prop-types" "^15.0.0"
     "ultimate-pagination" "1.0.0"
 
-"react@^16.4.1", "react@^16.8.0 || ^17.0.0", "react@^16.8.6", "react@16.8.6":
+"react@^16.4.1", "react@^16.8.0 || ^17.0.0", "react@^16.8.6", "react@>=16", "react@16.8.6":
   "integrity" "sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.8.6.tgz"
   "version" "16.8.6"
