@@ -444,10 +444,7 @@ const PoolDetailPopup = ({
               <span className={classes.detailsHeader}>Vault Details</span>
               <span>
                 Asset: <b> {pool.get('name')}</b>
-              </span>
-              <span>
-                XYZ Multiplyer: <b>2.50x</b>
-              </span>
+              </span>              
               <span>
                 Type: <b>auto-compounding</b>
               </span>

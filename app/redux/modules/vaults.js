@@ -55,16 +55,13 @@ const initialImmutableState = fromJS(initialState);
 export default function reducer(state = initialImmutableState, action = {}) {
   switch (action.type) {
     case VAULT_FETCH_VAULTS_DATA_BEGIN:
-      return state.withMutations(mutableState => {
-        mutableState.set('isLoading', true);
-        mutableState.set('fetchVaultsDataPending', true);
+      return state.withMutations(mutableState => {        
+        mutableState.set('isFetchVaultsDataPending', true);
       });
     case VAULT_FETCH_VAULTS_DATA_SUCCESS:
-      return state.withMutations(mutableState => {
-        mutableState.set('isLoading', false);
+      return state.withMutations(mutableState => {        
         mutableState.set('pools', action.data);
         mutableState.set('isFetchVaultsDataPending', false);
-        mutableState.set('hasFetchVaultsDataDone', true);
       });
     case VAULT_FETCH_VAULTS_DATA_FAILURE:
       return state.withMutations(mutableState => {

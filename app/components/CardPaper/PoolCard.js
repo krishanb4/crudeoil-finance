@@ -142,7 +142,6 @@ const calAPYDaily =()=> {
               <div className={classes.flexColumn}>
                 <span className={classes.detailsHeader}>Vault Details</span>
                 <span>Asset: <b>{pool.get('name')}</b></span>
-                <span>XYZ Multiplyer: <b>2x</b></span>
                 <span>Type: <b>auto-compounding</b></span>
                 <span>Farm Name: <b>{pool.get('platform')}</b></span>
               </div>
@@ -165,6 +164,8 @@ const calAPYDaily =()=> {
               color="secondary"
               variant="contained"
               className={classNames(classes.detailsBtn, classes.mr15)}
+              href={pool.get('farmContract')}
+              target="_blank"
             >
               <Ionicon icon="ios-open" />
               <span className={classes.detailsBtnText}>Farm Contract</span>
@@ -173,6 +174,8 @@ const calAPYDaily =()=> {
               color="secondary"
               variant="contained"
               className={classNames(classes.detailsBtn, classes.mr15)}
+              href={pool.get('vaultContract')}
+              target="_blank"
             >
               <Ionicon icon="ios-open" />
               <span className={classes.detailsBtnText}>Vault Contract</span>
@@ -180,6 +183,8 @@ const calAPYDaily =()=> {
             <Button
               color="secondary"
               variant="contained"
+              href={pool.get('addLiquidityUrl')}
+              target="_blank"
               className={classNames(classes.detailsBtn, classes.mr15)}
             >
               <Ionicon icon="md-create" />
