@@ -240,7 +240,7 @@ export function fetchWithdraw({ address, web3, amount, pid, contractAddress, ind
   };
 }
 
-export function fetchHarvest({ address, web3, contractAddress, index }) {
+export function fetchHarvest({ address, web3, pid, contractAddress, index }) {
   return dispatch => {
     dispatch({
       type: types.VAULT_FETCH_STRATEGY_HARVEST_BEGIN,
@@ -248,7 +248,7 @@ export function fetchHarvest({ address, web3, contractAddress, index }) {
     });
 
     const promise = new Promise((resolve, reject) => {
-      harvest({ web3, address, vaultContractAddress: contractAddress, dispatch })
+      harvest({ web3, address, pid, vaultContractAddress: contractAddress, dispatch })
         .then(data => {
           dispatch({
             type: types.VAULT_FETCH_STRATEGY_HARVEST_SUCCESS,
@@ -344,17 +344,3 @@ const FetchBeginningVaultData = items => ({
   type: types.VAULT_FETCH_VAULTS_DATA_BEGIN,
   items,
 });
-
-const getStrategyContract = ({ web3, contractAddress, pid }) => {
-  const promise = new Promise((resolve, reject) => {
-    fetchStrategy({ web3, contractAddress, pid })
-      .then(data => {
-        const strategyContractAddress = data;
-        resolve(data);
-      })
-      .catch(error => {
-        reject(error.message || error);
-      });
-  });
-  return promise;
-};

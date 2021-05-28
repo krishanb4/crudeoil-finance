@@ -22,6 +22,7 @@ import {
   fetchDeposit,
   fetchVaultsData,
   fetchWithdraw,
+  fetchHarvest,
 } from '../../actions/VaultAndPoolActions';
 import { Toast } from 'dan-components';
 import { closeToastAction } from 'dan-actions/ToastAction';
@@ -57,7 +58,16 @@ function valuetext(value) {
   return `${value}%`;
 }
 
-const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, index, apy, apyDaily }) => {
+const PoolDetailPopup = ({
+  classes,
+  pool,
+  token,
+  onCloseModal,
+  isOpenModal,
+  index,
+  apy,
+  apyDaily,
+}) => {
   const dispatch = useDispatch();
 
   const [depositSliderValue, setDepositSliderValue] = useState(0);
@@ -69,7 +79,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
     state => ({
       web3: state.getIn(['wallet', 'web3']),
       pools: state.getIn(['vaults', 'pools']),
-      tokens : state.getIn(['vaults', 'tokens']),
+      tokens: state.getIn(['vaults', 'tokens']),
       address: state.getIn(['wallet', 'address']),
       toastMessage: state.getIn(['toastMessage', 'toastMessage']),
       toastHash: state.getIn(['toastMessage', 'toastHash']),
@@ -93,14 +103,13 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
         dispatch(fetchBalances({ address, web3, tokens }));
         resetForm();
       })
-      .catch((error) => {
+      .catch(error => {
         dispatch({
           type: types.OPEN_TOAST,
-          items: { type: 'error', message: error }
+          items: { type: 'error', message: error },
         });
       });
   };
-
 
   const onClosePopUp = () => {
     onCloseModal();
@@ -161,7 +170,8 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
     if (isAll) {
       let balance = token.get('tokenBalance');
       const pid = pool.get('pid');
-      var amount = new BigNumber(balance).multipliedBy(new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals')))
+      var amount = new BigNumber(balance)
+        .multipliedBy(new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals')))
         .toString(10);
 
       setDepositAmount(balance);
@@ -172,10 +182,10 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
           dispatch(fetchBalances({ address, web3, tokens }));
           resetForm();
         })
-        .catch((error) => {
+        .catch(error => {
           dispatch({
             type: types.OPEN_TOAST,
-            items: { type: 'error', message: error }
+            items: { type: 'error', message: error },
           });
         });
     } else {
@@ -189,10 +199,10 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
           dispatch(fetchBalances({ address, web3, tokens }));
           resetForm();
         })
-        .catch((error) => {
+        .catch(error => {
           dispatch({
             type: types.OPEN_TOAST,
-            items: { type: 'error', message: error }
+            items: { type: 'error', message: error },
           });
         });
     }
@@ -215,15 +225,15 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
           dispatch(fetchBalances({ address, web3, tokens }));
           resetForm();
         })
-        .catch((error) => {
+        .catch(error => {
           dispatch({
             type: types.OPEN_TOAST,
-            items: { type: 'error', message: error }
+            items: { type: 'error', message: error },
           });
         });
     } else {
       let tDecimal = new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals'));
-      const formatValue = withdrawAmount.toString().replace(',','');
+      const formatValue = withdrawAmount.toString().replace(',', '');
       let amount = new BigNumber(formatValue).multipliedBy(tDecimal).toString(10);
       const pid = pool.get('pid');
 
@@ -233,10 +243,10 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
           dispatch(fetchBalances({ address, web3, tokens }));
           resetForm();
         })
-        .catch((error) => {
+        .catch(error => {
           dispatch({
             type: types.OPEN_TOAST,
-            items: { type: 'error', message: error }
+            items: { type: 'error', message: error },
           });
         });
     }
@@ -249,12 +259,22 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
     setDepositAmount(0);
   };
 
-  const harvestReward =()=> {
-    dispatch({
-      type: types.OPEN_TOAST,
-      items: { type: 'success', hash: '210210291909012919029012', message: 'Transaction Pending' }
-    });
-  }
+  const harvestReward = () => {
+    
+    const pid = pool.get('pid');
+    let contractAddress = pool.get('earnContractAddress');
+    dispatch(fetchHarvest({ web3, address, pid, contractAddress, index }))
+      .then(e => {
+        dispatch(fetchVaultsData({ address, web3, pools }));
+        dispatch(fetchBalances({ address, web3, tokens }));        
+      })
+      .catch(error => {
+        dispatch({
+          type: types.OPEN_TOAST,
+          items: { type: 'error', message: error },
+        });
+      });
+  };
 
   return (
     <Dialog
@@ -306,7 +326,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                   color="secondary"
                   variant="contained"
                   className={classNames(classes.shopDetailsBtnDeposit, classes.mr15)}
-                  onClick={onClickApproval}                  
+                  onClick={onClickApproval}
                 >
                   <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                   <span className={classes.shopDetailsBtnText}>Approve</span>
@@ -318,7 +338,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                     variant="contained"
                     className={classNames(classes.shopDetailsBtnDeposit, classes.mr15)}
                     onClick={() => onDeposit(false)}
-                    disabled = {token.get('tokenBalance') <=0}
+                    disabled={token.get('tokenBalance') <= 0}
                   >
                     <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                     <span className={classes.shopDetailsBtnText}>Deposit</span>
@@ -328,7 +348,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                     variant="contained"
                     className={classNames(classes.shopDetailsBtnDeposit)}
                     onClick={() => onDeposit(true)}
-                    disabled = {token.get('tokenBalance') <=0}
+                    disabled={token.get('tokenBalance') <= 0}
                   >
                     <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                     <span className={classes.shopDetailsBtnText}>Deposit All</span>
@@ -363,7 +383,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                 color="secondary"
                 variant="contained"
                 className={classNames(classes.shopDetailsBtnWithdraw, classes.mr15)}
-                disabled = {pool.get('deposited') <=0}
+                disabled={pool.get('deposited') <= 0}
                 onClick={() => onWithdraw(false)}
               >
                 <img className={classes.shopDetailsBtnImg} src="/images/withdraw.svg" />
@@ -373,7 +393,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
                 color="secondary"
                 variant="contained"
                 className={classNames(classes.shopDetailsBtnWithdraw)}
-                disabled = {pool.get('deposited') <=0}
+                disabled={pool.get('deposited') <= 0}
                 onClick={() => onWithdraw(true)}
               >
                 <img className={classes.shopDetailsBtnImg} src="/images/withdraw.svg" />
@@ -387,7 +407,12 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
           <div className={classes.autoRewardsSection}>
             <span className={classes.autoRewardsHeading}>XYZ Rewards</span>
             <span className={classes.autoRewardsValue}>{pool.get('reward')}</span>
-            <Button color="secondary" variant="contained" className={classes.autoRewardsBtn} onClick ={harvestReward}>
+            <Button
+              color="secondary"
+              variant="contained"
+              className={classes.autoRewardsBtn}
+              onClick={harvestReward}
+            >
               <span className={classes.detailsBtnText}>Harvest</span>
               <Ionicon icon="ios-open" />
             </Button>
@@ -414,17 +439,20 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
             <div className={classes.flexColumn}>
               <span className={classes.detailsHeader}>APY Calculations</span>
               <span>
-                Farm APY: <b>{apy}( {apyDaily} Daily)</b>
+                Farm APY:{' '}
+                <b>
+                  {apy}( {apyDaily} Daily)
+                </b>
               </span>
               <span>
                 Optimal Compounds per Year: <b>0</b>
-              </span>              
+              </span>
               <span>
                 XYZ APY: <b>201.20% (0.55% Daily)</b>
               </span>
             </div>
             <div className={classes.flexColumn}>
-              <span className={classes.detailsHeader}>Fees</span>              
+              <span className={classes.detailsHeader}>Fees</span>
               <span>
                 Platform Fee: <b>0.1% - 0.05% withdraw or deposit fee</b>
               </span>
@@ -438,7 +466,7 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
           </div>
           <div className={classes.detailsBtnRow}>
             <Button
-              target ="_blank"
+              target="_blank"
               color="secondary"
               variant="contained"
               className={classNames(classes.detailsBtn, classes.mr15)}
@@ -447,7 +475,13 @@ const PoolDetailPopup = ({ classes, pool, token, onCloseModal, isOpenModal, inde
               <span className={classes.detailsBtnText}>Farm Contract</span>
               <Ionicon icon="ios-open" />
             </Button>
-            <Button color="secondary" variant="contained" className={classes.detailsBtn} href={pool.get('vaultContract')}  target ="_blank">
+            <Button
+              color="secondary"
+              variant="contained"
+              className={classes.detailsBtn}
+              href={pool.get('vaultContract')}
+              target="_blank"
+            >
               <span className={classes.detailsBtnText}>Vault Contract</span>
               <Ionicon icon="ios-open" />
             </Button>
