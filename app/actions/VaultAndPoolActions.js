@@ -1,15 +1,22 @@
-
 import * as types from '../constants/actionConstants';
 import Web3 from 'web3';
 import { getRpcUrl } from '../utils/networkSetup';
 import axios from 'axios';
-import { erc20ABI, vaultABI } from '../bscconfigure';
+import { erc20ABI, vaultABI, strategyABI } from '../bscconfigure';
 import { byDecimals } from '../helpers/bignumber';
 import { getNetworkMultiCall } from '../helpers/getNetworkData';
 import BigNumber from 'bignumber.js';
 import { MultiCall } from 'eth-multicall';
 import { fromJS } from 'immutable';
-import { approval, deposit, withdraw, whenPricesLoaded, harvest, fetchPrice } from '../web3';
+import {
+  approval,
+  deposit,
+  withdraw,
+  whenPricesLoaded,
+  harvest,
+  fetchPrice,
+  fetchStrategy,
+} from '../web3';
 
 export function fetchVaultsData({ address, web3, pools }) {
   return async dispatch => {
@@ -36,48 +43,60 @@ export function fetchVaultsData({ address, web3, pools }) {
         });
       }
 
-      pools.map(pool => {
-        const vault = new web3.eth.Contract(vaultABI, pool.get('earnedTokenAddress'));
-        vaultCalls.push({
-          pricePerFullShare: vault.methods.balanceOf(address),
-          tvl: vault.methods.totalSupply() == undefined ? 0 : vault.methods.totalSupply(),
-        });
-      });
-
-      Promise.all([
-        multiCall.all([tokenCalls]).then(result => result[0]),
-        multiCall.all([vaultCalls]).then(result => result[0]),
-        whenPricesLoaded() // need to wait until prices are loaded in cache
-      ])
-        .then(data => {
-          const newPools = [];
-          pools.map((pool, i) => {
-            let a = data[1][i].pricePerFullShare == undefined ? 1 : data[1][i].pricePerFullShare;
-            const allowance = data[0][i] ? web3.utils.fromWei(data[0][i].allowance, 'ether') : 0;
-            const pricePerFullShare = byDecimals(a, 18).toNumber();
-
-            var newPool = pool.set('allowance', new BigNumber(allowance).toNumber() || 0);
-            newPool = newPool.set(
-              'pricePerFullShare',
-              new BigNumber(pricePerFullShare).toNumber() || 0
-            );
-            newPool = newPool.set('tvl', byDecimals(data[1][i].tvl, 18).toNumber());
-            newPool = newPool.set('oraclePrice', fetchPrice(pool.get('oracleId')));
-            newPools.push(newPool);
+      Promise.all(
+        pools.map(async pool => {
+          const vault = new web3.eth.Contract(vaultABI, pool.get('earnedTokenAddress'));
+          const strategyContractAddress = await fetchStrategy({
+            web3,
+            contractAddress: pool.get('earnedTokenAddress'),
+            pid: pool.get('pid'),
           });
-          var imPools = fromJS(newPools);
-          dispatch({
-            type: types.VAULT_FETCH_VAULTS_DATA_SUCCESS,
-            data: imPools,
+          const strategyContract = new web3.eth.Contract(strategyABI, strategyContractAddress);
+          var deposited = await vault.methods.stakedWantTokens(pool.get('pid'), address).call();
+          var reward = await vault.methods.pendingAUTO(pool.get('pid'), address).call();
+          var tvl = await strategyContract.methods.wantLockedTotal().call();
+          vaultCalls.push({
+            deposited: deposited,
+            tvl: tvl,
+            reward: reward
           });
-          resolve();
         })
-        .catch(error => {
-          dispatch({
-            type: types.VAULT_FETCH_VAULTS_DATA_FAILURE,
+      ).then(() => {
+        Promise.all([
+          multiCall.all([tokenCalls]).then(result => result[0]),
+          multiCall.all([vaultCalls]).then(result => result[0]),
+          whenPricesLoaded(), // need to wait until prices are loaded in cache
+        ])
+          .then(data => {
+            const newPools = [];
+            pools.map((pool, i) => {
+              let depBalance = data[1][i].deposited == undefined ? 0 : data[1][i].deposited;
+              let pendingReward = data[1][i].reward == undefined ? 0 : data[1][i].reward;
+              const allowance = data[0][i] ? web3.utils.fromWei(data[0][i].allowance, 'ether') : 0;
+              const deposited = byDecimals(depBalance, 18).toNumber().toFixed(6);
+              const reward = byDecimals(pendingReward, 18).toNumber().toFixed(6);
+
+              var newPool = pool.set('allowance', new BigNumber(allowance).toNumber() || 0);
+              newPool = newPool.set('deposited', new BigNumber(deposited).toNumber() || 0);
+              newPool = newPool.set('reward', new BigNumber(reward).toNumber() || 0);
+              newPool = newPool.set('tvl', byDecimals(data[1][i].tvl, 18).toNumber());
+              newPool = newPool.set('oraclePrice', fetchPrice(pool.get('oracleId')));
+              newPools.push(newPool);
+            });
+            var imPools = fromJS(newPools);
+            dispatch({
+              type: types.VAULT_FETCH_VAULTS_DATA_SUCCESS,
+              data: imPools,
+            });
+            resolve();
+          })
+          .catch(error => {
+            dispatch({
+              type: types.VAULT_FETCH_VAULTS_DATA_FAILURE,
+            });
+            reject(error.message || error);
           });
-          reject(error.message || error);
-        });
+      });
     });
 
     return promise;
@@ -118,7 +137,7 @@ export function fetchBalances({ address, web3, tokens }) {
             let newToken = {
               token: tokensList[i].token,
               tokenAddress: tokensList[i].tokenAddress,
-              tokenBalance: byDecimals(results[i].tokenBalance || 0, 18).toNumber(),
+              tokenBalance: byDecimals(results[i].tokenBalance || 0, 18).toNumber().toFixed(6),
             };
             newTokens.push(newToken);
           }
@@ -141,7 +160,7 @@ export function fetchBalances({ address, web3, tokens }) {
   };
 }
 
-export function fetchDeposit({ address, web3, amount, contractAddress, index }) {
+export function fetchDeposit({ address, web3, pid, amount, contractAddress, index }) {
   return async dispatch => {
     dispatch({
       type: types.VAULT_FETCH_DEPOSIT_BEGIN,
@@ -149,7 +168,7 @@ export function fetchDeposit({ address, web3, amount, contractAddress, index }) 
     });
 
     const promise = new Promise((resolve, reject) => {
-      deposit({ web3, address, amount, contractAddress, dispatch })
+      deposit({ web3, address, pid, amount, contractAddress, dispatch })
         .then(data => {
           dispatch({
             type: types.VAULT_FETCH_DEPOSIT_SUCCESS,
@@ -182,7 +201,7 @@ export function fetchDeposit({ address, web3, amount, contractAddress, index }) 
   };
 }
 
-export function fetchWithdraw({ address, web3, amount, contractAddress, index }) {
+export function fetchWithdraw({ address, web3, amount, pid, contractAddress, index }) {
   return async dispatch => {
     dispatch({
       type: types.VAULT_FETCH_WITHDRAW_BEGIN,
@@ -190,10 +209,10 @@ export function fetchWithdraw({ address, web3, amount, contractAddress, index })
     });
 
     const promise = new Promise((resolve, reject) => {
-      withdraw({ web3, address, amount, contractAddress, dispatch })
+      withdraw({ web3, address, amount, pid, contractAddress, dispatch })
         .then(data => {
           dispatch({
-            type: types.VAULT_FETCH_WITHDRAW_SUCCESS
+            type: types.VAULT_FETCH_WITHDRAW_SUCCESS,
           });
           dispatch({
             type: types.OPEN_TOAST,
@@ -295,13 +314,13 @@ export function fetchApys() {
       type: types.VAULT_FETCH_APYS_BEGIN,
     });
 
-    const promise = new Promise((resolve, reject) => {      
-      const apiReq = axios.get(`https://api.beefy.finance/apy?_=1617972101`);
+    const promise = new Promise((resolve, reject) => {
+      const apiReq = axios.get(`https://apiv2.crudeoil.finance/apy?_=1617972101`);
 
       apiReq.then(
         res => {
-          var output = Object.entries(res.data).map(([token, apy]) => ({token,apy}));
-          var imData = new fromJS(output)
+          var output = Object.entries(res.data).map(([token, apy]) => ({ token, apy }));
+          var imData = new fromJS(output);
           dispatch({
             type: types.VAULT_FETCH_APYS_SUCCESS,
             data: imData,
@@ -310,7 +329,7 @@ export function fetchApys() {
         },
         err => {
           dispatch({
-            type: types.VAULT_FETCH_APYS_FAILURE
+            type: types.VAULT_FETCH_APYS_FAILURE,
           });
           reject(err);
         }
@@ -325,3 +344,17 @@ const FetchBeginningVaultData = items => ({
   type: types.VAULT_FETCH_VAULTS_DATA_BEGIN,
   items,
 });
+
+const getStrategyContract = ({ web3, contractAddress, pid }) => {
+  const promise = new Promise((resolve, reject) => {
+    fetchStrategy({ web3, contractAddress, pid })
+      .then(data => {
+        const strategyContractAddress = data;
+        resolve(data);
+      })
+      .catch(error => {
+        reject(error.message || error);
+      });
+  });
+  return promise;
+};
