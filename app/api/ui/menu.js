@@ -29,25 +29,29 @@ module.exports = [
     name: 'Optimizer',
     link: '/app',
     icon: 'ios-globe-outline',
+    externalLink: false
   },
   {
     key: 'stats',
     name: 'Overall Stats',
     link: '/app/stat',
-    icon: 'md-stats'
+    icon: 'md-stats',
+    externalLink: false
   },
   {
     key: 'governance',
     name: 'Governance',
     link: '/app/coming-soon',
     badge: 'Coming Soon',
-    icon: 'md-medal'
+    icon: 'md-medal',
+    externalLink: false
   },
   {
     key: 'doc',
     name: 'Documents',
-    link: '',
-    icon: 'ios-document'
+    link: 'https://farm.crudeoil.finance/',
+    icon: 'ios-document',
+    externalLink: true
   },
 
   {
@@ -60,12 +64,14 @@ module.exports = [
         name: 'Buy OIL',
         link: 'https://farm.crudeoil.finance/',
         icon: 'md-clipboard',
+        externalLink: true
       },
       {
         key: 'buy-diesel',
         name: 'Buy DIESEL',
         link: 'https://farm.crudeoil.finance/',
         icon: 'md-clipboard',
+        externalLink: true
       },
     ],
   },
@@ -79,12 +85,14 @@ module.exports = [
         name: 'Yield Farm',
         link: 'https://farm.crudeoil.finance/',
         icon: 'md-ribbon',
+        externalLink: true
       },
       {
         key: 'audit-optimizer',
         name: 'Optimizer',
         link: 'https://farm.crudeoil.finance/',
         icon: 'md-ribbon',
+        externalLink: true
       },
     ],
   },

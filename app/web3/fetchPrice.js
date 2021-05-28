@@ -53,7 +53,7 @@ const fetchCoingecko = async ids => {
 
 const fetchTokens = async () => {
   try {
-    const response = await axios.get(`https://api.beefy.finance/prices?_=1617972101`);
+    const response = await axios.get(`https://apiv2.crudeoil.finance/prices?_=1617972101`);
     return response.data;
   } catch (err) {
     console.error(err);
@@ -63,7 +63,7 @@ const fetchTokens = async () => {
 
 const fetchLPs = async () => {
   try {
-    const response = await axios.get(`https://api.beefy.finance/lps?_=1617972101`);
+    const response = await axios.get(`https://apiv2.crudeoil.finance/lps?_=1617972101`);
     return response.data;
   } catch (err) {
     console.error(err);

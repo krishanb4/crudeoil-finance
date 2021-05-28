@@ -371,7 +371,8 @@ const styles = theme => ({
     padding: 0,
     width: '100%',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    zIndex: 9999
   },
   menuDivider: {
     borderTop: '1px solid #cccccc30',
@@ -448,6 +449,13 @@ const styles = theme => ({
   },
   languageBtn: {
     fontSize: 16
+  },
+  externalLinkDiv: {
+    background: 'transparent',
+    position: 'absolute',
+    zIndex: 99999,
+    width: '100%',
+    height: 25
   }
 });
 

@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -19,7 +19,10 @@ import styles from './sidebar-jss';
 
 const LinkBtn = React.forwardRef(function LinkBtn(props, ref) {
   // eslint-disable-line
-  return <NavLink to={props.to} {...props} innerRef={ref} />; // eslint-disable-line
+  if (props.external === 'true') {
+    return <Link to="/" {...props} innerRef={ref}  onClick={ (event) => event.preventDefault() } />;
+  } else
+    return <NavLink to={props.to} {...props} innerRef={ref} />; // eslint-disable-line
 });
 
 // eslint-disable-next-line
@@ -84,26 +87,28 @@ class MainMenu extends React.Component {
             </ListSubheader>
           );
         }
-        return (
-          <ListItem
-            key={index.toString()}
-            button
-            exact
-            className={classes.nested}
-            activeClassName={classes.active}
-            component={LinkBtn}
-            to={item.link}
-            onClick={() => this.handleClick()}
-          >
-            <ListItemIcon className={classes.icon}>
-              <Ionicon icon={item.icon} />
-            </ListItemIcon>
-            <ListItemText classes={{ primary: classes.primary }}
-              variant="inset"
-              primary={item.name} />
-            {item.badge && <Chip color="primary" label={item.badge} className={classes.badge} />}
-          </ListItem>
-        );
+          return (
+            <ListItem
+              key={index.toString()}
+              button
+              exact
+              className={classes.nested}
+              activeClassName={classes.active}
+              component={LinkBtn}
+              to={item.link}
+              external={item.externalLink.toString()}
+              onClick={() => this.handleClick()}
+            >
+              {item.externalLink && <div className={classes.externalLinkDiv} onClick={() => window.open(`${item.link}`, "_blank")}></div>}
+              <ListItemIcon className={classes.icon}>
+                <Ionicon icon={item.icon} />
+              </ListItemIcon>
+              <ListItemText classes={{ primary: classes.primary }}
+                variant="inset"
+                primary={item.name} />
+              {item.badge && <Chip color="primary" label={item.badge} className={classes.badge} />}
+            </ListItem>
+          );
       });
     return <div>{getMenus(dataMenu)}</div>;
   }

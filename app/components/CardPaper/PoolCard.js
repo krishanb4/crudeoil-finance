@@ -10,7 +10,7 @@ import CardContent from "@material-ui/core/CardContent";
 import styles from "./cardStyle-jss";
 import Button from '@material-ui/core/Button';
 import PoolDetailPopup from './PoolDetailPopup';
-import { useDispatch, useSelector, shallowEqual  } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as types from '../../constants/actionConstants';
 import { formatApy, formatTvl, calcDaily } from '../../helpers/format';
 
@@ -33,9 +33,17 @@ const PoolCard =({classes, width, tokens, pool, apys, isListView, index }) => {
     t.get('token') == pool.get('id')
 );
 
+const calAPY =()=> {
+ return formatApy(poolApy || 0);
+}
 
-  const closeDetailModal = () => {
-    setIsOpenDetailModal(false);
+
+const calAPYDaily =()=> {
+  return calcDaily(poolApy || 0);
+ }
+
+  const onCloseDetailModal = () => {
+    setIsOpenDetailModal(false);    
   };
 
   
@@ -80,7 +88,7 @@ const PoolCard =({classes, width, tokens, pool, apys, isListView, index }) => {
             isListView ? classes.shopDetailsDescGridLong : ''
           )}>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{pool.get('pricePerFullShare')}</span>
+              <span className={classes.shopDetailsValue}>{pool.get('deposited')}</span>
               <span className={classes.shopDetailsLabel}>Deposited</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
@@ -107,22 +115,21 @@ const PoolCard =({classes, width, tokens, pool, apys, isListView, index }) => {
           {isListView && <div className={classes.rowAdditonalGrid}>
               <div className={classes.flexColumn}>
                 <span className={classes.detailsHeader}>Vault Details</span>
-                <span>Asset: <b>OIL-BNB LP</b></span>
-                <span>XYZ Multiplyer: <b>11.50x</b></span>
-                <span>Type: <b>Stalking</b></span>
-                <span>Farm Name: <b>XYZ</b></span>
+                <span>Asset: <b>{pool.get('name')}</b></span>
+                <span>XYZ Multiplyer: <b>2x</b></span>
+                <span>Type: <b>auto-compounding</b></span>
+                <span>Farm Name: <b>{pool.get('platform')}</b></span>
               </div>
               <div className={classes.flexColumn}>
                 <span className={classes.detailsHeader}>APY Calculations</span>
                 <span>Farm APR: <b>0.00% (0.00% Daily)</b></span>
-                <span>Optimal Compunds per Year: <b>0</b></span>
-                <span>Farm APY: <b>0.00%</b></span>
+                <span>Optimal Compounds per Year: <b>0</b></span>
+                <span>Farm APY: <b>{formatApy(poolApy || 0)}</b></span>
                 <span>XYZ APR: <b>201.20% (0.55% Daily)</b></span>
               </div>
               <div className={classes.flexColumn}>
-                <span className={classes.detailsHeader}>Fees</span>
-                <span>Controller Fee: <b>None</b></span>
-                <span>Platform Fee: <b>None</b></span>
+                <span className={classes.detailsHeader}>Fees</span>                
+                <span>Platform Fee: <b>0.1% - 0.05% withdraw or deposit fee</b></span>
                 <span>XYZ Buyback Rate: <b>None</b></span>
                 <span>Max Entrance Fee: <b>None</b></span>
               </div>
@@ -150,7 +157,7 @@ const PoolCard =({classes, width, tokens, pool, apys, isListView, index }) => {
             </Button>
           </div>
         </CardActions> 
-        <PoolDetailPopup isOpenModal ={isOpenDetailModal} pool={pool} onCloseModal= {closeDetailModal} token ={token} index={index} ></PoolDetailPopup>       
+        <PoolDetailPopup isOpenModal ={isOpenDetailModal} pool={pool} onCloseModal= {onCloseDetailModal} token ={token} index={index} apy ={calAPY()} apyDaily = {calAPYDaily()} ></PoolDetailPopup>       
       </Card>      
 
     );

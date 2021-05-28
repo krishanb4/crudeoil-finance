@@ -16,7 +16,8 @@ import { ConnectedRouter } from 'connected-react-router/immutable';
 import FontFaceObserver from 'fontfaceobserver';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
-import { SnackbarProvider } from 'notistack';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Import root app
 import App from 'containers/App';
@@ -53,9 +54,8 @@ const render = messages => {
     <Provider store={store}>
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
-        <SnackbarProvider maxSnack={3}>
           <App />
-          </SnackbarProvider>
+          <ToastContainer />
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,
