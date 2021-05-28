@@ -176,16 +176,16 @@ class SidebarContent extends React.Component {
         <div className={classes.menuFooter}>
           <div className={classNames(!drawerPaper ? classes.menuDividerSmall : classes.menuDivider)} ></div>
           <div className={classes.flexWrap}>
-            <IconButton>
+            <IconButton onClick={() => window.open('https://twitter.com/crudeoil_fi', "_blank")}>
               <Ionicon icon="logo-twitter" />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={() => window.open('https://t.me/crudeoilfinance_ANN', "_blank")}>
               <Ionicon icon="ios-send" />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={() => window.open('https://farm.crudeoil.finance/', "_blank")}>
               <Ionicon icon="md-globe" />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={() => window.open('https://crudeoilfinance.medium.com/', "_blank")}>
               <img src="/images/logo/medium.png" width="24" />
             </IconButton>
             <IconButton>

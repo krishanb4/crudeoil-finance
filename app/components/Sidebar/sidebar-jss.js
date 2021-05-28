@@ -371,7 +371,8 @@ const styles = theme => ({
     padding: 0,
     width: '100%',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    zIndex: 9999
   },
   menuDivider: {
     borderTop: '1px solid #cccccc30',
