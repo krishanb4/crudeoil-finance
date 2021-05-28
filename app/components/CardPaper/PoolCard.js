@@ -13,6 +13,7 @@ import PoolDetailPopup from './PoolDetailPopup';
 import { useDispatch } from 'react-redux';
 import * as types from '../../constants/actionConstants';
 import { formatApy, formatTvl, calcDaily } from '../../helpers/format';
+import Ionicon from 'react-ionicons';
 
 const PoolCard =({classes, width, tokens, pool, apys, isListView, index }) => {
 
@@ -138,6 +139,32 @@ const calAPYDaily =()=> {
                 <span>Max Entrance Fee: <b>None</b></span>
               </div>
             </div>}
+            {isListView &&  <div className={classNames(classes.detailsBtnRow, classes.rowCenter)}>
+            <Button
+              color="secondary"
+              variant="contained"
+              className={classNames(classes.detailsBtn, classes.mr15)}
+            >
+              <Ionicon icon="ios-open" />
+              <span className={classes.detailsBtnText}>Farm Contract</span>
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              className={classNames(classes.detailsBtn, classes.mr15)}
+            >
+              <Ionicon icon="ios-open" />
+              <span className={classes.detailsBtnText}>Vault Contract</span>
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              className={classNames(classes.detailsBtn, classes.mr15)}
+            >
+              <Ionicon icon="md-create" />
+              <span className={classes.detailsBtnText}>Create LP</span>
+            </Button>
+          </div>}
 
 
         </CardContent>
