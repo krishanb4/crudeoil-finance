@@ -497,12 +497,20 @@ const PoolDetailPopup = ({
             <Button
               color="secondary"
               variant="contained"
-              className={classes.detailsBtn}
+              className={classNames(classes.detailsBtn, classes.mr15)}
               href={pool.get('vaultContract')}
               target="_blank"
             >
               <Ionicon icon="ios-open" />
               <span className={classes.detailsBtnText}>Vault Contract</span>
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              className={classNames(classes.detailsBtn, classes.mr15)}
+            >
+              <Ionicon icon="md-create" />
+              <span className={classes.detailsBtnText}>Create LP</span>
             </Button>
           </div>
         </DialogContentText>

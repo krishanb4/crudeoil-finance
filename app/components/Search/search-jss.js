@@ -181,10 +181,10 @@ const styles = theme => ({
   clearBtnRow: {
     display: 'flex', 
     alignItems: 'center', 
-    // marginLeft: 170, 
+    marginLeft: -42, 
     marginTop: '-3px',
     [theme.breakpoints.down('sm')]: {
-      marginLeft: 'auto'
+      marginLeft: 0
     },
   },
   platformFieldset:{
@@ -214,6 +214,10 @@ const styles = theme => ({
     marginLeft: -10,
     marginRight: 25
   },
+  refreshBtn : { 
+    marginRight: '10px', 
+    backgroundColor: '#2981bb !important'
+  }
 });
 
 export default styles;

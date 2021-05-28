@@ -643,11 +643,18 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 25
+    marginTop: 25,
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: 'inherit',
+    }
   },
   detailsBtn: {
     backgroundColor: '#2981bb !important',
-    borderRadius: 7
+    borderRadius: 7,
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: 12
+    }
   },
   detailsBtnText: {
     marginLeft: 5

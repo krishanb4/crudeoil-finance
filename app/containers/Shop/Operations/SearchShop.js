@@ -20,6 +20,7 @@ import Select from '@material-ui/core/Select';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import useStyles from '../../../hooks/useStyles';
+import Ionicon from 'react-ionicons';
 
 const SearchShop = ({ handleSwitchView, listView }) => {
   const classes = useStyles(styles)();
@@ -120,16 +121,7 @@ const SearchShop = ({ handleSwitchView, listView }) => {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <div className={classes.clearBtnRow}>
-                <Button style={{ marginRight: '10px' }} variant="contained" color="secondary">
-                  <img
-                    style={{ marginRight: '5px' }}
-                    src="/images/clear_filter.svg"
-                    width="20"
-                    height="20"
-                  />
-                  <span className={classes.cearBtnText}>Clear Filters</span>
-                </Button>
-                <Hidden mdDown>
+              <Hidden mdDown>
                   <div className={classes.toggleContainer}>
                     <ToggleButtonGroup value={listView} exclusive onChange={handleSwitchView}>
                       <ToggleButton value="grid">
@@ -141,6 +133,19 @@ const SearchShop = ({ handleSwitchView, listView }) => {
                     </ToggleButtonGroup>
                   </div>
                 </Hidden>
+                <Button style={{ marginRight: '10px' }} variant="contained" color="secondary">
+                  <img
+                    style={{ marginRight: '5px' }}
+                    src="/images/clear_filter.svg"
+                    width="20"
+                    height="20"
+                  />
+                  <span className={classes.cearBtnText}>Clear Filters</span>
+                </Button>
+                <Button className={classes.refreshBtn} variant="contained" color="secondary">
+                <Ionicon icon="md-refresh" />
+                  <span className={classes.cearBtnText}>Refresh</span>
+                </Button>
               </div>
             </div>
           </div>
