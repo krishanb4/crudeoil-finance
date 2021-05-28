@@ -73,8 +73,8 @@ export function fetchVaultsData({ address, web3, pools }) {
               let depBalance = data[1][i].deposited == undefined ? 0 : data[1][i].deposited;
               let pendingReward = data[1][i].reward == undefined ? 0 : data[1][i].reward;
               const allowance = data[0][i] ? web3.utils.fromWei(data[0][i].allowance, 'ether') : 0;
-              const deposited = byDecimals(depBalance, 18).toNumber().toFixed(6);
-              const reward = byDecimals(pendingReward, 18).toNumber().toFixed(6);
+              const deposited = byDecimals(depBalance, 18).toNumber();
+              const reward = byDecimals(pendingReward, 18).toNumber();
 
               var newPool = pool.set('allowance', new BigNumber(allowance).toNumber() || 0);
               newPool = newPool.set('deposited', new BigNumber(deposited).toNumber() || 0);
@@ -137,7 +137,7 @@ export function fetchBalances({ address, web3, tokens }) {
             let newToken = {
               token: tokensList[i].token,
               tokenAddress: tokensList[i].tokenAddress,
-              tokenBalance: byDecimals(results[i].tokenBalance || 0, 18).toNumber().toFixed(6),
+              tokenBalance: byDecimals(results[i].tokenBalance || 0, 18).toNumber(),
             };
             newTokens.push(newToken);
           }

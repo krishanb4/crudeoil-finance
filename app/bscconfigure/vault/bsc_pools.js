@@ -15,7 +15,7 @@ export const bscPools = [
     daily: 0,
     tvl: 0,
     reward: 0,
-    inactive: false,
+    isActive: true,
     depositsPaused: false,
     tokenAddress: '0xd712c16e0f6955db04d4e6167f485cb227a0f6ae',
     tokenDecimals: 18,

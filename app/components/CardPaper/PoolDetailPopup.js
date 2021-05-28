@@ -357,7 +357,7 @@ const PoolDetailPopup = ({
                     variant="contained"
                     className={classNames(classes.shopDetailsBtnDeposit, classes.mr15)}
                     onClick={() => onDeposit(false)}
-                    disabled={token.get('tokenBalance') <= 0}
+                    disabled={token.get('tokenBalance') <= 0 || depositAmount <= 0}
                   >
                     <img className={classes.shopDetailsBtnImg} src="/images/deposit.svg" />
                     <span className={classes.shopDetailsBtnText}>Deposit</span>
@@ -402,7 +402,7 @@ const PoolDetailPopup = ({
                 color="secondary"
                 variant="contained"
                 className={classNames(classes.shopDetailsBtnWithdraw, classes.mr15)}
-                disabled={pool.get('deposited') <= 0}
+                disabled={pool.get('deposited') <= 0 || withdrawAmount <= 0}
                 onClick={() => onWithdraw(false)}
               >
                 <img className={classes.shopDetailsBtnImg} src="/images/withdraw.svg" />
