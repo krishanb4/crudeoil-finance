@@ -1,9 +1,6 @@
 import { vaultABI } from '../bscconfigure';
 import * as types from '../constants/actionConstants';
-import { toast } from 'react-toastify';
-import React from 'react';
-import Ionicon from 'react-ionicons';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 export const deposit = async ({ web3, address, pid, amount, contractAddress, dispatch }) => {
   const contract = new web3.eth.Contract(vaultABI, contractAddress);
@@ -21,7 +18,7 @@ const _deposit = ({ web3, contract, amount, pid, address, dispatch }) => {
              
         dispatch({
           type: types.OPEN_TOAST,
-          items: { type: 'warning', hash: hash, message: 'Transaction Pending' }
+          items: { type: 'success', hash: hash, message: 'Transaction Pending' }
         });
       })
       .on('receipt', function(receipt) {
