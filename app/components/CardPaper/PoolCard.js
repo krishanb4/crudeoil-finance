@@ -12,7 +12,9 @@ import Button from '@material-ui/core/Button';
 import PoolDetailPopup from './PoolDetailPopup';
 import { useDispatch, useSelector, shallowEqual  } from 'react-redux';
 import * as types from '../../constants/actionConstants';
-const PoolCard =({classes, width, tokens, pool,isListView, index }) => {
+import { formatApy, formatTvl, calcDaily } from '../../helpers/format';
+
+const PoolCard =({classes, width, tokens, pool, apys, isListView, index }) => {
 
   const dispatch = useDispatch();
 
@@ -21,15 +23,16 @@ const PoolCard =({classes, width, tokens, pool,isListView, index }) => {
  const openDetailModal = () => {    
    setIsOpenDetailModal(true);
 
-  // dispatch({
-  //   type: types.OPEN_TOAST,
-  //   items: { type: 'success', hash: '210210291909012919029012', message: 'Transaction Pending' }
-  // });
   };
 
   var token = tokens.find(t => 
       t.get('token') == pool.get('token')
   );
+
+  var poolApy = apys.find(t => 
+    t.get('token') == pool.get('id')
+);
+
 
   const closeDetailModal = () => {
     setIsOpenDetailModal(false);
@@ -77,7 +80,7 @@ const PoolCard =({classes, width, tokens, pool,isListView, index }) => {
             isListView ? classes.shopDetailsDescGridLong : ''
           )}>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{pool.get('balance')}</span>
+              <span className={classes.shopDetailsValue}>{pool.get('pricePerFullShare')}</span>
               <span className={classes.shopDetailsLabel}>Deposited</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
@@ -85,15 +88,15 @@ const PoolCard =({classes, width, tokens, pool,isListView, index }) => {
               <span className={classes.shopDetailsLabel}>Available</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{pool.get('apy')}</span>
+              <span className={classes.shopDetailsValue}>{formatApy(poolApy || 0)}</span>
               <span className={classes.shopDetailsLabel}>APY </span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{pool.get('daily')}</span>
+              <span className={classes.shopDetailsValue}>{calcDaily(poolApy || 0)}</span>
               <span className={classes.shopDetailsLabel}>Daily </span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
-              <span className={classes.shopDetailsValue}>{pool.get('tvl')}</span>
+              <span className={classes.shopDetailsValue}>{ formatTvl (pool.get('tvl'), pool.get('oraclePrice'))}</span>
               <span className={classes.shopDetailsLabel}>TVL</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
@@ -157,6 +160,7 @@ PoolCard.propTypes = {
   classes: PropTypes.object.isRequired,
   width: PropTypes.string.isRequired,
   pool: PropTypes.object.isRequired,
+  apys:PropTypes.object.isRequired,
   isListView: PropTypes.bool
 };
 

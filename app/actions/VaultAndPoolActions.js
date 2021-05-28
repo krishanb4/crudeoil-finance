@@ -1,15 +1,15 @@
-import { useCallback } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+
 import * as types from '../constants/actionConstants';
 import Web3 from 'web3';
 import { getRpcUrl } from '../utils/networkSetup';
-import { erc20ABI, vaultABI, multiCallBnbShimABI } from '../bscconfigure';
+import axios from 'axios';
+import { erc20ABI, vaultABI } from '../bscconfigure';
 import { byDecimals } from '../helpers/bignumber';
 import { getNetworkMultiCall } from '../helpers/getNetworkData';
 import BigNumber from 'bignumber.js';
 import { MultiCall } from 'eth-multicall';
 import { fromJS } from 'immutable';
-import { approval, deposit } from '../web3';
+import { approval, deposit, withdraw, whenPricesLoaded, harvest, fetchPrice } from '../web3';
 import { toast } from 'react-toastify';
 import React from 'react';
 import Ionicon from 'react-ionicons';
@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const SuccessMsg = () => (
   <div style={{ display: 'flex', alignItems: 'center'}}>
-      <Ionicon icon="ios-checkmark-circle" /> 
+      <Ionicon icon="ios-checkmark-circle" />
       <span style={{ marginLeft: 5}}>Transaction Successfull</span>
   </div>
 )
@@ -50,10 +50,7 @@ export function fetchVaultsData({ address, web3, pools }) {
       pools.map(pool => {
         const vault = new web3.eth.Contract(vaultABI, pool.get('earnedTokenAddress'));
         vaultCalls.push({
-          pricePerFullShare:
-            vault.methods.getPricePerFullShare() == undefined
-              ? 0
-              : vault.methods.getPricePerFullShare(),
+          pricePerFullShare: vault.methods.balanceOf(address),
           tvl: vault.methods.totalSupply() == undefined ? 0 : vault.methods.totalSupply(),
         });
       });
@@ -61,7 +58,7 @@ export function fetchVaultsData({ address, web3, pools }) {
       Promise.all([
         multiCall.all([tokenCalls]).then(result => result[0]),
         multiCall.all([vaultCalls]).then(result => result[0]),
-        //whenPricesLoaded() // need to wait until prices are loaded in cache
+        whenPricesLoaded() // need to wait until prices are loaded in cache
       ])
         .then(data => {
           const newPools = [];
@@ -73,11 +70,10 @@ export function fetchVaultsData({ address, web3, pools }) {
             var newPool = pool.set('allowance', new BigNumber(allowance).toNumber() || 0);
             newPool = newPool.set(
               'pricePerFullShare',
-              new BigNumber(pricePerFullShare).toNumber() || 1
+              new BigNumber(pricePerFullShare).toNumber() || 0
             );
             newPool = newPool.set('tvl', byDecimals(data[1][i].tvl, 18).toNumber());
-            newPool = newPool.set('oraclePrice', 0.4);
-            // newPools.push(newPool);
+            newPool = newPool.set('oraclePrice', fetchPrice(pool.get('oracleId')));
             newPools.push(newPool);
           });
           var imPools = fromJS(newPools);
@@ -171,7 +167,7 @@ export function fetchDeposit({ address, web3, amount, contractAddress, index }) 
             data,
             index,
           });
-          toast.success(SuccessMsg);  
+          toast.success(SuccessMsg);
           // dispatch({
           //   type: types.OPEN_TOAST,
           //   items: { type: 'success', hash: '', message: 'Transaction Successfull' },
@@ -199,6 +195,74 @@ export function fetchDeposit({ address, web3, amount, contractAddress, index }) 
   };
 }
 
+export function fetchWithdraw({ address, web3, amount, contractAddress, index }) {
+  return async dispatch => {
+    dispatch({
+      type: types.VAULT_FETCH_WITHDRAW_BEGIN,
+      index,
+    });
+
+    const promise = new Promise((resolve, reject) => {
+      withdraw({ web3, address, amount, contractAddress, dispatch })
+        .then(data => {
+          dispatch({
+            type: types.VAULT_FETCH_WITHDRAW_SUCCESS
+          });
+          dispatch({
+            type: types.OPEN_TOAST,
+            items: { type: 'success', hash: '', message: 'Transaction Success' },
+          });
+          resolve(data);
+        })
+        .catch(error => {
+          dispatch({
+            type: types.VAULT_FETCH_WITHDRAW_FAILURE,
+            index,
+          });
+          dispatch({
+            type: types.OPEN_TOAST,
+            items: {
+              type: 'error',
+              hash: '',
+              message: `Transaction Failed : ${error.message || error} `,
+            },
+          });
+          reject(error.message || error);
+        });
+    });
+    return promise;
+  };
+}
+
+export function fetchHarvest({ address, web3, contractAddress, index }) {
+  return dispatch => {
+    dispatch({
+      type: types.VAULT_FETCH_STRATEGY_HARVEST_BEGIN,
+      index,
+    });
+
+    const promise = new Promise((resolve, reject) => {
+      harvest({ web3, address, vaultContractAddress: contractAddress, dispatch })
+        .then(data => {
+          dispatch({
+            type: types.VAULT_FETCH_STRATEGY_HARVEST_SUCCESS,
+            data,
+            index,
+          });
+          resolve(data);
+        })
+        .catch(error => {
+          dispatch({
+            type: types.VAULT_FETCH_STRATEGY_HARVEST_FAILURE,
+            index,
+          });
+          reject(error.message || error);
+        });
+    });
+    return promise;
+  };
+}
+
 export function fetchApproval({ address, web3, tokenAddress, contractAddress, index }) {
   return async dispatch => {
     dispatch({
@@ -215,7 +279,7 @@ export function fetchApproval({ address, web3, tokenAddress, contractAddress, in
         dispatch,
       })
         .then(data => {
-          toast.success(SuccessMsg);  
+          toast.success(SuccessMsg);
           // dispatch({
           //   type: types.OPEN_TOAST,
           //   items: { type: 'success', hash: '', message: 'Transaction Success' },
@@ -223,7 +287,7 @@ export function fetchApproval({ address, web3, tokenAddress, contractAddress, in
           resolve();
         })
         .catch(error => {
-          toast.error(`Transaction Failed : ${error.message || error} `);  
+          toast.error(`Transaction Failed : ${error.message || error} `);
           // dispatch({
           //   type: types.OPEN_TOAST,
           //   items: {
@@ -234,6 +298,38 @@ export function fetchApproval({ address, web3, tokenAddress, contractAddress, in
           // });
           reject(error.message || error);
         });
+    });
+
+    return promise;
+  };
+}
+
+export function fetchApys() {
+  return async dispatch => {
+    dispatch({
+      type: types.VAULT_FETCH_APYS_BEGIN,
+    });
+
+    const promise = new Promise((resolve, reject) => {
+      const apiReq = axios.get(`https://api.beefy.finance/apy?_=1617972101`);
+
+      apiReq.then(
+        res => {
+          var output = Object.entries(res.data).map(([token, apy]) => ({token,apy}));
+          var imData = new fromJS(output)
+          dispatch({
+            type: types.VAULT_FETCH_APYS_SUCCESS,
+            data: imData,
+          });
+          resolve(res);
+        },
+        err => {
+          dispatch({
+            type: types.VAULT_FETCH_APYS_FAILURE
+          });
+          reject(err);
+        }
+      );
     });
 
     return promise;
