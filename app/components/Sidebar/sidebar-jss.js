@@ -448,6 +448,13 @@ const styles = theme => ({
   },
   languageBtn: {
     fontSize: 16
+  },
+  externalLinkDiv: {
+    background: 'transparent',
+    position: 'absolute',
+    zIndex: 99999,
+    width: '100%',
+    height: 25
   }
 });
 

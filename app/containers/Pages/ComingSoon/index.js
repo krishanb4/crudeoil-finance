@@ -52,12 +52,7 @@ class ComingSoon extends React.Component {
                 )
               }
             >
-              <div className={classes.brandCenter}>
-                <div className={classes.brand}>
-                  <img src='/images/crudeoil_logo.png' alt={brand.name} />
-                  {brand.name}
-                </div>
-              </div>
+           
               <Typography variant="h4" className={classes.titleGradient} gutterBottom>
                 Our development team is working on this. It will be available soon...
               </Typography>
