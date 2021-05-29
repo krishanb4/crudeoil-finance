@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
 import * as types from '../../constants/actionConstants';
 import LinearProgress from '@material-ui/core/LinearProgress';
+
 import {
   fetchApproval,
   fetchBalances,
@@ -310,6 +311,7 @@ const PoolDetailPopup = ({
           </IconButton>
         </div>
       </DialogTitle>
+      {showLoader && <LinearProgress  className={classes.loaderBar}/>}
       <DialogContent>
         <Toast
           message={toastMessage}
@@ -317,14 +319,11 @@ const PoolDetailPopup = ({
           type={toastType}
           onClose={() => dispatch(closeToastAction())}
         />
-        {showLoader && <div className={classes.loaderDiv}>
-          <img src="/images/spinner.gif"  className={classes.loaderInit} alt="spinner" />
-          </div>
-        }
+        {showLoader && <div className={classes.loaderDiv}></div>}
         <div className={classes.dialogSliderGrid}>
           <div className={classes.flexColumn}>
             <span className={classes.inputLabel}>
-              Balance : {isFetchBalancesPending ? <LinearProgress /> : token.get('tokenBalance')}              
+              Balance : {isFetchBalancesPending ? <LinearProgress className={classes.depositedLoadingBar} /> : token.get('tokenBalance')}              
               </span>
             <Input
               placeholder="0"
@@ -384,7 +383,7 @@ const PoolDetailPopup = ({
           </div>
           <div className={classes.flexColumn}>
             <span className={classes.inputLabel}>
-               Deposited : {isFetchVaultsDataPending ? <LinearProgress /> : pool.get('deposited')}           
+               Deposited : {isFetchVaultsDataPending ? <LinearProgress className={classes.depositedLoadingBar} /> : pool.get('deposited')}           
               </span>
             <Input
               placeholder="0"
