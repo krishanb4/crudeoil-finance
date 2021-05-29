@@ -709,7 +709,7 @@ const styles = theme => ({
     position: 'absolute',
     top: 0,
     left: 0,
-    background: '#9494941f',
+    background: '#3e3e3e2e',
     width: '100vw',
     height: '100vh',
     zIndex: 1000,
@@ -719,6 +719,25 @@ const styles = theme => ({
     position: 'absolute',
     top: 'calc(50% - 65px)',
     left: 'calc(50% - 65px)'
+  },
+  loaderBar: {
+    position: 'relative',
+    top: -107
+  },
+  depositedLoadingBar: {
+    top: -8,
+    width: '84%',
+    left: 90,
+    [theme.breakpoints.down('sm')]: {
+      width: '70%'
+    }
+  },
+  valueLoadBar: {
+    marginTop: 18,
+    width: '85%',
+    [theme.breakpoints.down('sm')]: {
+      width: '65%'
+    }
   }
 });
 

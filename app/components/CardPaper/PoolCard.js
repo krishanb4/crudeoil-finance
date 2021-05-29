@@ -106,25 +106,25 @@ const calAPYDaily =()=> {
           )}>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>                
-                {isFetchVaultsDataPending ? <LinearProgress /> : pool.get('deposited')}
+                {isFetchVaultsDataPending ? <LinearProgress className={classes.valueLoadBar} /> : pool.get('deposited')}
                 </span>
               <span className={classes.shopDetailsLabel}>Deposited</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>
-              {isFetchBalancesPending ? <LinearProgress /> : token.get('tokenBalance')} 
+              {isFetchBalancesPending ? <LinearProgress className={classes.valueLoadBar} /> : token.get('tokenBalance')} 
                 </span>
               <span className={classes.shopDetailsLabel}>Available</span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>                
-                {isApysPending ? <LinearProgress /> : formatApy(poolApy || 0)} 
+                {isApysPending ? <LinearProgress className={classes.valueLoadBar} /> : formatApy(poolApy || 0)} 
                 </span>
               <span className={classes.shopDetailsLabel}>APY </span>
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>               
-                {isApysPending ? <LinearProgress /> : calcDaily(poolApy || 0)} 
+                {isApysPending ? <LinearProgress className={classes.valueLoadBar} /> : calcDaily(poolApy || 0)} 
                 </span>
               <span className={classes.shopDetailsLabel}>Daily </span>
             </Typography>
@@ -134,7 +134,7 @@ const calAPYDaily =()=> {
             </Typography>
             <Typography component="p" className={classes.shopDetailsDesc}>
               <span className={classes.shopDetailsValue}>                
-                {isFetchVaultsDataPending ? <LinearProgress /> : pool.get('reward')} 
+                {isFetchVaultsDataPending ? <LinearProgress className={classes.valueLoadBar} /> : pool.get('reward')} 
                 </span>
               <span className={classes.shopDetailsLabel}>Reward</span>
             </Typography>
