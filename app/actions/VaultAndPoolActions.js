@@ -264,7 +264,6 @@ export function fetchHarvest({ address, web3, pid, contractAddress, index }) {
         .then(data => {
           dispatch({
             type: types.VAULT_FETCH_STRATEGY_HARVEST_SUCCESS,
-            data,
             index,
           });
           resolve(data);

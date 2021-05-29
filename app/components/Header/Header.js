@@ -17,6 +17,7 @@ import {fetchVaultsData, fetchApys}  from '../../actions/VaultAndPoolActions';
 import { createWeb3Modal } from '../../web3';
 import styles from './header-jss';
 import networkSetup from  '../../utils/networkSetup';
+import * as types from '../../constants/actionConstants';
 
 import useStyles from '../../hooks/useStyles';
 
@@ -84,12 +85,14 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
       address &&
       !connectWalletPending &&
       networkId &&
-      Boolean(networkId !== Number(process.env.REACT_APP_NETWORK_ID))
+      Boolean(networkId !== Number(56))
     ) {
-      // networkSetup(process.env.REACT_APP_NETWORK_ID).catch(e => {
-      //   console.error(e);
-      //   alert('Network-Error');
-      // });
+      networkSetup(process.env.REACT_APP_NETWORK_ID).catch(e => {        
+        dispatch({
+          type: types.OPEN_TOAST,
+          items: { type: 'error', hash: '', message: 'Network Error.' },
+        });
+      });
     }
   }, [web3, address, networkId, connectWalletPending]);
 

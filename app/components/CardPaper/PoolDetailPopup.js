@@ -440,6 +440,7 @@ const PoolDetailPopup = ({
               variant="contained"
               className={classes.autoRewardsBtn}
               onClick={harvestReward}
+              disabled={pool.get('reward') <= 0}
             >
               <img src="/images/shovel.svg" width="20" height="20" />
               <span className={classes.detailsBtnText}>Harvest</span>

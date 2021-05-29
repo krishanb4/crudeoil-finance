@@ -14,6 +14,9 @@ import {
   VAULT_FETCH_APYS_BEGIN,
   VAULT_FETCH_APYS_SUCCESS,
   VAULT_FETCH_APYS_FAILURE,
+  VAULT_FETCH_STRATEGY_HARVEST_BEGIN,
+  VAULT_FETCH_STRATEGY_HARVEST_SUCCESS,
+  VAULT_FETCH_STRATEGY_HARVEST_FAILURE
 } from '../../constants/actionConstants';
 import { fromJS } from 'immutable';
 import { getNetworkPools } from '../../helpers/getNetworkData';
@@ -38,16 +41,12 @@ const initialState = {
   pools: pools,
   tokens: tokens,
   apys: [],
-  fetchApysDone: false,
-  fetchApysPending: false,
-  fetchVaultsDataDone: false,
-  fetchVaultsDataPending: false,
-  fetchBalancesDone: false,
-  fetchBalancesPending: false,
-  fetchApprovalPending: {},
-  fetchDepositPending: {},
-  fetchWithdrawPending: {},
-  fetchHarvestPending: {},
+  isFetchVaultsDataPending: true,
+  isFetchBalancesPending: true,
+  isDepositingPending: true,
+  isWithdrawingPending: false,
+  isApysPending: true,
+  isHarvestingPending: false
 };
 
 const initialImmutableState = fromJS(initialState);
@@ -119,6 +118,18 @@ export default function reducer(state = initialImmutableState, action = {}) {
     case VAULT_FETCH_APYS_FAILURE:
       return state.withMutations(mutableState => {
         mutableState.set('isApysPending', false);
+      });
+      case VAULT_FETCH_STRATEGY_HARVEST_BEGIN:
+      return state.withMutations(mutableState => {
+        mutableState.set('isHarvestingPending', true);
+      });
+    case VAULT_FETCH_STRATEGY_HARVEST_SUCCESS:
+      return state.withMutations(mutableState => {
+        mutableState.set('isHarvestingPending', false);
+      });
+    case VAULT_FETCH_STRATEGY_HARVEST_FAILURE:
+      return state.withMutations(mutableState => {
+        mutableState.set('isHarvestingPending', false);
       });
     default:
       return state;
