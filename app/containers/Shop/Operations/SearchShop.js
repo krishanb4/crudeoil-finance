@@ -22,7 +22,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import useStyles from '../../../hooks/useStyles';
 import Ionicon from 'react-ionicons';
 
-const SearchShop = ({ handleSwitchView, listView }) => {
+const SearchShop = ({ handleSwitchView, listView, onRefreshVaults }) => {
   const classes = useStyles(styles)();
 
   return (
@@ -142,7 +142,7 @@ const SearchShop = ({ handleSwitchView, listView }) => {
                   />
                   <span className={classes.cearBtnText}>Clear Filters</span>
                 </Button>
-                <Button className={classes.refreshBtn} variant="contained" color="secondary">
+                <Button className={classes.refreshBtn} variant="contained" color="secondary" onClick ={onRefreshVaults}>
                 <Ionicon icon="md-refresh" />
                   <span className={classes.cearBtnText}>Refresh</span>
                 </Button>
@@ -157,6 +157,7 @@ const SearchShop = ({ handleSwitchView, listView }) => {
 
 SearchShop.propTypes = {
   handleSwitchView: PropTypes.func.isRequired,
+  onRefreshVaults: PropTypes.func.isRequired,
   listView: PropTypes.string.isRequired,
 };
 

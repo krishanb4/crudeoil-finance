@@ -69,13 +69,7 @@ const Shop = ({ checkout, search }) => {
 
   useEffect(() => {
     const fetch = () => {
-      if (address && web3) {
-        dispatch(fetchBalances({ address, web3, tokens }));
-      }
-      if(web3){
-        dispatch(fetchVaultsData({ address, web3, pools }));
-      }
-      
+      refreshVaults();      
     };
     fetch();
 
@@ -116,6 +110,16 @@ const Shop = ({ checkout, search }) => {
     setPage(totalPages);
   };
 
+  const refreshVaults =()=> {
+    if (address && web3) {
+      dispatch(fetchBalances({ address, web3, tokens }));
+    }
+    if(web3){
+      dispatch(fetchVaultsData({ address, web3, pools }));
+    }
+    dispatch(fetchApys());
+  }
+
   const title = brand.name + ' - Optimizer';
   const description = brand.desc;
 
@@ -152,6 +156,7 @@ const Shop = ({ checkout, search }) => {
         search={search}
         keyword={keyword}
         listView={listView}
+        onRefreshVaults ={refreshVaults}
         handleSwitchView={handleSwitchView}
       />
       <ShopGallery
