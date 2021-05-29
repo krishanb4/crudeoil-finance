@@ -91,6 +91,9 @@ export function initializePriceCache() {
     if (!oracleToIds.has(pool.oracle)) {
       oracleToIds.set(pool.oracle, []);
     }
+    if(!oracleToIds.has('coingecko')){
+      oracleToIds.set('coingecko', ['OIL']);
+    }
     oracleToIds.get(pool.oracle).push(pool.oracleId);
   });
 
