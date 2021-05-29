@@ -7,7 +7,6 @@ import brand from 'dan-api/dummy/brand';
 import SearchShop from './Operations/SearchShop';
 import ShopGallery from './Operations/ShopGallery';
 import { closeToastAction } from 'dan-actions/ToastAction';
-import { formatDate } from '../../utils/common';
 import { Pagination } from '../../components';
 import Ionicon from 'react-ionicons';
 import useStyles from '../../hooks/useStyles';
@@ -50,7 +49,7 @@ const Shop = ({ checkout, search }) => {
   const { poolsTvl } = usePoolsTvl(pools);
   const { userTvl } = useUserTvl(pools, tokens);
 
-  const FETCH_INTERVAL_MS = 120000;
+  const FETCH_INTERVAL_MS = 240000;
 
   useEffect(() => {
      initializePriceCache();

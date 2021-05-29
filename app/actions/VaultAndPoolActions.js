@@ -45,27 +45,28 @@ export function fetchVaultsData({ address, web3, pools }) {
 
       Promise.all(
         pools.map(async pool => {
-          const vault = new web3.eth.Contract(vaultABI, pool.get('earnedTokenAddress'));
-          const pid = pool.get('pid');
-          const strategyContractAddress = await fetchStrategy({
-            web3,
-            contractAddress: pool.get('earnedTokenAddress'),
-            pid: pid,
-          });
-          const strategyContract = new web3.eth.Contract(strategyABI, strategyContractAddress);
-          let deposited = 0;
-          let reward = 0;
-          if(address) {
-            deposited = await vault.methods.stakedWantTokens(pid, address).call();
-            reward = await vault.methods.pendingAUTO(pid, address).call();
-          }
+          // const vault = new web3.eth.Contract(vaultABI, pool.get('earnedTokenAddress'));
+          // const pid = pool.get('pid');
+          // const strategyContractAddress = await fetchStrategy({
+          //   web3,
+          //   contractAddress: pool.get('earnedTokenAddress'),
+          //   pid: pid,
+          // });
+          // const strategyContract = new web3.eth.Contract(strategyABI, strategyContractAddress);
+          // let deposited = 0;
+          // let reward = 0;
+          // if(address) {
+          //   deposited = await vault.methods.stakedWantTokens(pid, address).call();
+          //   reward = await vault.methods.pendingAUTO(pid, address).call();
+          // }
           
-          var tvl = await strategyContract.methods.wantLockedTotal().call();
-          vaultCalls.push({
-            deposited: deposited,
-            tvl: tvl,
-            reward: reward,
-          });
+          // var tvl = await strategyContract.methods.wantLockedTotal().call();
+          // vaultCalls.push({
+          //   deposited: deposited,
+          //   tvl: tvl,
+          //   reward: reward,
+          // });
+          await _vaultsData({pool, web3, address, vaultCalls});
         })
       ).then(() => {
         Promise.all([
@@ -355,3 +356,27 @@ const FetchBeginningVaultData = items => ({
   type: types.VAULT_FETCH_VAULTS_DATA_BEGIN,
   items,
 });
+
+const _vaultsData = async ({pool, web3, address, vaultCalls })=> {
+  const vault = new web3.eth.Contract(vaultABI, pool.get('earnedTokenAddress'));
+  const pid = pool.get('pid');
+  const strategyContractAddress = await fetchStrategy({
+    web3,
+    contractAddress: pool.get('earnedTokenAddress'),
+    pid: pid,
+  });
+  const strategyContract = new web3.eth.Contract(strategyABI, strategyContractAddress);
+  let deposited = 0;
+  let reward = 0;
+  if(address) {
+    deposited = await vault.methods.stakedWantTokens(pid, address).call();
+    reward = await vault.methods.pendingAUTO(pid, address).call();
+  }
+  
+  var tvl = await strategyContract.methods.wantLockedTotal().call();
+  vaultCalls.push({
+    deposited: deposited,
+    tvl: tvl,
+    reward: reward,
+  });
+}

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -93,6 +93,10 @@ const PoolDetailPopup = ({
     }),
     shallowEqual
   );
+
+  useEffect(() => {
+    resetForm();
+  },[isOpenModal]);
 
   const onClickApproval = () => {
     setShowLoader(true);
