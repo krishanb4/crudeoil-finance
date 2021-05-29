@@ -46,19 +46,20 @@ export function fetchVaultsData({ address, web3, pools }) {
       Promise.all(
         pools.map(async pool => {
           const vault = new web3.eth.Contract(vaultABI, pool.get('earnedTokenAddress'));
+          const pid = pool.get('pid');
           const strategyContractAddress = await fetchStrategy({
             web3,
             contractAddress: pool.get('earnedTokenAddress'),
-            pid: pool.get('pid'),
+            pid: pid,
           });
           const strategyContract = new web3.eth.Contract(strategyABI, strategyContractAddress);
-          var deposited = await vault.methods.stakedWantTokens(pool.get('pid'), address).call();
-          var reward = await vault.methods.pendingAUTO(pool.get('pid'), address).call();
+          var deposited = await vault.methods.stakedWantTokens(pid, address).call();
+          var reward = await vault.methods.pendingAUTO(pid, address).call();
           var tvl = await strategyContract.methods.wantLockedTotal().call();
           vaultCalls.push({
             deposited: deposited,
             tvl: tvl,
-            reward: reward
+            reward: reward,
           });
         })
       ).then(() => {
@@ -73,12 +74,16 @@ export function fetchVaultsData({ address, web3, pools }) {
               let depBalance = data[1][i].deposited == undefined ? 0 : data[1][i].deposited;
               let pendingReward = data[1][i].reward == undefined ? 0 : data[1][i].reward;
               const allowance = data[0][i] ? web3.utils.fromWei(data[0][i].allowance, 'ether') : 0;
-              const deposited = byDecimals(depBalance, 18).toNumber();
-              const reward = byDecimals(pendingReward, 18).toNumber();
+              const deposited = byDecimals(depBalance, 18)
+                .toNumber()
+                .toFixed(8);
+              const reward = byDecimals(pendingReward, 18)
+                .toNumber()
+                .toFixed(8);
 
               var newPool = pool.set('allowance', new BigNumber(allowance).toNumber() || 0);
-              newPool = newPool.set('deposited', new BigNumber(deposited).toNumber() || 0);
-              newPool = newPool.set('reward', new BigNumber(reward).toNumber() || 0);
+              newPool = newPool.set('deposited', deposited || 0);
+              newPool = newPool.set('reward', reward || 0);
               newPool = newPool.set('tvl', byDecimals(data[1][i].tvl, 18).toNumber());
               newPool = newPool.set('oraclePrice', fetchPrice(pool.get('oracleId')));
               newPools.push(newPool);
@@ -137,7 +142,9 @@ export function fetchBalances({ address, web3, tokens }) {
             let newToken = {
               token: tokensList[i].token,
               tokenAddress: tokensList[i].tokenAddress,
-              tokenBalance: byDecimals(results[i].tokenBalance || 0, 18).toNumber(),
+              tokenBalance: byDecimals(results[i].tokenBalance || 0, 18)
+                .toNumber()
+                .toFixed(8),
             };
             newTokens.push(newToken);
           }

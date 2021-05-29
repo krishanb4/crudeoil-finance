@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
 import * as types from '../../constants/actionConstants';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import {
   fetchApproval,
   fetchBalances,
@@ -76,7 +77,7 @@ const PoolDetailPopup = ({
   const [withdrawAmount, setWithdrawAmount] = useState(0);
   const [showLoader, setShowLoader] = useState(false);
 
-  const { web3, address, toastMessage, toastHash, toastType, pools, tokens } = useSelector(
+  const { web3, address, toastMessage, toastHash, toastType, pools, tokens, isFetchBalancesPending, isFetchVaultsDataPending } = useSelector(
     state => ({
       web3: state.getIn(['wallet', 'web3']),
       pools: state.getIn(['vaults', 'pools']),
@@ -85,6 +86,9 @@ const PoolDetailPopup = ({
       toastMessage: state.getIn(['toastMessage', 'toastMessage']),
       toastHash: state.getIn(['toastMessage', 'toastHash']),
       toastType: state.getIn(['toastMessage', 'type']),
+      isFetchBalancesPending: state.getIn(['vaults', 'isFetchBalancesPending']),      
+      isFetchVaultsDataPending : state.getIn(['vaults', 'isFetchVaultsDataPending']),
+      isApysPending : state.getIn(['vaults', 'isApysPending']),
     }),
     shallowEqual
   );
@@ -223,7 +227,7 @@ const PoolDetailPopup = ({
       let balance = pool.get('deposited');
       let amount = new BigNumber(balance)
         .multipliedBy(new BigNumber(10).exponentiatedBy(pool.get('tokenDecimals')))
-        .toString(10);
+        .toFixed(0);
       setWithdrawAmount(balance);
       setWithdrawSliderValue(100);
       const pid = pool.get('pid');
@@ -319,7 +323,9 @@ const PoolDetailPopup = ({
         }
         <div className={classes.dialogSliderGrid}>
           <div className={classes.flexColumn}>
-            <span className={classes.inputLabel}>Balance : {token.get('tokenBalance')}</span>
+            <span className={classes.inputLabel}>
+              Balance : {isFetchBalancesPending ? <LinearProgress /> : token.get('tokenBalance')}              
+              </span>
             <Input
               placeholder="0"
               value={depositAmount}
@@ -333,9 +339,9 @@ const PoolDetailPopup = ({
               defaultValue={0}
               getAriaValueText={valuetext}
               aria-labelledby="discrete-slider-always"
+              valueLabelDisplay="auto"
               step={1}
-              marks={marks}
-              valueLabelDisplay="on"
+              marks={marks}              
               onChange={handleDepositSliderChangeRange}
               value={depositSliderValue}
             />
@@ -377,7 +383,9 @@ const PoolDetailPopup = ({
             </div>
           </div>
           <div className={classes.flexColumn}>
-            <span className={classes.inputLabel}>Deposited : {pool.get('deposited')}</span>
+            <span className={classes.inputLabel}>
+               Deposited : {isFetchVaultsDataPending ? <LinearProgress /> : pool.get('deposited')}           
+              </span>
             <Input
               placeholder="0"
               value={withdrawAmount}
@@ -391,9 +399,9 @@ const PoolDetailPopup = ({
               defaultValue={0}
               getAriaValueText={valuetext}
               aria-labelledby="discrete-slider-always"
+              valueLabelDisplay="auto"
               step={1}
-              marks={marks}
-              valueLabelDisplay="on"
+              marks={marks}              
               onChange={handleWithdrawSliderChangeRange}
               value={withdrawSliderValue}
             />
@@ -425,7 +433,9 @@ const PoolDetailPopup = ({
         <div className={classes.autoRewardsRow}>
           <div className={classes.autoRewardsSection}>
             <span className={classes.autoRewardsHeading}>XYZ Rewards</span>
-            <span className={classes.autoRewardsValue}>{pool.get('reward')}</span>
+            <span className={classes.autoRewardsValue}>
+            {isFetchVaultsDataPending ? <LinearProgress /> : pool.get('reward')}
+              </span>
             <Button
               color="secondary"
               variant="contained"
@@ -509,7 +519,7 @@ const PoolDetailPopup = ({
               className={classNames(classes.detailsBtn, classes.mr15)}
             >
               <Ionicon icon="md-create" />
-              <span className={classes.detailsBtnText}>Create LP</span>
+              <span className={classes.detailsBtnText}>{pool.get('oracle') == 'tokens'  ? 'BUY TOKEN' : 'Create LP'}</span>
             </Button>
           </div>
         </DialogContentText>
