@@ -135,31 +135,7 @@ class SidebarContent extends React.Component {
                     <img src={dummy.network.avalancheLogo} width="10" height="10" />
                     AVALANCHE
                   </MenuItem>
-                </Menu>
-                {/* <Menu
-                  id="status-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={closeMenuStatus}
-                  className={classes.statusMenu}
-                >
-                  <MenuItem onClick={() => changeStatus('online')}>
-                    <i className={classNames(classes.dotStatus, classes.online)} />
-                    Online
-                  </MenuItem>
-                  <MenuItem onClick={() => changeStatus('idle')}>
-                    <i className={classNames(classes.dotStatus, classes.idle)} />
-                    Idle
-                  </MenuItem>
-                  <MenuItem onClick={() => changeStatus('bussy')}>
-                    <i className={classNames(classes.dotStatus, classes.bussy)} />
-                    Bussy
-                  </MenuItem>
-                  <MenuItem onClick={() => changeStatus('offline')}>
-                    <i className={classNames(classes.dotStatus, classes.offline)} />
-                    Offline
-                  </MenuItem>
-                </Menu> */}
+                </Menu>                
               </div>
             </div>
           )}

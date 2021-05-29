@@ -91,7 +91,7 @@ export function fetchVaultsData({ address, web3, pools }) {
               newPool = newPool.set('deposited', deposited || 0);
               newPool = newPool.set('reward', reward || 0);
               newPool = newPool.set('tvl', byDecimals(data[1][i].tvl, 18).toNumber());
-              newPool = newPool.set('oraclePrice', fetchPrice(pool.get('oracleId')));
+              newPool = newPool.set('oraclePrice', fetchPrice({id: pool.get('oracleId')}));
               newPools.push(newPool);
             });
             var imPools = fromJS(newPools);
@@ -327,7 +327,7 @@ export function fetchApys() {
     });
 
     const promise = new Promise((resolve, reject) => {
-      const apiReq = axios.get(`https://apiv2.crudeoil.finance/apy?_=1617972101`);
+      const apiReq = axios.get(`https://apiv2.crudeoil.finance/apy`);
 
       apiReq.then(
         res => {

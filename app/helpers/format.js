@@ -1,13 +1,15 @@
 export const formatApy = apy => {
-  if (!apy) return `???`;
+  if ( !apy || !apy.get('apy')) return `???`;
+  
+  let apyValue = apy.get('apy');
 
-  apy *= 100;
+  apyValue *= 100;
 
   const units = ['', 'k', 'M', 'B', 'T', 'Q', 'Q', 'S', 'S'];
-  const order = apy < 1 ? 0 : Math.floor(Math.log10(apy) / 3);
+  const order = apyValue < 1 ? 0 : Math.floor(Math.log10(apyValue) / 3);
   if (order >= units.length - 1) return `🔥`;
 
-  const num = apy / 1000 ** order;
+  const num = apyValue / 1000 ** order;
   return `${num.toFixed(2)}${units[order]}%`;
 };
 

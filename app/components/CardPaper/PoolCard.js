@@ -14,7 +14,6 @@ import PoolDetailPopup from './PoolDetailPopup';
 import * as types from '../../constants/actionConstants';
 import { formatApy, formatTvl, calcDaily } from '../../helpers/format';
 import Ionicon from 'react-ionicons';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 const PoolCard =({classes, width, tokens, pool, apys, isListView, index }) => {
@@ -46,14 +45,25 @@ const PoolCard =({classes, width, tokens, pool, apys, isListView, index }) => {
     t.get('token') == pool.get('id')
 );
 
+var rewardApy = apys.find(t => 
+  t.get('token') == pool.get('rewardApyKey')
+);
+
 const calAPY =()=> {
  return formatApy(poolApy || 0);
 }
 
-
 const calAPYDaily =()=> {
   return calcDaily(poolApy || 0);
  }
+
+ const calRewardAPY =()=> {
+  return formatApy(rewardApy || 0);
+ }
+ 
+ const calRewardAPYDaily =()=> {
+   return calcDaily(rewardApy || 0);
+  }
 
   const onCloseDetailModal = () => {
     setIsOpenDetailModal(false);    
@@ -215,7 +225,9 @@ const calAPYDaily =()=> {
             </Button>
           </div>
         </CardActions> 
-        <PoolDetailPopup isOpenModal ={isOpenDetailModal} pool={pool} onCloseModal= {onCloseDetailModal} token ={token} index={index} apy ={calAPY()} apyDaily = {calAPYDaily()} ></PoolDetailPopup>       
+        <PoolDetailPopup isOpenModal ={isOpenDetailModal} pool={pool} onCloseModal= {onCloseDetailModal} token ={token}
+         index={index} apy ={calAPY()} apyDaily = {calAPYDaily()} RewardApy ={calRewardAPY()} RewardApyDaily = {calRewardAPYDaily()}
+          ></PoolDetailPopup>       
       </Card>      
 
     );

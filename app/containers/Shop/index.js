@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { useDispatch, useSelector, shallowEqual  } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { Toast } from 'dan-components';
 import brand from 'dan-api/dummy/brand';
 import SearchShop from './Operations/SearchShop';
@@ -10,10 +10,17 @@ import { closeToastAction } from 'dan-actions/ToastAction';
 import { Pagination } from '../../components';
 import Ionicon from 'react-ionicons';
 import useStyles from '../../hooks/useStyles';
-import {fetchVaultsData, fetchBalances, fetchApys, fetchApproval}  from '../../actions/VaultAndPoolActions';
+import {
+  fetchVaultsData,
+  fetchBalances,
+  fetchApys,
+  fetchApproval,
+} from '../../actions/VaultAndPoolActions';
 import { usePoolsTvl, useUserTvl } from '../../hooks/usePoolsTvl';
 import { initializePriceCache } from '../../web3/fetchPrice';
 import { formatGlobalTvl } from '../../helpers/format';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Web3 from 'web3';
 
 const Shop = ({ checkout, search }) => {
   const classes = useStyles(styles)();
@@ -24,24 +31,35 @@ const Shop = ({ checkout, search }) => {
   const shopData = stateData.getIn(['shop', 'list']);
   const shopIndex = stateData.getIn(['shop', 'shopIndex']);
   const totalItems = stateData.getIn(['shop', 'totalItems']);
-  
+
   const isLoading = stateData.getIn(['common', 'isLoading']);
 
   const [listView, setListView] = useState('grid');
-  
+
   const [page, setPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
 
-  const { web3, address, pools, tokens,toastMessage, toastHash, toastType, apys  } = useSelector(
+  const {
+    web3,
+    address,
+    pools,
+    tokens,
+    toastMessage,
+    toastHash,
+    toastType,
+    apys,
+    isFetchBalancesPending,
+  } = useSelector(
     state => ({
       web3: state.getIn(['wallet', 'web3']),
       address: state.getIn(['wallet', 'address']),
-      pools : state.getIn(['vaults', 'pools']),
-      tokens : state.getIn(['vaults', 'tokens']),
-      apys : state.getIn(['vaults', 'apys']),
-      toastMessage : state.getIn(['toastMessage', 'toastMessage']),
-      toastHash : state.getIn(['toastMessage', 'toastHash']),
-      toastType : state.getIn(['toastMessage', 'type']),
+      pools: state.getIn(['vaults', 'pools']),
+      tokens: state.getIn(['vaults', 'tokens']),
+      apys: state.getIn(['vaults', 'apys']),
+      toastMessage: state.getIn(['toastMessage', 'toastMessage']),
+      toastHash: state.getIn(['toastMessage', 'toastHash']),
+      toastType: state.getIn(['toastMessage', 'type']),
+      isFetchBalancesPending: state.getIn(['vaults', 'isFetchBalancesPending']),
     }),
     shallowEqual
   );
@@ -52,29 +70,27 @@ const Shop = ({ checkout, search }) => {
   const FETCH_INTERVAL_MS = 240000;
 
   useEffect(() => {
-     initializePriceCache();
+    initializePriceCache();
   }, []);
 
-  
-  useEffect(() => { 
-    const fetch = () => {     
-        dispatch(fetchApys());     
+  useEffect(() => {
+    const fetch = () => {
+      dispatch(fetchApys());
     };
     fetch();
-    
+
     const id = setInterval(fetch, FETCH_INTERVAL_MS);
     return () => clearInterval(id);
   }, [fetch]);
 
   useEffect(() => {
     const fetch = () => {
-      refreshVaults();      
+      refreshVaults();
     };
     fetch();
 
     const id = setInterval(fetch, FETCH_INTERVAL_MS);
     return () => clearInterval(id);
-
   }, [address, web3, fetchVaultsData, fetchApproval]);
 
   const handleSwitchView = (event, value) => {
@@ -109,15 +125,13 @@ const Shop = ({ checkout, search }) => {
     setPage(totalPages);
   };
 
-  const refreshVaults =()=> {
+  const refreshVaults = () => {
     if (address && web3) {
       dispatch(fetchBalances({ address, web3, tokens }));
     }
-    if(web3){
-      dispatch(fetchVaultsData({ address, web3, pools }));
-    }
+    dispatch(fetchVaultsData({ address, web3, pools }));
     dispatch(fetchApys());
-  }
+  };
 
   const title = brand.name + ' - Optimizer';
   const description = brand.desc;
@@ -132,10 +146,16 @@ const Shop = ({ checkout, search }) => {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
-      <Toast message={toastMessage} hash={toastHash} type={toastType} onClose={() => dispatch(closeToastAction())} />
+      <Toast
+        message={toastMessage}
+        hash={toastHash}
+        type={toastType}
+        onClose={() => dispatch(closeToastAction())}
+      />
       <div className={classes.headDetails}>
         <span className={classes.tvlText}>TVL : {formatGlobalTvl(poolsTvl)}</span>
-        <span className={classes.depositedText}>Deposited : {formatGlobalTvl(userTvl)}</span>
+        {/* <span className={classes.depositedText}>Deposited :{isFetchBalancesPending ? <LinearProgress className={classes.depositLoadBar} /> : formatGlobalTvl(userTvl)} </span> */}
+        <span className={classes.depositedText}>Deposited : {formatGlobalTvl(userTvl)} </span>
         <span className={classes.detailsText}>
           There is a 0.05%-0.1% withdrawal or deposit fee on all vaults
         </span>
@@ -155,16 +175,16 @@ const Shop = ({ checkout, search }) => {
         search={search}
         keyword={keyword}
         listView={listView}
-        onRefreshVaults ={refreshVaults}
+        onRefreshVaults={refreshVaults}
         handleSwitchView={handleSwitchView}
       />
       <ShopGallery
         listView={listView}
         pools={pools}
-        tokens ={tokens}
-        apys ={apys}        
+        tokens={tokens}
+        apys={apys}
         keyword={keyword}
-      />      
+      />
       <Pagination
         curpage={page}
         totpages={1}
@@ -230,5 +250,13 @@ const styles = theme => ({
     color: 'white',
     fontSize: 12,
     fontWeight: 400,
+  },
+  depositLoadBar: {
+    top: -8,
+    width: '84%',
+    left: 90,
+    [theme.breakpoints.down('sm')]: {
+      width: '70%',
+    },
   },
 });

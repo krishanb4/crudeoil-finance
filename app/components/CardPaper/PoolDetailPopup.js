@@ -69,6 +69,8 @@ const PoolDetailPopup = ({
   index,
   apy,
   apyDaily,
+  RewardApy,
+  RewardApyDaily
 }) => {
   const dispatch = useDispatch();
 
@@ -478,7 +480,7 @@ const PoolDetailPopup = ({
                 Optimal Compounds per Year: <b>0</b>
               </span>
               <span>
-                XYZ APY: <b>201.20% (0.55% Daily)</b>
+                XYZ APY: <b>{RewardApy}( {RewardApyDaily} Daily)</b>
               </span>
             </div>
             <div className={classes.flexColumn}>
