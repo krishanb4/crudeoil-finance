@@ -154,8 +154,8 @@ const Shop = ({ checkout, search }) => {
       />
       <div className={classes.headDetails}>
         <span className={classes.tvlText}>TVL : {formatGlobalTvl(poolsTvl)}</span>
-        {/* <span className={classes.depositedText}>Deposited :{isFetchBalancesPending ? <LinearProgress className={classes.depositLoadBar} /> : formatGlobalTvl(userTvl)} </span> */}
-        <span className={classes.depositedText}>Deposited : {formatGlobalTvl(userTvl)} </span>
+        <span className={classes.depositedText}>Deposited : {isFetchBalancesPending ? <LinearProgress className={classes.depositedLoadBar} /> : formatGlobalTvl(userTvl)} </span>
+        {/* <span className={classes.depositedText}>Deposited : {formatGlobalTvl(userTvl)} </span> */}
         <span className={classes.detailsText}>
           There is a 0.05%-0.1% withdrawal or deposit fee on all vaults
         </span>
@@ -251,12 +251,11 @@ const styles = theme => ({
     fontSize: 12,
     fontWeight: 400,
   },
-  depositLoadBar: {
-    top: -8,
-    width: '84%',
-    left: 90,
-    [theme.breakpoints.down('sm')]: {
-      width: '70%',
-    },
-  },
+  depositedLoadBar: {
+    top: -10,
+    left: 110,
+    width: '35%',
+    display: 'block',
+    marginRight: 173
+  }
 });
