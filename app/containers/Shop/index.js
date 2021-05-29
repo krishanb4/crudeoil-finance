@@ -16,18 +16,6 @@ import { usePoolsTvl, useUserTvl } from '../../hooks/usePoolsTvl';
 import { initializePriceCache } from '../../web3/fetchPrice';
 import { formatGlobalTvl } from '../../helpers/format';
 
-const initData = {
-  name: '',
-  email: '',
-  address: '',
-  telephone: '',
-  mobile: '',
-  closedFrom: formatDate(new Date(new Date().setDate(new Date().getDate() - 20))),
-  closedTo: formatDate(new Date(new Date().setDate(new Date().getDate() - 4))),
-  categoryId: '',
-  description: '',
-};
-
 const Shop = ({ checkout, search }) => {
   const classes = useStyles(styles)();
   const stateData = useSelector(state => state);
@@ -69,11 +57,9 @@ const Shop = ({ checkout, search }) => {
   }, []);
 
   
-  useEffect(() => {    
-
+  useEffect(() => { 
     const fetch = () => {     
-        dispatch(fetchApys());
-     
+        dispatch(fetchApys());     
     };
     fetch();
     
@@ -86,7 +72,10 @@ const Shop = ({ checkout, search }) => {
       if (address && web3) {
         dispatch(fetchBalances({ address, web3, tokens }));
       }
-      dispatch(fetchVaultsData({ address, web3, pools }));
+      if(web3){
+        dispatch(fetchVaultsData({ address, web3, pools }));
+      }
+      
     };
     fetch();
 

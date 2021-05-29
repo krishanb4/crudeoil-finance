@@ -53,8 +53,13 @@ export function fetchVaultsData({ address, web3, pools }) {
             pid: pid,
           });
           const strategyContract = new web3.eth.Contract(strategyABI, strategyContractAddress);
-          var deposited = await vault.methods.stakedWantTokens(pid, address).call();
-          var reward = await vault.methods.pendingAUTO(pid, address).call();
+          let deposited = 0;
+          let reward = 0;
+          if(address) {
+            deposited = await vault.methods.stakedWantTokens(pid, address).call();
+            reward = await vault.methods.pendingAUTO(pid, address).call();
+          }
+          
           var tvl = await strategyContract.methods.wantLockedTotal().call();
           vaultCalls.push({
             deposited: deposited,

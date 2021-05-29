@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import { useDispatch, useSelector, shallowEqual  } from 'react-redux';
 
 import { disconnectWallet, connectWallet } from 'dan-actions/WalletActions';
+import {fetchVaultsData, fetchApys}  from '../../actions/VaultAndPoolActions';
 import { createWeb3Modal } from '../../web3';
 import styles from './header-jss';
 import networkSetup from  '../../utils/networkSetup';
@@ -72,7 +73,8 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
 
   useEffect(() => {
     if (web3Modal && (web3Modal.cachedProvider || window.ethereum)) {
-      dispatch(connectWallet(web3Modal));
+      dispatch(connectWallet(web3Modal));      
+      dispatch(fetchApys());
     }
   }, [web3Modal, connectWallet]);
 
