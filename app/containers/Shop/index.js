@@ -60,6 +60,7 @@ const Shop = ({ checkout, search }) => {
       toastHash: state.getIn(['toastMessage', 'toastHash']),
       toastType: state.getIn(['toastMessage', 'type']),
       isFetchBalancesPending: state.getIn(['vaults', 'isFetchBalancesPending']),
+      isFetchVaultsDataPending: state.getIn(['vaults', 'isFetchVaultsDataPending']),
     }),
     shallowEqual
   );

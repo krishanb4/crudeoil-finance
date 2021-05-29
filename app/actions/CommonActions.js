@@ -1,6 +1,6 @@
 import * as types from '../constants/actionConstants';
 
-export const serverInvokingStartedAction = items => ({
+export const refreshData = () => ({
   type: types.SERVER_INVOKING_STARTED,
   items,
 });

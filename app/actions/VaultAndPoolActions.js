@@ -44,28 +44,7 @@ export function fetchVaultsData({ address, web3, pools }) {
       }
 
       Promise.all(
-        pools.map(async pool => {
-          // const vault = new web3.eth.Contract(vaultABI, pool.get('earnedTokenAddress'));
-          // const pid = pool.get('pid');
-          // const strategyContractAddress = await fetchStrategy({
-          //   web3,
-          //   contractAddress: pool.get('earnedTokenAddress'),
-          //   pid: pid,
-          // });
-          // const strategyContract = new web3.eth.Contract(strategyABI, strategyContractAddress);
-          // let deposited = 0;
-          // let reward = 0;
-          // if(address) {
-          //   deposited = await vault.methods.stakedWantTokens(pid, address).call();
-          //   reward = await vault.methods.pendingAUTO(pid, address).call();
-          // }
-          
-          // var tvl = await strategyContract.methods.wantLockedTotal().call();
-          // vaultCalls.push({
-          //   deposited: deposited,
-          //   tvl: tvl,
-          //   reward: reward,
-          // });
+        pools.map(async pool => {          
           await _vaultsData({pool, web3, address, vaultCalls});
         })
       ).then(() => {
@@ -77,8 +56,9 @@ export function fetchVaultsData({ address, web3, pools }) {
           .then(data => {
             const newPools = [];
             pools.map((pool, i) => {
-              let depBalance = data[1][i].deposited == undefined ? 0 : data[1][i].deposited;
-              let pendingReward = data[1][i].reward == undefined ? 0 : data[1][i].reward;
+              const correctPool = data[1].find( d=> d.id == pool.get('id'));
+              let depBalance =  correctPool.deposited;
+              let pendingReward = correctPool.reward;
               const allowance = data[0][i] ? web3.utils.fromWei(data[0][i].allowance, 'ether') : 0;
               const deposited = byDecimals(depBalance, 18)
                 .toNumber()
@@ -375,6 +355,7 @@ const _vaultsData = async ({pool, web3, address, vaultCalls })=> {
   
   var tvl = await strategyContract.methods.wantLockedTotal().call();
   vaultCalls.push({
+    id : pool.get('id'),
     deposited: deposited,
     tvl: tvl,
     reward: reward,

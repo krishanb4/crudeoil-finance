@@ -11,7 +11,6 @@ export const CHANGE_BG_POSITION = 'CHANGE_BG_POSITION';
 export const CHANGE_LAYOUT = 'CHANGE_LAYOUT';
 export const CHANGE_DIRECTION = 'CHANGE_DIRECTION';
 export const LOAD_PAGE = 'LOAD_PAGE';
-
 // Shops
 export const FETCH_SHOP_DATA = 'FETCH_SHOP_DATA';
 export const SEARCH_SHOP = 'SEARCH_SHOP';

@@ -17,8 +17,6 @@ import IconButton from '@material-ui/core/IconButton';
 
 import { fetchPrice } from '../../web3';
 
-const mainContent = document.getElementById('sidebar');
-
 const SidebarContent = ({
   classes,
   turnDarker,
@@ -38,6 +36,13 @@ const SidebarContent = ({
   const [oilPrice, setOilPrice] = useState(0);
   const [dieselPrice, setDieselPrice] = useState(0);
 
+  const { isFetchVaultsDataPending } = useSelector(
+    state => ({
+      isFetchVaultsDataPending: state.getIn(['vaults', 'isFetchVaultsDataPending']),
+    }),
+    shallowEqual
+  );
+
   useEffect(() => {
     const mainContent = document.getElementById('sidebar');
     mainContent.addEventListener('scroll', handleScroll);
@@ -48,9 +53,9 @@ const SidebarContent = ({
   }, []);
 
   useEffect(() => {
-   setOilPrice(fetchPrice({id: 'OIL'}));
-   setDieselPrice(fetchPrice({id: 'DIESEL'}));
-  },[]);
+    setOilPrice(fetchPrice({ id: 'OIL' }));
+    setDieselPrice(fetchPrice({ id: 'DIESEL' }));
+  },[isFetchVaultsDataPending]);
 
   const handleScroll = event => {
     const scroll = event.target.scrollTop;
