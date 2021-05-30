@@ -49,6 +49,7 @@ const Shop = ({ checkout, search }) => {
     toastType,
     apys,
     isFetchBalancesPending,
+    isFetchVaultsDataPending
   } = useSelector(
     state => ({
       web3: state.getIn(['wallet', 'web3']),
@@ -154,9 +155,8 @@ const Shop = ({ checkout, search }) => {
         onClose={() => dispatch(closeToastAction())}
       />
       <div className={classes.headDetails}>
-        <span className={classes.tvlText}>TVL : {formatGlobalTvl(poolsTvl)}</span>
-        <span className={classes.depositedText}>Deposited : {isFetchBalancesPending ? <LinearProgress className={classes.depositedLoadBar} /> : formatGlobalTvl(userTvl)} </span>
-        {/* <span className={classes.depositedText}>Deposited : {formatGlobalTvl(userTvl)} </span> */}
+        <span className={classes.tvlText}>TVL :{isFetchVaultsDataPending ? <LinearProgress className={classes.depositedLoadBar} /> :  formatGlobalTvl(poolsTvl)}</span>
+        <span className={classes.depositedText}>Deposited : {isFetchBalancesPending ? <LinearProgress className={classes.depositedLoadBar} /> : formatGlobalTvl(userTvl)} </span>        
         <span className={classes.detailsText}>
           There is a 0.05%-0.1% withdrawal or deposit fee on all vaults
         </span>
