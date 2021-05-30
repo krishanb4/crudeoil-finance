@@ -14,10 +14,10 @@ module.exports = options => ({
   output: Object.assign(
     {
       // Compile into js/build.js
-      path: path.resolve(process.cwd(), 'build'),
+      path: path.resolve(process.cwd(), 'public'),
       publicPath: '/',
     },
-    options.output,
+    options.output
   ), // Merge with env dependent settings
   optimization: options.optimization,
   module: {
@@ -64,36 +64,37 @@ module.exports = options => ({
       },
       {
         test: /\.(scss)$/,
-        use: [{
-          loader: 'style-loader'
-        },
-        {
-          loader: 'css-loader',
-          options:
+        use: [
           {
-            sourceMap: false,
-            importLoaders: 2,
-            modules: true,
-            localIdentName: '[local]__[hash:base64:5]'
-          }
-        },
-        {
-          loader: 'postcss-loader',
-          options: {
-            sourceMap: false
-          }
-        },
-        {
-          loader: 'sass-loader',
-          options: {
-            outputStyle: 'expanded',
-            sourceMap: false
-          }
-        }],
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: false,
+              importLoaders: 2,
+              modules: true,
+              localIdentName: '[local]__[hash:base64:5]',
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: false,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              outputStyle: 'expanded',
+              sourceMap: false,
+            },
+          },
+        ],
       },
       {
         test: /\.md$/,
-        use: 'raw-loader'
+        use: 'raw-loader',
       },
       {
         test: /\.(jpg|png|gif|svg)$/,
@@ -152,7 +153,7 @@ module.exports = options => ({
     ],
   },
   node: {
-    fs: 'empty'
+    fs: 'empty',
   },
   plugins: options.plugins.concat([
     // Always expose NODE_ENV to webpack, in order to use `process.env.NODE_ENV`
@@ -161,21 +162,23 @@ module.exports = options => ({
     new HappyPack({
       id: 'js',
       threadPool: happyThreadPool,
-      loaders: ['babel-loader?cacheDirectory=true']
+      loaders: ['babel-loader?cacheDirectory=true'],
     }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
     }),
     new webpack.ContextReplacementPlugin(/^\.\/locale$/, context => {
-      if (!/\/moment\//.test(context.context)) { return; }
+      if (!/\/moment\//.test(context.context)) {
+        return;
+      }
       // context needs to be modified in place
       Object.assign(context, {
         // include only CJK
         regExp: /^\.\/(ja|ko|zh)/,
         // point to the locale data folder relative to moment's src/lib/locale
-        request: '../../locale'
+        request: '../../locale',
       });
-    })
+    }),
   ]),
   resolve: {
     modules: ['node_modules', 'app'],
@@ -189,7 +192,7 @@ module.exports = options => ({
       'dan-api': path.resolve(__dirname, '../../app/api/'),
       'dan-images': path.resolve(__dirname, '../../public/images/'),
       'dan-vendor': path.resolve(__dirname, '../../node_modules/'),
-    }
+    },
   },
   devtool: options.devtool,
   target: 'web', // Make web variables accessible to webpack, e.g. window
