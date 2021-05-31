@@ -148,7 +148,7 @@ const styles = theme => ({
     gridTemplateColumns: 'auto auto', 
     gridColumnGap: 30, 
     gridRowGap: 0,
-    padding: '15px 0px 15px 0px',
+    padding: '0px 0px 15px 0px',
     [theme.breakpoints.down('sm')]: {
       gridTemplateColumns: '1fr', 
     },
@@ -218,6 +218,38 @@ const styles = theme => ({
   refreshBtn : { 
     marginLeft: 70, 
     backgroundColor: '#2981bb !important'
+  },
+  showHideFiltersSection: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    fontSize: 12,
+    background: 'white',
+  },
+  showHideBtn: {
+    border: '1px solid #e8e8e8',
+    width: 'fit-content',
+    padding: '5px 10px',
+    cursor: 'pointer',
+    background: '#eaf7ff',
+    display: 'flex',
+    alignItems: 'center',
+    fontWeight: 600
+  },
+  showHideIcon: {
+    width: 16,
+    height: 16,
+    marginRight: 5
+  },
+  hideFilterSection: {
+    height: 20
+  },
+  hideSection: {
+    display: 'none'
+  },
+  filterBtnRow: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 

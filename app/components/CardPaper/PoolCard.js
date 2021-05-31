@@ -21,6 +21,7 @@ const PoolCard =({classes, width, tokens, pool, apys, isListView, index }) => {
   const dispatch = useDispatch();
 
   const [isOpenDetailModal, setIsOpenDetailModal] = useState(false);
+  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
 
   const { isFetchBalancesPending, isFetchVaultsDataPending, isApysPending  } = useSelector(
     state => ({
@@ -69,6 +70,14 @@ const calAPYDaily =()=> {
     setIsOpenDetailModal(false);    
   };
 
+  const hideAdditionalInfo = () => {
+    setShowAdditionalInfo(false);
+  }
+
+  const showAdditionalInfoPanel = () => {
+    setShowAdditionalInfo(true);
+  }
+
   
     return (
       <Card
@@ -80,6 +89,22 @@ const calAPYDaily =()=> {
           isListView ? classes.cardFlex : ""
         )}
       >
+        {showAdditionalInfo && <div className={classNames(
+            isListView ? classes.showAdditionalInfoSection : classes.hideSection
+          )}>
+          <div className={classes.showAdditionalInfoBtn} onClick ={hideAdditionalInfo}>
+            <Ionicon className={classes.showAdditionalInfoIcon} icon="ios-information-circle-outline" />
+            <span>Hide Additional Information</span>
+          </div>
+        </div>}
+      {!showAdditionalInfo && <div className={classNames(
+            isListView ? classes.showAdditionalInfoSection : classes.hideSection
+          )}>
+          <div className={classes.showAdditionalInfoBtn} onClick ={showAdditionalInfoPanel}>
+            <Ionicon className={classes.showAdditionalInfoIcon} icon="ios-information-circle-outline" />
+            <span>Show Additional Information</span>
+          </div>
+        </div>}
         <CardContent className={classNames(
             classes.floatingButtonWrap,
             isListView ? classes.cardFlexGrow : ''
@@ -149,7 +174,9 @@ const calAPYDaily =()=> {
               <span className={classes.shopDetailsLabel}>Reward</span>
             </Typography>
           </div>
-          {isListView && <div className={classes.rowAdditonalGrid}>
+          {isListView && <div className={classNames(
+            showAdditionalInfo ? classes.rowAdditonalGrid : classes.hideSection
+          )}>
               <div className={classes.flexColumn}>
                 <span className={classes.detailsHeader}>Vault Details</span>
                 <span>Asset: <b>{pool.get('name')}</b></span>
@@ -202,8 +229,6 @@ const calAPYDaily =()=> {
               <span className={classes.detailsBtnText}>Create LP</span>
             </Button>
           </div>}
-
-
         </CardContent>
         <CardActions className={classes.actionRow}>
           <div className={classNames(
@@ -225,6 +250,7 @@ const calAPYDaily =()=> {
             </Button>
           </div>
         </CardActions> 
+        
         <PoolDetailPopup isOpenModal ={isOpenDetailModal} pool={pool} onCloseModal= {onCloseDetailModal} token ={token}
          index={index} apy ={calAPY()} apyDaily = {calAPYDaily()} RewardApy ={calRewardAPY()} RewardApyDaily = {calRewardAPYDaily()}
           ></PoolDetailPopup>       

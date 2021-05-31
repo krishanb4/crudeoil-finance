@@ -284,6 +284,10 @@ const styles = theme => ({
         fill: theme.palette.common.white,
       }
     },
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: -12,
+      marginRight: 10
+    }
   },
   brand: {
     display: 'flex',
@@ -513,6 +517,9 @@ const styles = theme => ({
   },
   logoutBtnText: {
     marginLeft: '5px'
+  },
+  notifDivider: {
+    marginLeft: '0px !important'
   }
 });
 

@@ -20,6 +20,8 @@ import { networkSetup } from '../../utils/networkSetup';
 import * as types from '../../constants/actionConstants';
 
 import useStyles from '../../hooks/useStyles';
+import Hidden from '@material-ui/core/Hidden';
+import HeaderNotification from './HeaderNotification';
 
 const elem = document.documentElement;
 
@@ -189,23 +191,28 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
         <div className={classes.headerProperties}>
           <div className={classNames(classes.headerAction, showTitle && classes.fadeOut)}>
             {fullScreen ? (
+              <Hidden mdDown>
               <Tooltip title="Exit Full Screen" placement="bottom">
                 <IconButton className={classes.button} onClick={closeFullScreen}>
                   <Ionicon icon="ios-qr-scanner" />
                 </IconButton>
               </Tooltip>
+              </Hidden>
             ) : (
+              <Hidden mdDown>
               <Tooltip title="Full Screen" placement="bottom">
                 <IconButton className={classes.button} onClick={openFullScreen}>
                   <Ionicon icon="ios-qr-scanner" />
                 </IconButton>
               </Tooltip>
+              </Hidden>
             )}
             <Tooltip title="Turn Dark/Light" placement="bottom">
               <IconButton className={classes.button} onClick={() => turnMode(mode)}>
                 <Ionicon icon="ios-bulb-outline" />
               </IconButton>
             </Tooltip>
+            <HeaderNotification />
             <div className={classes.flexRowLeft}>
               <Tooltip title="Buy" placement="bottom">
                 <Button className={classes.buyBtn} variant="contained" color="secondary">

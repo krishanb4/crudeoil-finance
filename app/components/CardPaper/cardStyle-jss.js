@@ -738,6 +738,32 @@ const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       width: '65%'
     }
+  },
+  showAdditionalInfoSection: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    fontSize: 12,
+    background: 'white',
+    position: 'absolute',
+    right: 0
+  },
+  showAdditionalInfoBtn: {
+    border: '1px solid #e8e8e8',
+    width: 'fit-content',
+    padding: '5px 10px',
+    cursor: 'pointer',
+    background: '#eaf7ff',
+    display: 'flex',
+    alignItems: 'center',
+    fontWeight: 600
+  },
+  showAdditionalInfoIcon: {
+    width: 16,
+    height: 16,
+    marginRight: 5
+  },
+  hideSection: {
+    display: 'none'
   }
 });
 
