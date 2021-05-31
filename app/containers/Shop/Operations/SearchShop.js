@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -21,16 +21,49 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import useStyles from '../../../hooks/useStyles';
 import Ionicon from 'react-ionicons';
+import classNames from "classnames";
+
+
 
 const SearchShop = ({ handleSwitchView, listView, onRefreshVaults }) => {
   const classes = useStyles(styles)();
 
+  const [showFilters, setShowFilters] = useState(true);
+
+  const hideFilerPanel = () => {
+    setShowFilters(false);
+  }
+
+  const showFilerPanel = () => {
+    setShowFilters(true);
+  }
+
   return (
     <div className={classes.shopSearchRoot}>
+       {showFilters && <div className={classes.showHideFiltersSection}>
+          <div className={classes.showHideBtn} onClick ={hideFilerPanel}>
+            <Ionicon className={classes.showHideIcon} icon="ios-expand" />
+            <span>Hide Filter Panel</span>
+          </div>
+        </div>}
+      {!showFilters && <div className={classes.showHideFiltersSection}>
+          <div className={classes.showHideBtn} onClick ={showFilerPanel}>
+            <Ionicon className={classes.showHideIcon} icon="ios-expand" />
+            <span>Show Filter Panel</span>
+          </div>
+        </div>}
       <AppBar position="static" color="inherit">
-        <Toolbar>
-          <div className={classes.filterSection}>
-            <section>
+        <Toolbar className={classNames(
+            showFilters ? '' : classes.hideSection
+          )}>
+      
+          <div className={classNames(
+            classes.filterSection,
+            showFilters ? '' : classes.hideFilterSection
+          )}>
+            <section className={classNames(
+            showFilters ? '' : classes.hideSection
+          )}>
               <div className={classes.platformFieldSetTitle}>Platforms</div>
               <RadioGroup
                 aria-label="filter"
@@ -51,7 +84,9 @@ const SearchShop = ({ handleSwitchView, listView, onRefreshVaults }) => {
                 <FormControlLabel value="all" control={<Radio />} label="All" />
               </RadioGroup>
             </section>
-
+            <section className={classNames(
+            showFilters ? '' : classes.hideSection
+          )}>
             <FormGroup className={classes.flexRow}>
               <FormControlLabel
                 control={<Checkbox value="hideZeroBalance" />}
@@ -66,8 +101,11 @@ const SearchShop = ({ handleSwitchView, listView, onRefreshVaults }) => {
                 label="Deposited Vaults"
               />
             </FormGroup>
-
-            <div className={classes.dropdownRow}>
+            </section>
+            <div className={classNames(
+              classes.dropdownRow,
+            showFilters ? '' : classes.hideSection
+          )}>
               <FormControl className={classes.dropdownControl}>
                 <InputLabel htmlFor="age-simple">Vault Type</InputLabel>
                 <Select
@@ -119,8 +157,12 @@ const SearchShop = ({ handleSwitchView, listView, onRefreshVaults }) => {
                 </Select>
               </FormControl>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <div className={classes.clearBtnRow}>
+            <div className={classNames(
+            showFilters ? classes.filterBtnRow : classes.hideSection
+          )}>
+              <div className={classNames(
+            showFilters ? classes.clearBtnRow : classes.hideSection
+          )}>
               <Hidden mdDown>
                   <div className={classes.toggleContainer}>
                     <ToggleButtonGroup value={listView} exclusive onChange={handleSwitchView}>
@@ -151,6 +193,7 @@ const SearchShop = ({ handleSwitchView, listView, onRefreshVaults }) => {
           </div>
         </Toolbar>
       </AppBar>
+     
     </div>
   );
 };

@@ -218,6 +218,38 @@ const styles = theme => ({
   refreshBtn : { 
     marginLeft: 70, 
     backgroundColor: '#2981bb !important'
+  },
+  showHideFiltersSection: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    fontSize: 12,
+    background: 'white',
+    fontWeight: 600
+  },
+  showHideBtn: {
+    border: '1px solid #d4d4d4',
+    width: 'fit-content',
+    padding: '5px 10px',
+    cursor: 'pointer',
+    background: '#eaf7ff',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  showHideIcon: {
+    width: 16,
+    height: 16,
+    marginRight: 5
+  },
+  hideFilterSection: {
+    height: 20
+  },
+  hideSection: {
+    display: 'none'
+  },
+  filterBtnRow: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
