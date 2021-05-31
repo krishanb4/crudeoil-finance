@@ -186,7 +186,7 @@ const calAPYDaily =()=> {
               <div className={classes.flexColumn}>
                 <span className={classes.detailsHeader}>APY Calculations</span>
                 <span>Farm APR: <b>0.00% (0.00% Daily)</b></span>
-                <span>Optimal Compounds per Year: <b>0</b></span>
+                <span>Optimal Compounds per Year: <b>365</b></span>
                 <span>Farm APY: <b>{formatApy(poolApy || 0)}</b></span>
                 <span>XYZ APR: <b>201.20% (0.55% Daily)</b></span>
               </div>

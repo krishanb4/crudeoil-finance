@@ -83,7 +83,11 @@ async function _connectWallet(dispatch, web3Modal) {
       });
       provider.on('accountsChanged', async accounts => {
         if (accounts[0]) {
-          dispatch({ type: types.HOME_ACCOUNTS_CHANGED, data: accounts[0] });
+          dispatch({ type: types.HOME_ACCOUNTS_CHANGED, data: {account: accounts[0], web3} });
+          dispatch({
+            type: types.OPEN_TOAST,
+            items: { type: 'info', hash: '', message: `Your connected wallet has been changed. New address : ${accounts[0]} ` },
+          });
         } else {
           dispatch(disconnectWallet(web3, web3Modal));
         }
