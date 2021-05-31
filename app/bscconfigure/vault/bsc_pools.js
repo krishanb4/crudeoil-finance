@@ -43,7 +43,7 @@ export const bscPools = [
     platform: 'pancake',
     name: 'DIESEL',
     token: 'DIESEL',
-    rewardApyKey: 'diesel-diesel-xyz',
+    rewardAprKey: 'diesel-diesel-xyz',
     tokenDescription: 'DIESEL SINGLE',
     description: 'DIESEL',
     balance: 0,

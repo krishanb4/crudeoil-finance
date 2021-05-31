@@ -477,10 +477,10 @@ const PoolDetailPopup = ({
                 </b>
               </span>
               <span>
-                Optimal Compounds per Year: <b>0</b>
+                Optimal Compounds per Year: <b>365</b>
               </span>
               <span>
-                XYZ APY: <b>{RewardApy}( {RewardApyDaily} Daily)</b>
+                XYZ APR: <b>{RewardApy}( {RewardApyDaily} Daily)</b>
               </span>
             </div>
             <div className={classes.flexColumn}>
