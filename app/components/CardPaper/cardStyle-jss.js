@@ -748,7 +748,7 @@ const styles = theme => ({
     right: 0
   },
   showAdditionalInfoBtn: {
-    border: '1px solid #d4d4d4',
+    border: '1px solid #e8e8e8',
     width: 'fit-content',
     padding: '5px 10px',
     cursor: 'pointer',

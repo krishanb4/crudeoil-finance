@@ -16,9 +16,10 @@ const styles = theme => ({
     oilTankDiv: {
         position: 'absolute',
         bottom: 20,
+        width: 400,
         [theme.breakpoints.down('sm')]: {
             bottom: 48,
-            width: 1100
+            width: '100%'
         }
     },
     oilRigDiv: {
@@ -66,20 +67,20 @@ const styles = theme => ({
         flexDirection: 'column',
         alignItems: 'center',
         [theme.breakpoints.down('sm')]: {
-            width: 750,
-            marginLeft: -190,
+            width: '100vw !important',
+            marginLeft: 0,
             paddingTop: 40
         }
     },
     oilSmoke: {
         position: 'relative',
-        top: 195,
+        top: 25,
         width: 100,
-        left: 57,
+        left: 34,
         zIndex: 99999,
         [theme.breakpoints.down('sm')]: {
-            top: 160,
-            left: 38
+            top: 20,
+            left: 29
         }
     },
     oilRigGif: {
@@ -96,7 +97,10 @@ const styles = theme => ({
     cloudDiv: {
         position: 'absolute',
         width: '100%',
-        opacity: .3
+        opacity: .3,
+        [theme.breakpoints.down('sm')]: {
+            width: '100vw'
+        }
     },
     cloudDivImg: {
         width: '100vw',
@@ -106,7 +110,10 @@ const styles = theme => ({
         color: '#551515',
         width: '50%',
         textAlign: 'center',
-        marginTop: -20
+        marginTop: -20,
+        [theme.breakpoints.down('sm')]: {
+            width: '85%'
+        }
     },
     socialMediaBtn: {
         color: 'black !important',

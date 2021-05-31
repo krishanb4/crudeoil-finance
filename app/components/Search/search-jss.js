@@ -148,7 +148,7 @@ const styles = theme => ({
     gridTemplateColumns: 'auto auto', 
     gridColumnGap: 30, 
     gridRowGap: 0,
-    padding: '15px 0px 15px 0px',
+    padding: '0px 0px 15px 0px',
     [theme.breakpoints.down('sm')]: {
       gridTemplateColumns: '1fr', 
     },
@@ -226,7 +226,7 @@ const styles = theme => ({
     background: 'white',
   },
   showHideBtn: {
-    border: '1px solid #d4d4d4',
+    border: '1px solid #e8e8e8',
     width: 'fit-content',
     padding: '5px 10px',
     cursor: 'pointer',
