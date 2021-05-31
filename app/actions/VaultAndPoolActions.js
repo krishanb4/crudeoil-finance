@@ -338,11 +338,11 @@ const FetchBeginningVaultData = items => ({
 });
 
 const _vaultsData = async ({pool, web3, address, vaultCalls })=> {
-  const vault = new web3.eth.Contract(vaultABI, pool.get('earnedTokenAddress'));
+  const vault = new web3.eth.Contract(vaultABI, pool.get('earnContractAddress'));
   const pid = pool.get('pid');
   const strategyContractAddress = await fetchStrategy({
     web3,
-    contractAddress: pool.get('earnedTokenAddress'),
+    contractAddress: pool.get('earnContractAddress'),
     pid: pid,
   });
   const strategyContract = new web3.eth.Contract(strategyABI, strategyContractAddress);

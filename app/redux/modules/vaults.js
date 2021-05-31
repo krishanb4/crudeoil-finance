@@ -24,15 +24,10 @@ import { getNetworkPools } from '../../helpers/getNetworkData';
 const pools = getNetworkPools();
 const tokens = [];
 
-pools.forEach(({ token, tokenAddress, earnedToken, earnedTokenAddress }) => {
+pools.forEach(({ token, tokenAddress }) => {
   tokens.push({
     token: token,
     tokenAddress: tokenAddress,
-    tokenBalance: 0,
-  });
-  tokens.push({
-    token: earnedToken,
-    tokenAddress: earnedTokenAddress,
     tokenBalance: 0,
   });
 });
