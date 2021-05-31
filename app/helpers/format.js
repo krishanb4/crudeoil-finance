@@ -34,9 +34,11 @@ export const formatTvl = (tvl, oraclePrice) => {
 export const formatGlobalTvl = tvl => formatTvl(tvl, 1);
 
 export const calcDaily = apy => {
-  if (!apy) return `???`;
+  if ( !apy || !apy.get('apy')) return `???`;
+  
+  let apyValue = apy.get('apy');
 
-  const g = Math.pow(10, Math.log10(apy + 1) / 365) - 1;
+  const g = Math.pow(10, Math.log10(apyValue + 1) / 365) - 1;
   if (isNaN(g)) {
     return '- %';
   }

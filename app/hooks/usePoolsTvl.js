@@ -25,21 +25,16 @@ const useUserTvl = (pools, tokens) => {
   const [userTvl, setUserTvl] = useState(0);
 
   useEffect(() => {
-    let userTvl = 0;
+    let userTvlAmount = 0;
 
-    pools.filter(isUniqueEarnContract).forEach(pool => {
-      const token = tokens.find(c => c.get('token') == pool.get('earnedToken'));
-      const sharesBalance = new BigNumber(token.get('tokenBalance'));
-      if (sharesBalance > 0) {
-        const deposited = byDecimals(
-          sharesBalance.multipliedBy(new BigNumber(pool.get('pricePerFullShare'))),
-          pool.get('tokenDecimals')
-        );
-        userTvl += deposited * pool.get('oraclePrice');
+    pools.forEach(pool => {      
+      const depositedAmount = new BigNumber(pool.get('deposited'));
+      if (depositedAmount > 0) {
+        userTvlAmount += depositedAmount * pool.get('oraclePrice');
       }
     });
 
-    setUserTvl(userTvl);
+    setUserTvl(userTvlAmount);
   }, [pools, tokens]);
 
   return { userTvl };
