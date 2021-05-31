@@ -21,7 +21,7 @@ export const networkSetup = (chainId) => {
             params: [networkSetting]
           }).then(resolve).catch(reject)
         } else {
-          reject(new Error(`No network settings configured for chainId: '${chainId}'`))
+          reject(new Error(`No network settings configured for BSC chain. Chain id : '${chainId}'`))
         }
       } else {
         reject(new Error(`window.ethereum is '${typeof provider}'`))

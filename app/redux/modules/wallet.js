@@ -48,9 +48,9 @@ export default function reducer(state = initialImmutableState, action = {}) {
     case HOME_ACCOUNTS_CHANGED:
       return state.withMutations(mutableState => {
         mutableState.set('isLoading', false);
-        mutableState.set('address', action.data);
+        mutableState.set('address', action.data.account);
         mutableState.set('connected', true);
-        mutableState.set('web3', action.items.web3);
+        mutableState.set('web3', action.data.web3);
       });
     case HOME_CONNECT_WALLET_FAILURE:
       return state.withMutations(mutableState => {

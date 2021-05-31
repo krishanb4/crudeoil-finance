@@ -10,13 +10,13 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
-import { useDispatch, useSelector, shallowEqual  } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 import { disconnectWallet, connectWallet } from 'dan-actions/WalletActions';
-import {fetchVaultsData, fetchApys}  from '../../actions/VaultAndPoolActions';
+import { fetchApys } from '../../actions/VaultAndPoolActions';
 import { createWeb3Modal } from '../../web3';
 import styles from './header-jss';
-import networkSetup from  '../../utils/networkSetup';
+import { networkSetup } from '../../utils/networkSetup';
 import * as types from '../../constants/actionConstants';
 
 import useStyles from '../../hooks/useStyles';
@@ -32,7 +32,7 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
   const [showTitle, setShowTitle] = useState(false);
   const [web3Modal, setWeb3Modal] = useState(null);
   const [shortAddress, setShortAddress] = useState('');
-  
+
   const dispatch = useDispatch();
 
   const { web3, address, networkId, connected, connectWalletPending, test } = useSelector(
@@ -42,7 +42,7 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
       networkId: state.getIn(['wallet', 'networkId']),
       connected: state.getIn(['wallet', 'connected']),
       connectWalletPending: state.getIn(['wallet', 'connectWalletPending']),
-      test : state.testreducer
+      test: state.testreducer,
     }),
     shallowEqual
   );
@@ -56,7 +56,7 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
       return;
     }
     const asd = test;
-    
+
     if (address.length < 11) {
       setShortAddress(address);
     } else {
@@ -74,7 +74,7 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
 
   useEffect(() => {
     if (web3Modal && (web3Modal.cachedProvider || window.ethereum)) {
-      dispatch(connectWallet(web3Modal));      
+      dispatch(connectWallet(web3Modal));
       dispatch(fetchApys());
     }
   }, [web3Modal, connectWallet]);
@@ -87,24 +87,22 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
       networkId &&
       Boolean(networkId !== Number(56))
     ) {
-      networkSetup(process.env.REACT_APP_NETWORK_ID).catch(e => {        
+      networkSetup(process.env.REACT_APP_NETWORK_ID).catch(e => {
         dispatch({
           type: types.OPEN_TOAST,
-          items: { type: 'error', hash: '', message: 'Network Error.' },
+          items: { type: 'error', hash: '', message: `${e}` },
         });
       });
     }
   }, [web3, address, networkId, connectWalletPending]);
-
 
   const connectToWallet = () => {
     dispatch(connectWallet(web3Modal));
   };
 
   const diConnectToWallet = () => {
-    dispatch(disconnectWallet(web3,web3Modal));
+    dispatch(disconnectWallet(web3, web3Modal));
   };
-
 
   const handleScroll = () => {
     const doc = document.documentElement;
@@ -223,22 +221,18 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
                   onClick={connected ? diConnectToWallet : connectToWallet}
                 >
                   {connected ? (
-            <>
-              
-              <Ionicon icon="ios-power" />
-                  <span className={classes.walletBtnText}>{shortAddress}</span>
-              
-            </>
-          ) : (
-            <>
-              <Ionicon icon="ios-card" />
-                  <span className={classes.walletBtnText}>Wallet</span>
-            </>
-          )}
-                  
+                    <>
+                      <Ionicon icon="ios-power" />
+                      <span className={classes.walletBtnText}>{shortAddress}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Ionicon icon="ios-card" />
+                      <span className={classes.walletBtnText}>Wallet</span>
+                    </>
+                  )}
                 </Button>
               </Tooltip>
-              
             </div>
           </div>
           <Typography
