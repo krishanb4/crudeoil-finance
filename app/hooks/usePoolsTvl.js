@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js';
 import { useState, useEffect } from 'react';
-import { byDecimals } from '../helpers/bignumber';
 
 const usePoolsTvl = pools => {
   const [poolsTvl, setPoolsTvl] = useState(0);
