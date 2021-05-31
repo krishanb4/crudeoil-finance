@@ -42,7 +42,7 @@ const SearchShop = ({ handleSwitchView, listView, onRefreshVaults }) => {
     <div className={classes.shopSearchRoot}>
        {showFilters && <div className={classes.showHideFiltersSection}>
           <div className={classes.showHideBtn} onClick ={hideFilerPanel}>
-            <Ionicon className={classes.showHideIcon} icon="ios-expand" />
+            <Ionicon className={classes.showHideIcon} icon="ios-contract" />
             <span>Hide Filter Panel</span>
           </div>
         </div>}

@@ -224,7 +224,6 @@ const styles = theme => ({
     justifyContent: 'flex-end',
     fontSize: 12,
     background: 'white',
-    fontWeight: 600
   },
   showHideBtn: {
     border: '1px solid #d4d4d4',
@@ -234,6 +233,7 @@ const styles = theme => ({
     background: '#eaf7ff',
     display: 'flex',
     alignItems: 'center',
+    fontWeight: 600
   },
   showHideIcon: {
     width: 16,
