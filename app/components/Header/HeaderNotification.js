@@ -17,6 +17,7 @@ import Ionicon from 'react-ionicons';
 import dummy from 'dan-api/dummy/dummyContents';
 import messageStyles from 'dan-styles/Messages.scss';
 import styles from './header-jss';
+import Error from '@material-ui/icons/RemoveCircle'
 
 class HeaderNotification extends React.Component {
   state = {
@@ -65,31 +66,42 @@ class HeaderNotification extends React.Component {
           className={classes.notifMenu}
           PaperProps={{
             style: {
-              width: 350,
+              width: 375,
+              height: 'auto',
+              maxHeight: 300,
+              overflowY: 'auto'
             },
           }}
           open={openMenu === 'notification'}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={this.handleClose}>
+          <MenuItem className={classes.notifItem} onClick={this.handleClose}>
             <div className={messageStyles.messageSuccess}>
               <ListItemAvatar>
                 <Avatar className={messageStyles.icon}>
                   <Check />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Transaction Id successfull" className={classes.textNotif} secondary="Jun 10 2021" />
+              <div className={classes.textNotifDiv}>
+              <span className={classes.textNotif}>TXN :<span className={classes.textNotifLink} 
+              onClick={() => window.open(`https://bscscan.com/tx/920192012019202002020`, '_blank')}>920192012019202002020</span>was successfull</span>
+              <span className={classes.textNotifSecodary}>10 mins ago</span>
+              </div>
             </div>
           </MenuItem>
           <Divider className={classes.notifDivider} variant="inset" />
-          <MenuItem onClick={this.handleClose}>
-            <div className={messageStyles.messageSuccess}>
+          <MenuItem className={classes.notifItem} onClick={this.handleClose}>
+            <div className={messageStyles.messageError}>
               <ListItemAvatar>
                 <Avatar className={messageStyles.icon}>
-                  <Check />
+                <Error />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Transaction Id successfull" className={classes.textNotif} secondary="Jun 10 2021" />
+              <div className={classes.textNotifDiv}>
+              <span className={classes.textNotif}>TXN : <span className={classes.textNotifLink} 
+              onClick={() => window.open(`https://bscscan.com/tx/920192012019202002020`, '_blank')}>920192012019202002020</span> failed</span>
+              <span className={classes.textNotifSecodary}>12 mins ago</span>
+              </div>
             </div>
           </MenuItem>
           <Divider className={classes.notifDivider} variant="inset" />
