@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 import { disconnectWallet, connectWallet } from 'dan-actions/WalletActions';
-import { fetchApys } from '../../actions/VaultAndPoolActions';
+import { fetchApys, fetchVaultsData } from '../../actions/VaultAndPoolActions';
 import { createWeb3Modal } from '../../web3';
 import styles from './header-jss';
 import { networkSetup } from '../../utils/networkSetup';
@@ -37,14 +37,14 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
 
   const dispatch = useDispatch();
 
-  const { web3, address, networkId, connected, connectWalletPending, test } = useSelector(
+  const { web3, address, networkId, connected, connectWalletPending, pools } = useSelector(
     state => ({
       web3: state.getIn(['wallet', 'web3']),
       address: state.getIn(['wallet', 'address']),
       networkId: state.getIn(['wallet', 'networkId']),
       connected: state.getIn(['wallet', 'connected']),
       connectWalletPending: state.getIn(['wallet', 'connectWalletPending']),
-      test: state.testreducer,
+      pools: state.getIn(['vaults', 'pools']),
     }),
     shallowEqual
   );
@@ -57,7 +57,6 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
     if (!connected) {
       return;
     }
-    const asd = test;
 
     if (address.length < 11) {
       setShortAddress(address);
@@ -78,6 +77,8 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
     if (web3Modal && (web3Modal.cachedProvider || window.ethereum)) {
       dispatch(connectWallet(web3Modal));
       dispatch(fetchApys());
+    }else{
+      dispatch(fetchVaultsData({pool: pools}));
     }
   }, [web3Modal, connectWallet]);
 

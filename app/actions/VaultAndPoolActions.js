@@ -1,5 +1,6 @@
 import * as types from '../constants/actionConstants';
 import Web3 from 'web3';
+import { Providers } from 'web3-core';
 import { getRpcUrl } from '../utils/networkSetup';
 import axios from 'axios';
 import { erc20ABI, vaultABI, strategyABI } from '../bscconfigure';
@@ -31,12 +32,12 @@ export function fetchVaultsData({ address, web3, pools }) {
 
       let tokenCalls = [];
       let vaultCalls = [];
+      let tvlCalls = [];
       if (address) {
         // can only fetch allowances if a wallet is connected
         pools.map(pool => {
-          const bnbShimAddress = '0xC72E5edaE5D7bA628A2Acb39C8Aa0dbbD06daacF';
           let tokenAddress = pool.get('tokenAddress');
-          const token = new web3.eth.Contract(erc20ABI, tokenAddress || bnbShimAddress);
+          const token = new web3.eth.Contract(erc20ABI, tokenAddress);
           tokenCalls.push({
             allowance: token.methods.allowance(address, pool.get('earnContractAddress')),
           });
@@ -44,50 +45,33 @@ export function fetchVaultsData({ address, web3, pools }) {
       }
 
       Promise.all(
-        pools.map(async pool => {          
-          await _vaultsData({pool, web3, address, vaultCalls});
+        pools.map(async pool => {
+          await _vaultsData({ pool, web3, address, vaultCalls, tvlCalls, multiCall });
         })
-      ).then(() => {
-        Promise.all([
-          multiCall.all([tokenCalls]).then(result => result[0]),
-          multiCall.all([vaultCalls]).then(result => result[0]),
-          whenPricesLoaded(), // need to wait until prices are loaded in cache
-        ])
-          .then(data => {
-            const newPools = [];
-            pools.map((pool, i) => {
-              const correctPool = data[1].find( d=> d.id == pool.get('id'));
-              let depBalance =  correctPool.deposited;
-              let pendingReward = correctPool.reward;
-              const allowance = data[0][i] ? web3.utils.fromWei(data[0][i].allowance, 'ether') : 0;
-              const deposited = byDecimals(depBalance, 18)
-                .toNumber()
-                .toFixed(8);
-              const reward = byDecimals(pendingReward, 18)
-                .toNumber()
-                .toFixed(8);
-
-              var newPool = pool.set('allowance', new BigNumber(allowance).toNumber() || 0);
-              newPool = newPool.set('deposited', deposited || 0);
-              newPool = newPool.set('reward', reward || 0);
-              newPool = newPool.set('tvl', byDecimals(data[1][i].tvl, 18).toNumber());
-              newPool = newPool.set('oraclePrice', fetchPrice({id: pool.get('oracleId')}));
-              newPools.push(newPool);
-            });
-            var imPools = fromJS(newPools);
-            dispatch({
-              type: types.VAULT_FETCH_VAULTS_DATA_SUCCESS,
-              data: imPools,
-            });
-            resolve();
-          })
-          .catch(error => {
-            dispatch({
-              type: types.VAULT_FETCH_VAULTS_DATA_FAILURE,
-            });
-            reject(error.message || error);
+      )
+        .then(async () => {
+          if (address) {
+            _vaultDataOfAllowance({ tokenCalls, pools, multiCall, dispatch, web3 }).then(
+              newPools => {
+                _vaultDataWithoutAllowance({
+                  vaultCalls,
+                  tvlCalls,
+                  pools: newPools,
+                  multiCall,
+                  dispatch,
+                });
+              }
+            );
+          } else {
+            await _vaultDataWithoutAllowance({ vaultCalls, tvlCalls, pools, multiCall, dispatch });
+          }
+        })
+        .catch(error => {
+          dispatch({
+            type: types.VAULT_FETCH_VAULTS_DATA_FAILURE,
           });
-      });
+          reject(error.message || error);
+        });
     });
 
     return promise;
@@ -337,27 +321,81 @@ const FetchBeginningVaultData = items => ({
   items,
 });
 
-const _vaultsData = async ({pool, web3, address, vaultCalls })=> {
+const _vaultsData = async ({ pool, web3, address, vaultCalls, tvlCalls }) => {
   const vault = new web3.eth.Contract(vaultABI, pool.get('earnContractAddress'));
   const pid = pool.get('pid');
-  const strategyContractAddress = await fetchStrategy({
-    web3,
-    contractAddress: pool.get('earnContractAddress'),
-    pid: pid,
-  });
+  const strategyContractAddress = pool.get('strategyAddress');
   const strategyContract = new web3.eth.Contract(strategyABI, strategyContractAddress);
   let deposited = 0;
   let reward = 0;
-  if(address) {
-    deposited = await vault.methods.stakedWantTokens(pid, address).call();
-    reward = await vault.methods.pendingAUTO(pid, address).call();
+  if (address) {
+    deposited = vault.methods.stakedWantTokens(pid, address);
+    reward = vault.methods.pendingAUTO(pid, address);
   }
-  
-  var tvl = await strategyContract.methods.wantLockedTotal().call();
+
+  var tvl = strategyContract.methods.wantLockedTotal();
   vaultCalls.push({
-    id : pool.get('id'),
     deposited: deposited,
-    tvl: tvl,
     reward: reward,
   });
-}
+  tvlCalls.push({
+    tvl: tvl,
+  });
+};
+
+const _vaultDataWithoutAllowance = ({ vaultCalls, tvlCalls, pools, multiCall, dispatch }) => {
+  let promise = Promise.all([
+    multiCall.all([vaultCalls]).then(result => result[0]),
+    multiCall.all([tvlCalls]).then(result => result[0]),
+    whenPricesLoaded(), // need to wait until prices are loaded in cache
+  ])
+    .then(data => {
+      const newPools = [];
+      pools.map((pool, i) => {
+        let depBalance = data[0][i].deposited;
+        let pendingReward = data[0][i].reward;
+        const deposited = byDecimals(depBalance, 18)
+          .toNumber()
+          .toFixed(8);
+        const reward = byDecimals(pendingReward, 18)
+          .toNumber()
+          .toFixed(8);
+
+        var newPool = pool.set('deposited', deposited || 0);
+        newPool = newPool.set('reward', reward || 0);
+        newPool = newPool.set('tvl', byDecimals(data[1][i].tvl, 18).toNumber());
+        newPool = newPool.set('oraclePrice', fetchPrice({ id: pool.get('oracleId') }));
+        newPools.push(newPool);
+      });
+      var imPools = fromJS(newPools);
+      dispatch({
+        type: types.VAULT_FETCH_VAULTS_DATA_SUCCESS,
+        data: imPools,
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  return promise;
+};
+
+const _vaultDataOfAllowance = async ({ tokenCalls, pools, multiCall, dispatch, web3 }) => {
+  let promise = Promise.all([
+    multiCall.all([tokenCalls]).then(result => result[0]),
+    whenPricesLoaded(),
+  ])
+    .then(data => {
+      const newPools = [];
+      pools.map((pool, i) => {
+        const allowance = data[0][i] ? web3.utils.fromWei(data[0][i].allowance, 'ether') : 0;
+        var newPool = pool.set('allowance', new BigNumber(allowance).toNumber() || 0);
+        newPool = newPool.set('oraclePrice', fetchPrice({ id: pool.get('oracleId') }));
+        newPools.push(newPool);
+      });
+      return newPools;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  return promise;
+};

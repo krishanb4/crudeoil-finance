@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import * as types from '../constants/actionConstants';
 import Web3 from 'web3';
 
@@ -9,20 +7,6 @@ export function connectWallet(web3Modal) {
     _connectWallet(dispatch, web3Modal);
     document.getElementsByClassName('web3modal-modal-lightbox')[0].style.zIndex = '9999';
   };
-}
-
-export function useDisconnectWallet() {
-  const dispatch = useDispatch();
-  const disconnectWalletPending = useSelector(
-    state => state.home.disconnectWalletPending,
-    shallowEqual
-  );
-  const boundAction = useCallback(
-    (web3, web3Modal) => dispatch(disconnectWallet(web3, web3Modal)),
-    [dispatch]
-  );
-
-  return { disconnectWalletPending, disconnectWallet: boundAction };
 }
 
 export function disconnectWallet(web3, web3Modal) {

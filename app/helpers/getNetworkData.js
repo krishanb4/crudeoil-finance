@@ -27,7 +27,7 @@ export const getNetworkConnectors = networkId => {
     providerOptions: {
       injected: {
         display: {
-          name: 'Injected',
+          name: 'Default',
           description: 'Home-BrowserWallet',
         },
       },
