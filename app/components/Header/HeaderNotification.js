@@ -17,7 +17,8 @@ import Ionicon from 'react-ionicons';
 import dummy from 'dan-api/dummy/dummyContents';
 import messageStyles from 'dan-styles/Messages.scss';
 import styles from './header-jss';
-import Error from '@material-ui/icons/RemoveCircle'
+import Error from '@material-ui/icons/RemoveCircle';
+import ErrorIcon from '@material-ui/icons/Error';
 
 class HeaderNotification extends React.Component {
   state = {
@@ -75,7 +76,7 @@ class HeaderNotification extends React.Component {
           open={openMenu === 'notification'}
           onClose={this.handleClose}
         >
-          <MenuItem className={classes.notifItem} onClick={this.handleClose}>
+          <MenuItem className={classNames(classes.notifItem, classes.successNotification)} onClick={this.handleClose}>
             <div className={messageStyles.messageSuccess}>
               <ListItemAvatar>
                 <Avatar className={messageStyles.icon}>
@@ -90,11 +91,11 @@ class HeaderNotification extends React.Component {
             </div>
           </MenuItem>
           <Divider className={classes.notifDivider} variant="inset" />
-          <MenuItem className={classes.notifItem} onClick={this.handleClose}>
+          <MenuItem className={classNames(classes.notifItem, classes.errorNotification)} onClick={this.handleClose}>
             <div className={messageStyles.messageError}>
               <ListItemAvatar>
                 <Avatar className={messageStyles.icon}>
-                <Error />
+                <ErrorIcon />
                 </Avatar>
               </ListItemAvatar>
               <div className={classes.textNotifDiv}>

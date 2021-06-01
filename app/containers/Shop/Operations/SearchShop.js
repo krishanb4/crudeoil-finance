@@ -52,7 +52,7 @@ const SearchShop = ({ handleSwitchView, listView, onRefreshVaults }) => {
             <span>Show Filter Panel</span>
           </div>
         </div>}
-      <AppBar position="static" color="inherit">
+      <AppBar  className={classes.mobMargin} position="static" color="inherit">
         <Toolbar className={classNames(
             showFilters ? '' : classes.hideSection
           )}>

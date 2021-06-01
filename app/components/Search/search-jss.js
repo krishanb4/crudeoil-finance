@@ -196,7 +196,10 @@ const styles = theme => ({
     marginTop: '-2px',
     border: '1px solid #eaeaea',
     padding: '5px 15px',
-    borderRadius: '8px'
+    borderRadius: '8px',
+    [theme.breakpoints.down('sm')]: {
+      padding: '5px 12px',
+    }
   },
   platformFieldSetTitle: {
     border: '1px solid #eaeaea',
@@ -250,6 +253,11 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  mobMargin: {
+    [theme.breakpoints.down('sm')]: {
+      marginTop: -1
+    }
   }
 });
 

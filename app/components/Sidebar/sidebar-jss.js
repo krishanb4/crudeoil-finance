@@ -234,8 +234,12 @@ const styles = theme => ({
     fontWeight: 500,
     color: theme.palette.text.primary,
     '& img': {
-      width: 45,
+      width: 50,
       marginRight: 10,
+    },
+    '& span': {
+      marginLeft: -5,
+      marginTop: 10
     },
   },
   brandBig: {
@@ -456,6 +460,18 @@ const styles = theme => ({
     zIndex: 99999,
     width: '100%',
     height: 25
+  },
+  oilPriceLoadBar: {
+    width: '60%',
+    display: 'block',
+    left: 80,
+    top: -9
+  },
+  dieselPriceLoadBar: {
+    width: '50%',
+    display: 'block',
+    left: 100,
+    top: -9
   }
 });
 

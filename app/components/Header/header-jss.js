@@ -268,7 +268,7 @@ const styles = theme => ({
   textNotifSecodary: {
     fontSize: 12,
     fontStyle: 'italic',
-    color: '#b7b7b7'
+    color: '#a79f9f'
   },
   textNotifDiv: {
     display: 'flex',
@@ -276,9 +276,10 @@ const styles = theme => ({
     marginLeft: -10
   },
   textNotifLink: {
-    color: 'blue',
+    color: '#2c2cfb',
     textDecoration: 'underline',
-    margin: '0 4px'
+    margin: '0 4px',
+    fontWeight: 600
   },
   notifItem: {
     padding: '0 !important'
@@ -534,6 +535,12 @@ const styles = theme => ({
   },
   notifDivider: {
     marginLeft: '0px !important'
+  },
+  successNotification: {
+    background: '#e4ffe4'
+  },
+  errorNotification: {
+    background: '#ffe0e0'
   }
 });
 

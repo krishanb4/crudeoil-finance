@@ -4,5 +4,5 @@ module.exports = {
   prefix: 'slShopping',
   footerText: 'SL shop All Rights Reserved 2018',
   logoText: 'SL Shopping Portal',
-  logo: '/images/crudeoil_logo.png'
+  logo: '/images/cruideoillogo.svg'
 };
