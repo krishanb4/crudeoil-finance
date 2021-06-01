@@ -262,12 +262,27 @@ const styles = theme => ({
     }
   },
   textNotif: {
-    '& span': {
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      display: 'block'
-    }
+    display:'flex',
+    alignItems: 'center',
+  },
+  textNotifSecodary: {
+    fontSize: 12,
+    fontStyle: 'italic',
+    color: '#a79f9f'
+  },
+  textNotifDiv: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: -10
+  },
+  textNotifLink: {
+    color: '#2c2cfb',
+    textDecoration: 'underline',
+    margin: '0 4px',
+    fontWeight: 600
+  },
+  notifItem: {
+    padding: '0 !important'
   },
   notifIcon: {
     '& svg': {
@@ -520,6 +535,12 @@ const styles = theme => ({
   },
   notifDivider: {
     marginLeft: '0px !important'
+  },
+  successNotification: {
+    background: '#e4ffe4'
+  },
+  errorNotification: {
+    background: '#ffe0e0'
   }
 });
 

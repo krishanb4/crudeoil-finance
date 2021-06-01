@@ -121,9 +121,11 @@ const styles = theme => ({
         zIndex: 9999
     },
     headingImg: {
+        marginTop: 65,
         [theme.breakpoints.down('sm')]: {
             width: 400,
-            marginBottom: 15
+            marginBottom: 15,
+            marginTop: 90
         } 
     }
 });

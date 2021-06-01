@@ -14,6 +14,7 @@ import MainMenu from './MainMenu';
 import styles from './sidebar-jss';
 import Ionicon from 'react-ionicons';
 import IconButton from '@material-ui/core/IconButton';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { fetchPrice } from '../../web3';
 
@@ -72,7 +73,7 @@ const SidebarContent = ({
           className={classNames(classes.brand, classes.brandBar, turnDarker && classes.darker)}
         >
           <img src={brand.logo} alt={brand.name} />
-          {brand.name}
+          <span>{brand.name}</span>
         </NavLink>
         {isLogin && (
           <div
@@ -140,12 +141,12 @@ const SidebarContent = ({
         <div className={classes.priceMenuDivider} />
         <div className={classes.mb8}>
           <span>
-            OIL Price: <b>$ {oilPrice.toFixed(4)}</b>
+            OIL Price: <b>$ {isFetchVaultsDataPending ? <LinearProgress className={classes.oilPriceLoadBar} /> :  oilPrice.toFixed(4)}</b>
           </span>
         </div>
         <div>
           <span>
-            DIESEL Price: <b>${dieselPrice.toFixed(4)}</b>
+            DIESEL Price: <b>$ {isFetchVaultsDataPending ? <LinearProgress className={classes.dieselPriceLoadBar} /> :  dieselPrice.toFixed(4)}</b>
           </span>
         </div>
       </div>

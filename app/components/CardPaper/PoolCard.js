@@ -197,7 +197,8 @@ const calAPYDaily =()=> {
                 <span>Max Entrance Fee: <b>None</b></span>
               </div>
             </div>}
-            {isListView &&  <div className={classNames(classes.detailsBtnRow, classes.rowCenter)}>
+            {isListView &&  <div className={classNames(classes.detailsBtnRow, classes.rowCenter,
+              showAdditionalInfo ? '' : classes.hideSection)}>
             <Button
               color="secondary"
               variant="contained"
@@ -230,7 +231,10 @@ const calAPYDaily =()=> {
             </Button>
           </div>}
         </CardContent>
-        <CardActions className={classes.actionRow}>
+        <CardActions className={classNames(
+            classes.actionRow,
+            showAdditionalInfo ? '' : classes.mt25
+          )}>
           <div className={classNames(
             isListView ? classes.shopDetailsBtnCol : classes.shopDetailsBtnRow
           )}>

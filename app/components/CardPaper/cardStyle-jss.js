@@ -764,6 +764,9 @@ const styles = theme => ({
   },
   hideSection: {
     display: 'none'
+  },
+  mt25: {
+    marginTop: 25
   }
 });
 
