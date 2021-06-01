@@ -1,59 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import Info from '@material-ui/icons/Info';
 import Check from '@material-ui/icons/CheckCircle';
 import Badge from '@material-ui/core/Badge';
 import Divider from '@material-ui/core/Divider';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Ionicon from 'react-ionicons';
-import dummy from 'dan-api/dummy/dummyContents';
+
 import messageStyles from 'dan-styles/Messages.scss';
 import styles from './header-jss';
-import Error from '@material-ui/icons/RemoveCircle';
+
 import ErrorIcon from '@material-ui/icons/Error';
 
-class HeaderNotification extends React.Component {
-  state = {
-    anchorEl: null,
-    openMenu: null
+const HeaderNotification = ({ dark, data, classes }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [openMenu, setOpenMenu] = useState(null);
+
+  const handleMenu = menu => event => {
+    setOpenMenu(openMenu === menu ? null : menu);
+    setAnchorEl(event.currentTarget);
   };
 
-  handleMenu = menu => (event) => {
-    const { openMenu } = this.state;
-    this.setState({
-      openMenu: openMenu === menu ? null : menu,
-      anchorEl: event.currentTarget
-    });
+  const handleClose = () => {
+    setOpenMenu(null);
+    setAnchorEl(null);
   };
 
-  handleClose = () => {
-    this.setState({ anchorEl: null, openMenu: null });
-  };
-
-  render() {
-    const { classes, dark } = this.props;
-    const { anchorEl, openMenu } = this.state;
-    return (
-      <div>        
-        <IconButton
-          aria-haspopup="true"
-          onClick={this.handleMenu('notification')}
-          color="inherit"
-          className={classNames(classes.notifIcon, dark ? classes.dark : classes.light)}
-        >
-          <Badge className={classes.badge} badgeContent={4} color="secondary">
-            <Ionicon icon="ios-notifications-outline" />
-          </Badge>
-        </IconButton>
-        <Menu
+  return (
+    <div>
+      <IconButton
+        aria-haspopup="true"
+        onClick={handleMenu('notification')}
+        color="inherit"
+        className={classNames(classes.notifIcon, dark ? classes.dark : classes.light)}
+      >
+        <Badge className={classes.badge} badgeContent={data.length} color="secondary">
+          <Ionicon icon="ios-notifications-outline" />
+        </Badge>
+      </IconButton>
+      {
+        data.length > 0 ?  (<Menu
           id="menu-notification"
           anchorEl={anchorEl}
           anchorOrigin={{
@@ -70,55 +62,59 @@ class HeaderNotification extends React.Component {
               width: 375,
               height: 'auto',
               maxHeight: 300,
-              overflowY: 'auto'
+              overflowY: 'auto',
             },
           }}
           open={openMenu === 'notification'}
-          onClose={this.handleClose}
+          onClose={handleClose}
         >
-          <MenuItem className={classNames(classes.notifItem, classes.successNotification)} onClick={this.handleClose}>
-            <div className={messageStyles.messageSuccess}>
-              <ListItemAvatar>
-                <Avatar className={messageStyles.icon}>
-                  <Check />
-                </Avatar>
-              </ListItemAvatar>
-              <div className={classes.textNotifDiv}>
-              <span className={classes.textNotif}>TXN :<span className={classes.textNotifLink} 
-              onClick={() => window.open(`https://bscscan.com/tx/920192012019202002020`, '_blank')}>920192012019202002020</span>was successfull</span>
-              <span className={classes.textNotifSecodary}>10 mins ago</span>
-              </div>
-            </div>
-          </MenuItem>
-          <Divider className={classes.notifDivider} variant="inset" />
-          <MenuItem className={classNames(classes.notifItem, classes.errorNotification)} onClick={this.handleClose}>
-            <div className={messageStyles.messageError}>
-              <ListItemAvatar>
-                <Avatar className={messageStyles.icon}>
-                <ErrorIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <div className={classes.textNotifDiv}>
-              <span className={classes.textNotif}>TXN : <span className={classes.textNotifLink} 
-              onClick={() => window.open(`https://bscscan.com/tx/920192012019202002020`, '_blank')}>920192012019202002020</span> failed</span>
-              <span className={classes.textNotifSecodary}>12 mins ago</span>
-              </div>
-            </div>
-          </MenuItem>
-          <Divider className={classes.notifDivider} variant="inset" />
-        </Menu>
-      </div>
-    );
-  }
-}
+          {data.map((mes, index) => {
+            return (
+              <MenuItem
+                className={classNames(classes.notifItem, classes.successNotification)}
+                onClick={handleClose}
+                key={index}
+              >
+                <div className={messageStyles.messageSuccess}>
+                  <ListItemAvatar>
+                    <Avatar className={messageStyles.icon}>
+                      <Check />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <div className={classes.textNotifDiv}>
+                    <span className={classes.textNotif}>
+                      TXN :
+                      <span
+                        className={classes.textNotifLink}
+                        onClick={() =>
+                          window.open(`https://bscscan.com/tx/920192012019202002020`, '_blank')
+                        }
+                      >
+                        920192012019202002020
+                      </span>
+                    </span>
+                    <span className={classes.textNotifSecodary}>10 mins ago</span>
+                  </div>
+                </div>
+              </MenuItem>
+            );
+          })}
+        </Menu>) : null
+      }
+      
+    </div>
+  );
+};
 
 HeaderNotification.propTypes = {
   classes: PropTypes.object.isRequired,
   dark: PropTypes.bool,
+  data: PropTypes.object,
 };
 
 HeaderNotification.defaultProps = {
-  dark: false
+  dark: false,
+  data: [],
 };
 
 export default withStyles(styles)(HeaderNotification);
