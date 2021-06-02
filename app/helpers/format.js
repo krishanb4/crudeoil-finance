@@ -33,6 +33,21 @@ export const formatTvl = (tvl, oraclePrice) => {
 
 export const formatGlobalTvl = tvl => formatTvl(tvl, 1);
 
+export const formatTotalApy = (apy, apy2) => {
+  if ( (!apy || !apy.get('apy')) && (!apy2 || !apy2.get('apy')) ) return `???`;
+  
+  let apyValue = apy.get('apy') + apy2.get('apy');
+
+  apyValue *= 100;
+
+  const units = ['', 'k', 'M', 'B', 'T', 'Q', 'Q', 'S', 'S'];
+  const order = apyValue < 1 ? 0 : Math.floor(Math.log10(apyValue) / 3);
+  if (order >= units.length - 1) return `🔥`;
+
+  const num = apyValue / 1000 ** order;
+  return `${num.toFixed(2)}${units[order]}%`;
+}
+
 export const calcDaily = apy => {
   if ( !apy || !apy.get('apy')) return `???`;
   
