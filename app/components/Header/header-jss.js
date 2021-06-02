@@ -263,12 +263,15 @@ const styles = theme => ({
   },
   textNotif: {
     display:'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    fontSize: 12
   },
   textNotifSecodary: {
-    fontSize: 12,
+    fontSize: 11,
     fontStyle: 'italic',
-    color: '#a79f9f'
+    color: '#a79f9f',
+    alignSelf: 'flex-end',
+    marginRight: 8
   },
   textNotifDiv: {
     display: 'flex',
@@ -279,7 +282,12 @@ const styles = theme => ({
     color: '#2c2cfb',
     textDecoration: 'underline',
     margin: '0 4px',
-    fontWeight: 600
+    fontWeight: 600,
+    wordBreak: 'break-all',
+    whiteSpace: 'normal'
+  },
+  iconMargin: {
+    marginTop: -2
   },
   notifItem: {
     padding: '0 !important'

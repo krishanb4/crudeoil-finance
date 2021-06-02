@@ -15,6 +15,7 @@ import messageStyles from 'dan-styles/Messages.scss';
 import styles from './header-jss';
 
 import ErrorIcon from '@material-ui/icons/Error';
+import Info from '@material-ui/icons/Info';
 
 const HeaderNotification = ({ dark, data, classes }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -69,7 +70,10 @@ const HeaderNotification = ({ dark, data, classes }) => {
           {data.map((mes, index) => (
             <div>
               <MenuItem
-                className={classNames(classes.notifItem, classes.successNotification)}
+                className={classNames(classes.notifItem, 
+                  mes.get('status') === 'failed'
+                      ? classes.errorNotification
+                      : classes.successNotification)}
                 onClick={handleClose}
                 key={index.toString()}
               >
@@ -81,8 +85,8 @@ const HeaderNotification = ({ dark, data, classes }) => {
                   }
                 >
                   <ListItemAvatar>
-                    <Avatar className={messageStyles.icon}>
-                      {mes.get('status') == 'failed' ? <ErrorIcon /> : <Check />}
+                    <Avatar className={classNames(messageStyles.icon, classes.iconMargin)}>
+                      {mes.get('status') == 'failed' ? <Info /> : <Info />}
                     </Avatar>
                   </ListItemAvatar>
                   <div className={classes.textNotifDiv}>

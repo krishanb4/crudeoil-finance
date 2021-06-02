@@ -195,7 +195,7 @@ const styles = theme => ({
     width: '100%',
     marginTop: '-2px',
     border: '1px solid #eaeaea',
-    padding: '5px 15px',
+    padding: '5px 12px',
     borderRadius: '8px',
     [theme.breakpoints.down('sm')]: {
       padding: '5px 12px',
