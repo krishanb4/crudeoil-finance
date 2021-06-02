@@ -69,8 +69,9 @@ const PoolDetailPopup = ({
   index,
   apy,
   apyDaily,
-  RewardApy,
-  RewardApyDaily
+  rewardApy,
+  rewardApyDaily,
+  totalApy
 }) => {
   const dispatch = useDispatch();
 
@@ -480,16 +481,31 @@ const PoolDetailPopup = ({
                 Optimal Compounds per Year: <b>365</b>
               </span>
               <span>
-                XYZ APR: <b>{RewardApy}( {RewardApyDaily} Daily)</b>
+                CRUDE APR: <b>{rewardApy}( {rewardApyDaily} Daily)</b>
+              </span>
+              <span>
+                Total APY: <b>{totalApy}</b>
               </span>
             </div>
             <div className={classes.flexColumn}>
               <span className={classes.detailsHeader}>Fees</span>
               <span>
-                Platform Fee: <b>0.1% - 0.05% withdraw or deposit fee</b>
+                Platform Fee: <b>0.1% on deposit</b>
               </span>
               <span>
-                XYZ Buyback Rate: <b>None</b>
+                Withdraw Fee: <b>None</b>
+              </span>
+              <span>
+              CRUDE Buyback and Burn: <b>1% on profits of rewards</b>
+              </span>
+              <span>
+              Crudeoil Treasury: <b>1% on profits of rewards</b>
+              </span>
+              <span>
+              Platform Operation Fee: <b>0.5% on profits of rewards</b>
+              </span>
+              <span>
+              CRUDE reward Fee: <b>None</b>
               </span>
               <span>
                 Max Entrance Fee: <b>None</b>

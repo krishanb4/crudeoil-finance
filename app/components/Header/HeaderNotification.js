@@ -94,7 +94,7 @@ const HeaderNotification = ({ dark, data, classes }) => {
                           window.open(`https://bscscan.com/tx/${mes.get('txnId')}`, '_blank')
                         }
                       >
-                        {mes.get('txnId')}
+                        {mes.get('txnId').slice(0, 6)}...{mes.get('txnId').slice(-6)}
                       </span>
                     </span>
                     <span className={classes.textNotifSecodary}>
