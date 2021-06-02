@@ -158,7 +158,7 @@ const Shop = ({ checkout, search }) => {
         <span className={classes.tvlText}>TVL :{isFetchVaultsDataPending ? <LinearProgress className={classes.depositedLoadBar} /> :  formatGlobalTvl(poolsTvl)}</span>
         <span className={classes.depositedText}>Deposited : {isFetchBalancesPending ? <LinearProgress className={classes.depositedLoadBar} /> : formatGlobalTvl(userTvl)} </span>        
         <span className={classes.detailsText}>
-          There is a 0.05%-0.1% withdrawal or deposit fee on all vaults
+          There is a 0.1% deposit fee on all vaults
         </span>
       </div>
 
