@@ -191,7 +191,7 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
           <MenuIcon />
         </Fab>
         <div className={classes.headerProperties}>
-          <div className={classNames(classes.headerAction, showTitle && classes.fadeOut)}>
+          <div className={classNames(classes.headerAction, showTitle && classes.show)}>
             {fullScreen ? (
               <Hidden mdDown>
               <Tooltip title="Exit Full Screen" placement="bottom">
@@ -244,12 +244,12 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
               </Tooltip>
             </div>
           </div>
-          <Typography
+          {/* <Typography
             component="h2"
             className={classNames(classes.headerTitle, showTitle && classes.show)}
           >
             {title}
-          </Typography>
+          </Typography> */}
         </div>
       </Toolbar>
     </AppBar>
