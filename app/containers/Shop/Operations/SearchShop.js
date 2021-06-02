@@ -71,7 +71,7 @@ const SearchShop = ({ handleSwitchView, listView, onRefreshVaults }) => {
                 className={classes.platformFieldset}
                 value={'all'}
               >
-                <FormControlLabel value="pancake" control={<Radio />} label="Pancake" />
+                <FormControlLabel value="pancake" control={<Radio />} label="Pancakeswap" />
                 <img className={classes.platformIcon} src="/images/logo/pancake.svg" />
                 <FormControlLabel value="oneinch" control={<Radio />} label="1Inch" />
                 <img className={classes.platformIcon} src="/images/logo/1inch.png" />

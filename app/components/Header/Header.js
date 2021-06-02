@@ -216,12 +216,12 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
             </Tooltip>
             <HeaderNotification data ={txns} />
             <div className={classes.flexRowLeft}>
-              <Tooltip title="Buy" placement="bottom">
+              {/* <Tooltip title="Buy" placement="bottom">
                 <Button className={classes.buyBtn} variant="contained" color="secondary">
                   <Ionicon icon="logo-usd" />
                   <span className={classes.walletBtnText}>Buy</span>
                 </Button>
-              </Tooltip>
+              </Tooltip> */}
               <Tooltip title="Connect To Wallet" placement="bottom">
                 <Button
                   className={classes.walletBtn}
