@@ -21,14 +21,43 @@ const _withdraw = ({ web3, contract, address, pid, amount, dispatch }) => {
         dispatch({
           type: types.OPEN_TOAST,
           items: { type: 'success', hash: hash, message: 'Transaction Pending' }
-        });        
+        });
+        const txn = {
+          txnId: hash,
+          status: 'pending',
+          time : new Date().getTime()
+        };
+        dispatch({
+          type: types.SAVE_TXNS,
+          item: txn
+        });
       })
       .on('receipt', function(receipt) {
         console.log(receipt);
+        const txn = {
+          txnId: receipt.transactionHash,
+          status: 'success',
+          time : new Date().getTime()
+        };
+        dispatch({
+          type: types.UPDATE_TXNS,
+          item: txn
+        });
         resolve();
       })
       .on('error', function(error) {
         console.log(error);
+        if(error.receipt) {
+          const txn = {
+            txnId: error.receipt.transactionHash,
+            status: 'failed',
+            time : new Date().getTime()
+          };
+          dispatch({
+            type: types.UPDATE_TXNS,
+            item: txn
+          });
+        }
         reject(error);
       })
       .catch(error => {

@@ -37,7 +37,7 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
 
   const dispatch = useDispatch();
 
-  const { web3, address, networkId, connected, connectWalletPending, pools } = useSelector(
+  const { web3, address, networkId, connected, connectWalletPending, pools, txns } = useSelector(
     state => ({
       web3: state.getIn(['wallet', 'web3']),
       address: state.getIn(['wallet', 'address']),
@@ -45,6 +45,7 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
       connected: state.getIn(['wallet', 'connected']),
       connectWalletPending: state.getIn(['wallet', 'connectWalletPending']),
       pools: state.getIn(['vaults', 'pools']),
+      txns: state.getIn(['txn', 'txns'])
     }),
     shallowEqual
   );
@@ -213,7 +214,7 @@ const Header = ({ toggleDrawerOpen, margin, position, gradient, mode, title, cha
                 <Ionicon icon="ios-bulb-outline" />
               </IconButton>
             </Tooltip>
-            <HeaderNotification />
+            <HeaderNotification data ={txns} />
             <div className={classes.flexRowLeft}>
               <Tooltip title="Buy" placement="bottom">
                 <Button className={classes.buyBtn} variant="contained" color="secondary">

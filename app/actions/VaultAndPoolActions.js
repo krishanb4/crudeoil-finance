@@ -1,6 +1,5 @@
 import * as types from '../constants/actionConstants';
 import Web3 from 'web3';
-import { Providers } from 'web3-core';
 import { getRpcUrl } from '../utils/networkSetup';
 import axios from 'axios';
 import { erc20ABI, vaultABI, strategyABI } from '../bscconfigure';
@@ -9,15 +8,7 @@ import { getNetworkMultiCall } from '../helpers/getNetworkData';
 import BigNumber from 'bignumber.js';
 import { MultiCall } from 'eth-multicall';
 import { fromJS } from 'immutable';
-import {
-  approval,
-  deposit,
-  withdraw,
-  whenPricesLoaded,
-  harvest,
-  fetchPrice,
-  fetchStrategy,
-} from '../web3';
+import { approval, deposit, withdraw, whenPricesLoaded, harvest, fetchPrice } from '../web3';
 
 export function fetchVaultsData({ address, web3, pools }) {
   return async dispatch => {
@@ -63,7 +54,7 @@ export function fetchVaultsData({ address, web3, pools }) {
               }
             );
           } else {
-            await _vaultDataWithoutAllowance({ vaultCalls, tvlCalls, pools, multiCall, dispatch });
+            _vaultDataWithoutAllowance({ vaultCalls, tvlCalls, pools, multiCall, dispatch });
           }
         })
         .catch(error => {
@@ -343,7 +334,7 @@ const _vaultsData = async ({ pool, web3, address, vaultCalls, tvlCalls }) => {
   });
 };
 
-const _vaultDataWithoutAllowance = ({ vaultCalls, tvlCalls, pools, multiCall, dispatch }) => {
+const _vaultDataWithoutAllowance = async ({ vaultCalls, tvlCalls, pools, multiCall, dispatch }) => {
   let promise = Promise.all([
     multiCall.all([vaultCalls]).then(result => result[0]),
     multiCall.all([tvlCalls]).then(result => result[0]),
@@ -375,11 +366,14 @@ const _vaultDataWithoutAllowance = ({ vaultCalls, tvlCalls, pools, multiCall, di
     })
     .catch(err => {
       console.log(err);
+      dispatch({
+        type: types.VAULT_FETCH_VAULTS_DATA_FAILURE,
+      });
     });
   return promise;
 };
 
-const _vaultDataOfAllowance = async ({ tokenCalls, pools, multiCall, dispatch, web3 }) => {
+const _vaultDataOfAllowance = async ({ tokenCalls, pools, multiCall, web3 }) => {
   let promise = Promise.all([
     multiCall.all([tokenCalls]).then(result => result[0]),
     whenPricesLoaded(),
@@ -396,6 +390,7 @@ const _vaultDataOfAllowance = async ({ tokenCalls, pools, multiCall, dispatch, w
     })
     .catch(err => {
       console.log(err);
+      reject(err);
     });
   return promise;
 };

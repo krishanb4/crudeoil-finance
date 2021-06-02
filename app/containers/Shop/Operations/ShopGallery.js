@@ -14,15 +14,7 @@ const ShopGallery = ({
   return (
     <div>      
       <Grid container alignItems="flex-start" justify="flex-start" direction="row" spacing={3}>
-        {pools.map((pool, index) => {
-          if (
-            pool
-              .get('name')
-              .toLowerCase()
-              .indexOf(keyword) === -1
-          ) {
-            return false;
-          }         
+        {pools.map((pool, index) => {                
           return (
             <Grid
               item

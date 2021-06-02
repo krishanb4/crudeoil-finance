@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
@@ -12,7 +11,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Ionicon from 'react-ionicons';
-
 import messageStyles from 'dan-styles/Messages.scss';
 import styles from './header-jss';
 
@@ -40,12 +38,12 @@ const HeaderNotification = ({ dark, data, classes }) => {
         color="inherit"
         className={classNames(classes.notifIcon, dark ? classes.dark : classes.light)}
       >
-        <Badge className={classes.badge} badgeContent={data.length} color="secondary">
+        <Badge className={classes.badge} badgeContent={data.count()} color="secondary">
           <Ionicon icon="ios-notifications-outline" />
         </Badge>
       </IconButton>
-      {
-        data.length > 0 ?  (<Menu
+      {data.count() > 0 ? (
+        <Menu
           id="menu-notification"
           anchorEl={anchorEl}
           anchorOrigin={{
@@ -68,17 +66,23 @@ const HeaderNotification = ({ dark, data, classes }) => {
           open={openMenu === 'notification'}
           onClose={handleClose}
         >
-          {data.map((mes, index) => {
-            return (
+          {data.map((mes, index) => (
+            <div>
               <MenuItem
                 className={classNames(classes.notifItem, classes.successNotification)}
                 onClick={handleClose}
-                key={index}
+                key={index.toString()}
               >
-                <div className={messageStyles.messageSuccess}>
+                <div
+                  className={
+                    mes.get('status') === 'failed'
+                      ? messageStyles.messageError
+                      : messageStyles.messageSuccess
+                  }
+                >
                   <ListItemAvatar>
                     <Avatar className={messageStyles.icon}>
-                      <Check />
+                      {mes.get('status') == 'failed' ? <ErrorIcon /> : <Check />}
                     </Avatar>
                   </ListItemAvatar>
                   <div className={classes.textNotifDiv}>
@@ -87,21 +91,29 @@ const HeaderNotification = ({ dark, data, classes }) => {
                       <span
                         className={classes.textNotifLink}
                         onClick={() =>
-                          window.open(`https://bscscan.com/tx/920192012019202002020`, '_blank')
+                          window.open(`https://bscscan.com/tx/${mes.get('txnId')}`, '_blank')
                         }
                       >
-                        920192012019202002020
+                        {mes.get('txnId')}
                       </span>
                     </span>
-                    <span className={classes.textNotifSecodary}>10 mins ago</span>
+                    <span className={classes.textNotifSecodary}>
+                      {Math.floor((new Date().getTime() - mes.get('time')) / 60000)} mins ago
+                    </span>
                   </div>
                 </div>
               </MenuItem>
-            );
-          })}
-        </Menu>) : null
-      }
-      
+              <div>
+                {data.size - 1 !== index ? (
+                  <Divider className={classes.notifDivider} variant="inset" />
+                ) : (
+                  ''
+                )}
+              </div>
+            </div>
+          ))}
+        </Menu>
+      ) : null}
     </div>
   );
 };
@@ -114,7 +126,6 @@ HeaderNotification.propTypes = {
 
 HeaderNotification.defaultProps = {
   dark: false,
-  data: [],
 };
 
 export default withStyles(styles)(HeaderNotification);

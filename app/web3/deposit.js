@@ -11,10 +11,19 @@ export const deposit = async ({ web3, address, pid, amount, contractAddress, dis
 const _deposit = ({ web3, contract, amount, pid, address, dispatch }) => {
   return new Promise((resolve, reject) => {
     contract.methods
-      .deposit(pid, amount)
+      .deposit(pid, 100000)
       .send({ from: address })
       .on('transactionHash', function(hash) {
         console.log(hash);
+        const txn = {
+          txnId: hash,
+          status: 'success',
+          time : new Date().getTime()
+        };
+        dispatch({
+          type: types.SAVE_TXNS,
+          item: txn
+        });
              
         dispatch({
           type: types.OPEN_TOAST,
@@ -23,10 +32,31 @@ const _deposit = ({ web3, contract, amount, pid, address, dispatch }) => {
       })
       .on('receipt', function(receipt) {
         console.log(receipt);
+        const txn = {
+          txnId: receipt.transactionHash,
+          status: 'success',
+          time : new Date().getTime()
+        };
+        dispatch({
+          type: types.UPDATE_TXNS,
+          item: txn
+        });
         resolve();
       })
       .on('error', function(error) {
         console.log(error);
+        if(error.receipt) {
+          const txn = {
+            txnId: error.receipt.transactionHash,
+            status: 'failed',
+            time : new Date().getTime()
+          };
+          dispatch({
+            type: types.UPDATE_TXNS,
+            item: txn
+          });
+        }
+        
         reject(error);
       })
       .catch(error => {
